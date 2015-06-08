@@ -6,6 +6,7 @@ use Ponticlaro\Bebop\Common\Collection;
 use Ponticlaro\Bebop\Common\UrlManager;
 use Ponticlaro\Bebop\Common\PathManager;
 use Ponticlaro\Bebop\Common\Utils;
+use Ponticlaro\Bebop\UI\UI;
 
 class ContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
 
@@ -117,7 +118,7 @@ class ContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
 
 					<?php if ($this->isMode('gallery')) {
 
-						\Ponticlaro\Bebop::UI()->Media('Image', '', array(
+						UI::getInstance()->Media('Image', '', array(
 							'field_name' => 'id',
 							'mime_types' => array(
 								'image'
