@@ -3,10 +3,11 @@
 namespace Ponticlaro\Bebop\UI;
 
 use Ponticlaro\Bebop\Common\Collection;
-use Ponticlaro\Bebop\Common\Helpers\UrlManager;
-use Ponticlaro\Bebop\Common\Helpers\PathManager;
+use Ponticlaro\Bebop\Common\UrlManager;
+use Ponticlaro\Bebop\Common\PathManager;
 use Ponticlaro\Bebop\Common\Utils;
 use Ponticlaro\Bebop\Common\StaticAssetsServer;
+use Ponticlaro\Bebop\HttpApi\HttpApi;
 
 class UI extends \Ponticlaro\Bebop\Common\Patterns\SingletonAbstract {
 
@@ -56,11 +57,11 @@ class UI extends \Ponticlaro\Bebop\Common\Patterns\SingletonAbstract {
 
 		// Set static assets URL
         $paths = PathManager::getInstance(); 
-		$paths->setPath('_bebop/static', $assets_dir);
+		$paths->set('_bebop/static', $assets_dir);
 
 		// Set static assets directory
         $urls = UrlManager::getInstance(); 
-        $urls->setUrl('_bebop/static', $urls->getUrl('home', '_bebop/static'));
+        $urls->set('_bebop/static', $urls->get('home', '_bebop/static'));
 
 		// Setup static assets server
 		$http_api = new HttpApi('bebop_static_assets');
@@ -86,7 +87,7 @@ class UI extends \Ponticlaro\Bebop\Common\Patterns\SingletonAbstract {
 		wp_register_style('bebop-ui', $urls->get('_bebop/static', $css_path), array(), $css_version);
 
 		// Register development JS
-		if (defined(BEBOP_DEV_ENV_ENABLED) && BEBOP_DEV_ENV_ENABLED) {
+		if (defined('BEBOP_DEV_ENV_ENABLED') && BEBOP_DEV_ENV_ENABLED) {
 			
 			wp_register_script('mustache', $urls->get('_bebop/static', 'core/js/vendor/mustache'), array(), '0.8.1', true);
 			wp_register_script('jquery.debounce', $urls->get('_bebop/static', 'core/js/vendor/jquery.ba-throttle-debounce.min'), array('jquery'), '0.8.1', true);

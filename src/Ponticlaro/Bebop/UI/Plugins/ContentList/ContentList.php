@@ -3,8 +3,8 @@
 namespace Ponticlaro\Bebop\UI\Plugins\ContentList;
 
 use Ponticlaro\Bebop\Common\Collection;
-use Ponticlaro\Bebop\Common\Helpers\UrlManager;
-use Ponticlaro\Bebop\Common\Helpers\PathManager;
+use Ponticlaro\Bebop\Common\UrlManager;
+use Ponticlaro\Bebop\Common\PathManager;
 use Ponticlaro\Bebop\Common\Utils;
 
 class ContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
@@ -55,7 +55,7 @@ class ContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
 		wp_register_style('bebop-ui--list', $urls->get('_bebop/static', $css_path), $css_dependencies, $css_version);
 
 		// Register development JS
-		if (defined(BEBOP_DEV_ENV_ENABLED) && BEBOP_DEV_ENV_ENABLED) {
+		if (defined('BEBOP_DEV_ENV_ENABLED') && BEBOP_DEV_ENV_ENABLED) {
 			
 			wp_register_script('bebop-ui--listView', $urls->get('_bebop/static', 'list/js/views/List'), array(), false, true);
 			wp_register_script('bebop-ui--listItemView', $urls->get('_bebop/static', 'list/js/views/ListItemView'), array(), false, true);
@@ -219,21 +219,21 @@ class ContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
 		$this->data = new Collection($data ?: array());
 
 		// Views
-		$this->views = new Collection(array(
+		$this->views = (new Collection(array(
 			'browse'  => '',
 			'reorder' => '',
 			'edit'    => ''
-		))->disableDottedNotation();
+		)))->disableDottedNotation();
 
 		// Labels
-		$this->labels = new Collection(array(
+		$this->labels = (new Collection(array(
 			'add_button'      => 'Add Item',
 			'sort_button'     => 'Sort',
 			'edit_all_button' => 'Edit All'
-		))->disableDottedNotation();
+		)))->disableDottedNotation();
 
 		// Forms
-		$this->forms = new Collection()->disableDottedNotation();
+		$this->forms = (new Collection())->disableDottedNotation();
 
 		// Add default form
 		// This is inherited by user added forms without form elements

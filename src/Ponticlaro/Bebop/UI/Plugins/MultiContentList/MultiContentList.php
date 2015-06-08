@@ -3,8 +3,8 @@
 namespace Ponticlaro\Bebop\UI\Plugins\MultiContentList;
 
 use Ponticlaro\Bebop\Common\Collection;
-use Ponticlaro\Bebop\Common\Helpers\UrlManager;
-use Ponticlaro\Bebop\Common\Helpers\PathManager;
+use Ponticlaro\Bebop\Common\UrlManager;
+use Ponticlaro\Bebop\Common\PathManager;
 use Ponticlaro\Bebop\Common\Utils;
 
 class MultiContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
@@ -85,7 +85,7 @@ class MultiContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
 		wp_register_style('bebop-ui--multilist', $urls->get('_bebop/static', $css_path), $css_dependencies, $css_version);
 
 		// Register development JS
-		if (defined(BEBOP_DEV_ENV_ENABLED) && BEBOP_DEV_ENV_ENABLED) {
+		if (defined('BEBOP_DEV_ENV_ENABLED') && BEBOP_DEV_ENV_ENABLED) {
 			
 			wp_register_script('bebop-ui--multilistView', $urls->get('_bebop/static', 'ui/multilist/js/views/MultiList'), array(), false, true);
 

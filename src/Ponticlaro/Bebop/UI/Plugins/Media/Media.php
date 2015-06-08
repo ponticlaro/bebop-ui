@@ -3,8 +3,8 @@
 namespace Ponticlaro\Bebop\UI\Plugins\Media;
 
 use Ponticlaro\Bebop\Common\Collection;
-use Ponticlaro\Bebop\Common\Helpers\UrlManager;
-use Ponticlaro\Bebop\Common\Helpers\PathManager;
+use Ponticlaro\Bebop\Common\UrlManager;
+use Ponticlaro\Bebop\Common\PathManager;
 use Ponticlaro\Bebop\Common\Utils;
 
 class Media extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
@@ -85,7 +85,7 @@ class Media extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
 		wp_register_style('bebop-ui--media', $urls->get('_bebop/static', $css_path), $css_dependencies, $css_version);
 		
 		// Register development JS
-		if (defined(BEBOP_DEV_ENV_ENABLED) && BEBOP_DEV_ENV_ENABLED) {
+		if (defined('BEBOP_DEV_ENV_ENABLED') && BEBOP_DEV_ENV_ENABLED) {
 			
 			wp_register_script('bebop-ui--mediaView', $urls->get('_bebop/static', 'media/js/views/Media'), array(), false, true);
 
