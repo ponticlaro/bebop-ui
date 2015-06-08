@@ -79,15 +79,15 @@ class Media extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
 
 		// Register CSS
 		$css_path         = 'media/css/bebop-ui--media';
-		$css_version      = Utils::getFileVersion($paths->get('_bebop/static', $css_path .'.css'));
+		$css_version      = Utils::getFileVersion($paths->get('_bebop/static/ui', $css_path .'.css'));
 		$css_dependencies = array('bebop-ui');
 
-		wp_register_style('bebop-ui--media', $urls->get('_bebop/static', $css_path), $css_dependencies, $css_version);
+		wp_register_style('bebop-ui--media', $urls->get('_bebop/static/ui', $css_path), $css_dependencies, $css_version);
 		
 		// Register development JS
 		if (defined('BEBOP_DEV_ENV_ENABLED') && BEBOP_DEV_ENV_ENABLED) {
 			
-			wp_register_script('bebop-ui--mediaView', $urls->get('_bebop/static', 'media/js/views/Media'), array(), false, true);
+			wp_register_script('bebop-ui--mediaView', $urls->get('_bebop/static/ui', 'media/js/views/Media'), array(), false, true);
 
 			$js_dependencies = array(
 				'jquery',
@@ -99,7 +99,7 @@ class Media extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
 				'bebop-ui--mediaView'
 			);		
 
-			wp_register_script('bebop-ui--media', $urls->get('_bebop/static', 'media/js/bebop-ui--media'), $js_dependencies, false, true);
+			wp_register_script('bebop-ui--media', $urls->get('_bebop/static/ui', 'media/js/bebop-ui--media'), $js_dependencies, false, true);
 		}
 
 		// Register optimized JS
@@ -118,9 +118,9 @@ class Media extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
 			);
 
 			$js_path    = 'media/js/bebop-ui--media.min';
-			$js_version = Utils::getFileVersion($paths->get('_bebop/static', $js_path .'.js'));
+			$js_version = Utils::getFileVersion($paths->get('_bebop/static/ui', $js_path .'.js'));
 
-			wp_register_script('bebop-ui--media', $urls->get('_bebop/static', $js_path), $js_dependencies, $js_version, true);
+			wp_register_script('bebop-ui--media', $urls->get('_bebop/static/ui', $js_path), $js_dependencies, $js_version, true);
 		}
 	}
 

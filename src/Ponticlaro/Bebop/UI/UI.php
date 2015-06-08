@@ -57,17 +57,15 @@ class UI extends \Ponticlaro\Bebop\Common\Patterns\SingletonAbstract {
 
 		// Set static assets URL
         $paths = PathManager::getInstance(); 
-		$paths->set('_bebop/static', $assets_dir);
+		$paths->set('_bebop/static/ui', $assets_dir);
 
 		// Set static assets directory
         $urls = UrlManager::getInstance(); 
-        $urls->set('_bebop/static', $urls->get('home', '_bebop/static'));
+        $urls->set('_bebop/static/ui', $urls->get('home', '_bebop/static/ui'));
 
 		// Setup static assets server
-		$http_api = new HttpApi('bebop_static_assets');
-        $http_api->setBaseUrl('_bebop/static');
-
-        new StaticAssetsServer($http_api, $assets_dir);
+		$http_api = new HttpApi('bebop_ui_static_assets', '_bebop/static/ui');
+	    new StaticAssetsServer($http_api, $assets_dir);
 	}
 
 	/**
@@ -81,16 +79,16 @@ class UI extends \Ponticlaro\Bebop\Common\Patterns\SingletonAbstract {
 		$urls  = UrlManager::getInstance();
 		
 		// Register CSS
-		$css_path    = '/ui/core/css/bebop-ui';
-		$css_version = Utils::getFileVersion($paths->get('_bebop/static', $css_path .'.css'));
+		$css_path    = 'core/css/bebop-ui';
+		$css_version = Utils::getFileVersion($paths->get('_bebop/static/ui', $css_path .'.css'));
 
-		wp_register_style('bebop-ui', $urls->get('_bebop/static', $css_path), array(), $css_version);
+		wp_register_style('bebop-ui', $urls->get('_bebop/static/ui', $css_path), array(), $css_version);
 
 		// Register development JS
 		if (defined('BEBOP_DEV_ENV_ENABLED') && BEBOP_DEV_ENV_ENABLED) {
 			
-			wp_register_script('mustache', $urls->get('_bebop/static', 'core/js/vendor/mustache'), array(), '0.8.1', true);
-			wp_register_script('jquery.debounce', $urls->get('_bebop/static', 'core/js/vendor/jquery.ba-throttle-debounce.min'), array('jquery'), '0.8.1', true);
+			wp_register_script('mustache', $urls->get('_bebop/static/ui', 'core/js/vendor/mustache'), array(), '0.8.1', true);
+			wp_register_script('jquery.debounce', $urls->get('_bebop/static/ui', 'core/js/vendor/jquery.ba-throttle-debounce.min'), array('jquery'), '0.8.1', true);
 			
 			$dependencies = array(
 				'jquery',
@@ -98,7 +96,7 @@ class UI extends \Ponticlaro\Bebop\Common\Patterns\SingletonAbstract {
 				'jquery.debounce'
 			);
 			
-			wp_register_script('bebop-ui', $urls->get('_bebop/static', 'core/js/bebop-ui'), $dependencies, false, true);
+			wp_register_script('bebop-ui', $urls->get('_bebop/static/ui', 'core/js/bebop-ui'), $dependencies, false, true);
 		}
 
 		// Register optimized JS
@@ -106,10 +104,10 @@ class UI extends \Ponticlaro\Bebop\Common\Patterns\SingletonAbstract {
 
 			// Mustache is optimized separately 
 			// so that other components can load it only if needed
-			$mustache_path    = 'ui/core/js/vendor/mustache.min';
-			$mustache_version = Utils::getFileVersion($paths->get('_bebop/static', $mustache_path .'.js')); 
+			$mustache_path    = 'core/js/vendor/mustache.min';
+			$mustache_version = Utils::getFileVersion($paths->get('_bebop/static/ui', $mustache_path .'.js')); 
 			
-			wp_register_script('mustache', $urls->get('_bebop/static', $mustache_path), array(), $mustache_version, true);
+			wp_register_script('mustache', $urls->get('_bebop/static/ui', $mustache_path), array(), $mustache_version, true);
 
 			// The following dependencies should never be concatenated and minified
 			// These are used by other WordPress features and plugins
@@ -119,9 +117,9 @@ class UI extends \Ponticlaro\Bebop\Common\Patterns\SingletonAbstract {
 			);
 
 			$bebop_ui_path    = 'core/js/bebop-ui.min';
-			$bebop_ui_version = Utils::getFileVersion($paths->get('_bebop/static', $bebop_ui_path .'.js')); 
+			$bebop_ui_version = Utils::getFileVersion($paths->get('_bebop/static/ui', $bebop_ui_path .'.js')); 
 
-			wp_register_script('bebop-ui', $urls->get('_bebop/static', $bebop_ui_path), $dependencies, $bebop_ui_version, true);
+			wp_register_script('bebop-ui', $urls->get('_bebop/static/ui', $bebop_ui_path), $dependencies, $bebop_ui_version, true);
 		}
 	}
 

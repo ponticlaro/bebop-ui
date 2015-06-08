@@ -78,16 +78,16 @@ class MultiContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
 		$urls  = UrlManager::getInstance();
 
 		// Register CSS
-		$css_path         = 'ui/multilist/css/bebop-ui--multilist';
-		$css_version      = Utils::getFileVersion($paths->get('_bebop/static', $css_path .'.css'));
+		$css_path         = 'multilist/css/bebop-ui--multilist';
+		$css_version      = Utils::getFileVersion($paths->get('_bebop/static/ui', $css_path .'.css'));
 		$css_dependencies = array('bebop-ui');
 
-		wp_register_style('bebop-ui--multilist', $urls->get('_bebop/static', $css_path), $css_dependencies, $css_version);
+		wp_register_style('bebop-ui--multilist', $urls->get('_bebop/static/ui', $css_path), $css_dependencies, $css_version);
 
 		// Register development JS
 		if (defined('BEBOP_DEV_ENV_ENABLED') && BEBOP_DEV_ENV_ENABLED) {
 			
-			wp_register_script('bebop-ui--multilistView', $urls->get('_bebop/static', 'ui/multilist/js/views/MultiList'), array(), false, true);
+			wp_register_script('bebop-ui--multilistView', $urls->get('_bebop/static/ui', 'multilist/js/views/MultiList'), array(), false, true);
 
 			$js_dependencies = array(
 				'jquery',
@@ -95,7 +95,7 @@ class MultiContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
 				'bebop-ui--multilistView'
 			);		
 
-			wp_register_script('bebop-ui--multilist', $urls->get('_bebop/static', 'ui/multilist/js/bebop-ui--multilist'), $js_dependencies, false, true);
+			wp_register_script('bebop-ui--multilist', $urls->get('_bebop/static/ui', 'multilist/js/bebop-ui--multilist'), $js_dependencies, false, true);
 		}
 
 		// Register optimized JS
@@ -109,10 +109,10 @@ class MultiContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
 				'jquery-ui-tabs'
 			);
 
-			$js_path    = 'ui/multilist/js/bebop-ui--multilist.min';
-			$js_version = Utils::getFileVersion($paths->get('_bebop/static', $js_path .'.js'));
+			$js_path    = 'multilist/js/bebop-ui--multilist.min';
+			$js_version = Utils::getFileVersion($paths->get('_bebop/static/ui', $js_path .'.js'));
 
-			wp_register_script('bebop-ui--multilist', $urls->get('_bebop/static', $js_path), $js_dependencies, $js_version, true);
+			wp_register_script('bebop-ui--multilist', $urls->get('_bebop/static/ui', $js_path), $js_dependencies, $js_version, true);
 		}
 	}
 
