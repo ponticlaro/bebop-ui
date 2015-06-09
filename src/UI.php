@@ -1,13 +1,13 @@
 <?php
 
-namespace Ponticlaro\Bebop\UI;
+namespace Ponticlaro\Bebop;
 
 use Ponticlaro\Bebop\Common\Collection;
 use Ponticlaro\Bebop\Common\UrlManager;
 use Ponticlaro\Bebop\Common\PathManager;
 use Ponticlaro\Bebop\Common\Utils;
 use Ponticlaro\Bebop\Common\StaticAssetsServer;
-use Ponticlaro\Bebop\HttpApi\HttpApi;
+use Ponticlaro\Bebop\HttpApi;
 
 class UI extends \Ponticlaro\Bebop\Common\Patterns\SingletonAbstract {
 
