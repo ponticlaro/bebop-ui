@@ -53,7 +53,7 @@ class UI extends \Ponticlaro\Bebop\Common\Patterns\SingletonAbstract {
 		add_action('admin_enqueue_scripts', array($this, 'registerScripts'));
 
 		// Set assets directory
-		$assets_dir = __DIR__ . '/assets';
+		$assets_dir = __DIR__ . '/UI/assets';
 
 		// Set static assets URL
         $paths = PathManager::getInstance(); 
