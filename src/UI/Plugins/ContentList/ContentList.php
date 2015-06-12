@@ -6,7 +6,7 @@ use Ponticlaro\Bebop\Common\Collection;
 use Ponticlaro\Bebop\Common\UrlManager;
 use Ponticlaro\Bebop\Common\PathManager;
 use Ponticlaro\Bebop\Common\Utils;
-use Ponticlaro\Bebop\UI\UI;
+use Ponticlaro\Bebop\UI;
 
 class ContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
 
