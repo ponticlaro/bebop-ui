@@ -185,17 +185,22 @@ class Media extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
 	{
 		global $wp_version;
 
-		if (version_compare($wp_version, '3.5', '>=')) {
+		if (version_compare($wp_version, '4.0', '>=')) {
+			
+			wp_enqueue_media();
+		}
+
+		elseif (version_compare($wp_version, '3.5', '>=')) {
 			
 			// Enqueue media scripts ONLY if needed
 			add_action('admin_enqueue_scripts', function() {
 
 				if (!did_action('wp_enqueue_media'))
 					wp_enqueue_media();
-			});
-			
-		} else {
+			});	
+		}
 
+		else {
 			// Handle WordPress lower than 3.5
 		}
 
