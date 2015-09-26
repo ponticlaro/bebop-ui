@@ -3,7 +3,7 @@
 <div bebop-ui--gallery-item-type="image" bebop-ui--gallery-item-view="browse">
 	
 	<div bebop-ui--gallery-item-widget>
-		<?php (new Media('Image ID', '{{image_id}}'))->render(); ?>
+		<?php (new Media('ID', '{{id}}'))->render(); ?>
 	</div>
     <div bebop-ui--gallery-item-meta>
 		{{#title}}

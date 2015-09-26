@@ -8,7 +8,7 @@
 	<input type="hidden" name="type" value="{{type}}">
 	<br>
 	
-	<?php (new Media('Image ID', '{{image_id}}'))->render(); ?>
+	<?php (new Media('ID', '{{id}}'))->render(); ?>
 
 	<label for="">Title</label><br>
 	<input type="text" name="title" value="{{title}}">
