@@ -46,7 +46,8 @@ class UI extends \Ponticlaro\Bebop\Common\Patterns\SingletonAbstract {
 		$this->addPlugins(array(
 			'Ponticlaro\Bebop\UI\Plugins\Media\Media',
 			'Ponticlaro\Bebop\UI\Plugins\ContentList\ContentList',
-			'Ponticlaro\Bebop\UI\Plugins\MultiContentList\MultiContentList'
+			'Ponticlaro\Bebop\UI\Plugins\MultiContentList\MultiContentList',
+			'Ponticlaro\Bebop\UI\Plugins\Gallery\Gallery'
 		));
 
 		// Register common UI scripts

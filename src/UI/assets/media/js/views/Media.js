@@ -28,7 +28,7 @@
 					empty: $body.find('[bebop-media--template="empty-view"]').html().trim(),
 					error: $body.find('[bebop-media--template="error-view"]').html().trim(),
 					loading: $body.find('[bebop-media--template="loading-view"]').html().trim()
-				}
+				};
 
 				// Insert main template
 				this.$el.append(this.templates.main);
@@ -41,7 +41,7 @@
 				// Set default status model
 				this.status = new Backbone.Model({
 					view: 'loading',
-					id: options.id != undefined ? options.id : this.$dataContainer.val(),
+					id: options.id !== undefined ? options.id : this.$dataContainer.val(),
 					data: null
 				});
 
@@ -104,7 +104,7 @@
 				}
 
 				this.render();
-			};
+			}
 		},
 
 		doAction: function(event) {
@@ -114,7 +114,7 @@
 			var action = $(event.currentTarget).attr('bebop-media--action');
 
 			// Execute action if available
-			if (this[action] != undefined) this[action](event);
+			if (this[action] !== undefined) this[action](event);
 		},
 
 		storeData: function() {
@@ -166,25 +166,25 @@
 
 			if (data) {
 
-				if(data.error != undefined && data.error) {
+				if(data.error !== undefined && data.error) {
 
 					this.status.set('view', 'error');
 
-				} else if(data.ID != undefined || data.id != undefined) {
+				} else if(data.ID !== undefined || data.id !== undefined) {
 
-					id          = data.id != undefined ? data.id : data.ID,
-					typeValue   = data.post_mime_type != undefined ? data.post_mime_type : data.mime,
-					view        = typeValue.indexOf('image') != -1 ? 'image' : 'nonImage',
-					data.title  = data.post_title != undefined ? data.post_title : data.title;
+					id          = data.id !== undefined ? data.id : data.ID;
+					typeValue   = data.post_mime_type !== undefined ? data.post_mime_type : data.mime;
+					view        = typeValue.indexOf('image') != -1 ? 'image' : 'nonImage';
+					data.title  = data.post_title !== undefined ? data.post_title : data.title;
 
 					if (data.type == 'image') {
 
-						data.url = data.sizes.thumbnail != undefined ? data.sizes.thumbnail.url : data.url;
+						data.url = data.sizes.thumbnail !== undefined ? data.sizes.thumbnail.url : data.url;
 					} 
 
 					else {
 
-						data.url = data.permalink != undefined ? data.permalink : data.url;
+						data.url = data.permalink !== undefined ? data.permalink : data.url;
 					}
 
 					this.status.set('id', id);
@@ -209,7 +209,7 @@
 
 			this.$el.removeClass('view--' + prevView).addClass('view--' + currentView);
 
-			if (data && data.url != undefined) {
+			if (data && data.url !== undefined) {
 
 				this.$actions.find('[bebop-media--action="select"] b').text('Change');
 

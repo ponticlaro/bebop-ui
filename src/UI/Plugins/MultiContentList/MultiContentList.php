@@ -190,6 +190,6 @@ class MultiContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
 	 */
 	private function __renderTemplate(\Ponticlaro\Bebop\Common\Collection $lists)
 	{
-		include __DIR__ . '/templates/views/default/default.php';
+		include __DIR__ . '/templates/main.php';
 	}
 }

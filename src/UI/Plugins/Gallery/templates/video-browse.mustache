@@ -1,0 +1,31 @@
+<div bebop-ui--gallery-item-type="video" bebop-ui--gallery-item-view="browse">
+
+    {{#id}}
+        {{#source_is_youtube}}
+            <div bebop-ui--gallery-item-widget>
+                <iframe src="//www.youtube.com/embed/{{id}}" width="160" height="107" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+            </div>
+            <div bebop-ui--gallery-item-meta>
+                {{#title}}
+                    <div bebop-ui--gallery-item-title>{{title}}</div>
+                {{/title}}
+            </div>
+        {{/source_is_youtube}}
+
+        {{#source_is_vimeo}}
+            <div bebop-ui--gallery-item-widget>
+                <iframe src="//player.vimeo.com/video/{{id}}" width="160" height="107" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+            </div>
+            <div bebop-ui--gallery-item-meta>
+                {{#title}}
+                    <div bebop-ui--gallery-item-title>{{title}}</div>
+                {{/title}}
+            </div>
+        {{/source_is_vimeo}}
+    {{/id}}
+
+    {{^id}}
+        <span class="description">You need to insert a video ID</span>
+    {{/id}}
+
+</div>

@@ -1,0 +1,18 @@
+<div bebop-ui--gallery-item-type="map" bebop-ui--gallery-item-view="reorder">
+
+	{{#map_url}}
+		<div bebop-ui--gallery-item-widget>
+			<iframe src="{{map_url}}" width="100" height="67" frameborder="0" style="border:0" allowfullscreen></iframe>
+		</div>
+	    <div bebop-ui--gallery-item-meta>
+			{{#title}}
+	        	<div bebop-ui--gallery-item-title>{{title}}</div>
+	        {{/title}}
+	    </div>
+	{{/map_url}}
+	
+	{{^map_url}}
+		<span class="description">You need to insert a map URL</span>
+	{{/map_url}}
+
+</div>

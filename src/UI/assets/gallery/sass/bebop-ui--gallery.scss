@@ -1,0 +1,87 @@
+// Extendable rule set
+@import 'extends';
+
+[bebop-ui--gallery-item-type] {
+	@extend %clrfix;
+
+	[bebop-ui--gallery-item-widget] {
+		float: left;
+		width: 160px;
+	}
+
+	[bebop-ui--gallery-item-meta] {
+		margin-left: 170px;
+	}
+
+	[bebop-ui--gallery-item-title] {
+		font-size: 19px;
+		line-height: 23px;
+		font-weight: bold;
+		margin-top: 4px 0 9px 0;
+	}
+}
+
+[bebop-ui--gallery-item-view="browse"] {
+
+}
+
+[bebop-ui--gallery-item-view="edit"] {
+
+}
+
+[bebop-ui--gallery-item-view="reorder"] {
+
+	[bebop-ui--gallery-item-widget] {
+		margin: -10px;
+		width: 100px;
+		height:67px;
+	}
+
+	[bebop-ui--gallery-item-meta] {
+		margin-left: 100px;
+	}
+
+	[bebop-ui--gallery-item-title] {
+		margin-top: 0;
+	}
+}	
+
+[bebop-ui--gallery-item-type="image"] {
+		
+	&[bebop-ui--gallery-item-view="browse"] {
+
+		[bebop-media--el="container"] {
+			margin: 0;
+
+			.bebop-media--previewer-image {
+				padding:0px;
+			}
+		}
+	}
+
+	&[bebop-ui--gallery-item-view="reorder"] {
+		
+		[bebop-ui--gallery-item-widget] {
+			overflow: hidden;
+		}
+
+		[bebop-media--el="container"] {
+			margin-top: 0;
+
+			.bebop-media--previewer-image {
+				border: none;
+				padding:0;
+			}
+
+			img {
+				-webkit-box-shadow: none;
+    			box-shadow: none;
+			}
+
+			[bebop-media--el="actions"] {
+				display: none;
+				visibility: hidden;
+			}
+		}
+	}
+}
