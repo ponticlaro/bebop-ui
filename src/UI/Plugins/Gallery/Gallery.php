@@ -298,6 +298,12 @@ class Gallery extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
 	 */
 	public function getContentList()
 	{
+		$this->content_list
+		     ->setFormElement('main', 'add', $this->getFormAddElementTemplate())
+		     ->setItemView('browse', $this->getBrowseTemplate())
+		     ->setItemView('edit', $this->getEditTemplate())
+		     ->setItemView('reorder', $this->getReorderTemplate());
+
 		return $this->content_list;
 	}
 
@@ -442,12 +448,7 @@ class Gallery extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
 	 */
 	public function render()
 	{
-		$this->content_list
-		     ->setFormElement('main', 'add', $this->getFormAddElementTemplate())
-		     ->setItemView('browse', $this->getBrowseTemplate())
-		     ->setItemView('edit', $this->getEditTemplate())
-		     ->setItemView('reorder', $this->getReorderTemplate())
-		     ->render();
+		$this->getContentList()->render();
 
 		return $this;
 	}
