@@ -145,7 +145,7 @@
 
 			// Empty state indicatior
 			this.$emptyStateIndicator = $('<div>').attr('bebop-list--el', 'empty-state-indicator').css('display', 'none')
-												  .append('<input type="hidden"><span class="bebop-list--item-name">No items added until now</span>');
+												  .append('<input type="hidden"><span class="bebop-list--item-name">'+ this.config.get('no_items_message') +'</span>');
 			this.$el.append(this.$emptyStateIndicator);
 
 			// Bottom Form

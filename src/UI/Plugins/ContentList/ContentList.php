@@ -215,7 +215,8 @@ class ContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
 			'show_top_form'    => true,
 			'show_bottom_form' => true,
 			'type'             => 'single',
-			'mode'             => 'default'
+			'mode'             => 'default',
+			'no_items_message' => 'No items added until now'
 		);
 
 		// Main configuration
