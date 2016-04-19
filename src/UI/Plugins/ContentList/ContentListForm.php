@@ -6,98 +6,177 @@ use Ponticlaro\Bebop\Common\Collection;
 
 class ContentListForm {
 
-	private $id;
+  /**
+   * Form ID
+   * 
+   * @var string
+   */
+  private $id;
 
-	private $elements;
+  /**
+   * Form elements
+   * 
+   * @var object Ponticlaro\Bebop\Common\Collection
+   */
+  private $elements;
 
-	public function __construct($id, array $elements = array())
-	{
-		if (!is_string($id))
-			throw new \Exception("Form ID must be a string");
-		
-		$this->id = $id;
-		$this->elements = new Collection($elements);
-	}
+  /**
+   * Instantiates class
+   * 
+   * @param string $id       Form ID
+   * @param array  $elements Form elements
+   */
+  public function __construct($id, array $elements = array())
+  {
+    if (!is_string($id))
+      throw new \Exception("Form ID must be a string");
+    
+    $this->id = $id;
+    $this->elements = new Collection($elements);
+  }
 
-	public function getId()
-	{
-		return $this->id;
-	}
+  /**
+   * Returns form ID
+   * 
+   * @return string Form ID
+   */
+  public function getId()
+  {
+    return $this->id;
+  }
 
-	public function addElement($id, $template)
-	{
-		if (!is_string($id) || !is_string($template))
-			throw new \Exception("Form Element ID and Template must both be strings");
+  /**
+   * Adds form element
+   * 
+   * @param  string $id       Form element ID
+   * @param  string $template HTML for form element
+   * @return object           This class object
+   */
+  public function addElement($id, $template)
+  {
+    if (!is_string($id) || !is_string($template))
+      throw new \Exception("Form Element ID and Template must both be strings");
 
-		$this->elements->set($id, $template);
+    $this->elements->set($id, $template);
 
-		return $this;
-	}
+    return $this;
+  }
 
-	public function addElements(array $elements)
-	{
-		foreach ($elements as $id => $template) {
-			
-			$this->addElement($id, $template);
-		}
+  /**
+   * Adds multiple form elements
+   * 
+   * @param  array $elements List of form elements to add
+   * @return object          This class object
+   */
+  public function addElements(array $elements)
+  {
+    foreach ($elements as $id => $template) {
+      
+      $this->addElement($id, $template);
+    }
 
-		return $this;
-	}
+    return $this;
+  }
 
-	public function replaceElement($id, $template)
-	{
-		$this->addElement($id, $template);
+  /**
+   * Replace form element
+   * 
+   * @param string $id       Form element ID
+   * @param string $template HTML for form element
+   */
+  public function replaceElement($id, $template)
+  {
+    $this->addElement($id, $template);
 
-		return $this;
-	}
+    return $this;
+  }
 
-	public function hasElement($id)
-	{
-		return is_string($id) ? $this->elements->hasKey($id) : false;
-	}
+  /**
+   * Checks if form element with target ID already exists
+   * 
+   * @param  string  $id Element ID
+   * @return boolean     True if it exists, false otherwise
+   */
+  public function hasElement($id)
+  {
+    return is_string($id) ? $this->elements->hasKey($id) : false;
+  }
 
-	public function isEmpty()
-	{
-		return $this->elements->count() > 0 ? false : true;
-	}
+  /**
+   * Checks if form elements list is empty
+   * 
+   * @return boolean True is empty, false otherwise
+   */
+  public function isEmpty()
+  {
+    return $this->elements->count() > 0 ? false : true;
+  }
 
-	public function removeElement($id)
-	{
-		if (!is_string($id))
-			throw new \Exception("Form Element ID must be a string");
+  /**
+   * Removes form element with target ID
+   * 
+   * @param  string $id Element ID
+   * @return object     This class object
+   */
+  public function removeElement($id)
+  {
+    if (!is_string($id))
+      throw new \Exception("Form Element ID must be a string");
 
-		$this->elements->remove($id);
+    $this->elements->remove($id);
 
-		return $this;
-	}
+    return $this;
+  }
 
-	public function removeElements(array $ids)
-	{
-		foreach ($elements as $id => $template) {
-			
-			$this->removeElement($id);
-		}
+  /**
+   * Removes form elements contained on the list of target IDs
+   * 
+   * @param  array  $ids List of IDs to remove
+   * @return object      This class object
+   */
+  public function removeElements(array $ids)
+  {
+    foreach ($elements as $id => $template) {
+      
+      $this->removeElement($id);
+    }
 
-		return $this;
-	}
+    return $this;
+  }
 
-	public function clearElements()
-	{
-		$this->elements->clear();
-		
-		return $this;	
-	}
+  /**
+   * Removes all existing form elements
+   * 
+   * @return object This class object
+   */
+  public function clearElements()
+  {
+    $this->elements->clear();
+    
+    return $this; 
+  }
 
-	public function getElement($id)
-	{
-		if (!is_string($id))
-			throw new \Exception("Form Element ID must be a string");
+  /**
+   * Returns the template for the form element with target ID
+   * 
+   * @param  string $id Element ID
+   * @return string     Element template
+   */
+  public function getElement($id)
+  {
+    if (!is_string($id))
+      throw new \Exception("Form Element ID must be a string");
 
-		return $this->elements->get($id);
-	}
+    return $this->elements->get($id);
+  }
 
-	public function getAllElements()
-	{
-		return $this->elements->getAll();
-	}
+  /**
+   * Returns all form elements
+   * 
+   * @return array List of all elements
+   */
+  public function getAllElements()
+  {
+    return $this->elements->getAll();
+  }
 }

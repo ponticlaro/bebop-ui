@@ -22,6 +22,10 @@
 	color: #333;
 }
 
+[bebop-list--el="content"] > .bebop-ui-mod {
+	margin:0;
+}
+
 .metabox-holder {
 	
 	[bebop-list--el="container"] {
@@ -34,6 +38,12 @@
 		}
 	}
 
+	[bebop-list--el="title"] {
+		display: none;
+	}
+}
+
+.bebop-ui-mod {
 	[bebop-list--el="title"] {
 		display: none;
 	}
@@ -248,9 +258,14 @@
 		float: left;
 		margin: 0;
 		overflow: hidden;
+		margin: 0 !important;
 		width: 120px;
 
 		[bebop-media--el="previewer"] {
+			
+			.bebop-media--previewer-info {
+				display: none;
+			}
 
 			.bebop-media--previewer-image {
 				padding: 8px;
@@ -271,11 +286,11 @@
 	}
 
 	.bebop-list--item.view--reorder {
-			
+
 		[bebop-media--el="container"] {	
 			height: 40px;
 			width: 40px;
-			margin: -10px;
+			margin: -10px !important;
 
 			[bebop-media--el="previewer"] {
 				height: 40px;

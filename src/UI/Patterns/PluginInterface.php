@@ -4,7 +4,6 @@ namespace Ponticlaro\Bebop\UI\Patterns;
 
 interface PluginInterface{
 
-	public function __construct();
 	public function load();
 	public static function setKey($key);
 	public static function getKey();

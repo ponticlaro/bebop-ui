@@ -1,465 +1,491 @@
 ;(function(window, document, undefined, $) {
 
-	window.Bebop = window.Bebop || {};
+  window.Bebop = window.Bebop || {};
 
-	var List = Bebop.List || {};
+  var List = Bebop.List || {};
 
-	var ItemView = List.ItemView = Backbone.View.extend({	
+  var ItemView = List.ItemView = Backbone.View.extend({ 
 
-		tagName: 'li',
+    tagName: 'li',
 
-		className: 'bebop-list--item',
+    className: 'bebop-list--item',
 
-		events: {
-			'click > [bebop-list--el="item-actions"] [bebop-list--action]': 'doAction',
-			'change > [bebop-list--el="content"] [bebop-ui--field]': 'updateSingle',
-			'keyup > [bebop-list--el="content"] [bebop-ui--field]': 'updateSingle'
-		},
+    events: {
+      'click > [bebop-list--el="item-actions"] [bebop-list--action]': 'doAction',
+      'change > [bebop-list--el="content"] [bebop-ui--field]': 'updateSingle',
+      'keyup > [bebop-list--el="content"] [bebop-ui--field]': 'updateSingle'
+    },
 
-		initialize: function(options) {
+    initialize: function(options) {
 
-			var self = this;
+      var self = this;
 
-			// Store reference to container list
-			this.list = options.list;
+      // Store reference to container list
+      this.list = options.list;
 
-			// Used to define a single parameter we want to edit on a given model
-			this.dataContext = options.dataContext ? options.dataContext : '';
+      // Used to define a single parameter we want to edit on a given model
+      this.dataContext = options.dataContext ? options.dataContext : '';
 
-			// add mode id to $el as an attribute
-			this.$el.attr('bebop-list--model-id', this.model.cid);
+      // add mode id to $el as an attribute
+      this.$el.attr('bebop-list--model-id', this.model.cid);
 
-			// Set main template as $el html
-			this.$el.html(options.templates.main);
+      // Set main template as $el html
+      this.$el.html(options.templates.main);
 
-			this.$content = this.$el.find('[bebop-list--el="content"]');
+      this.$content = this.$el.find('[bebop-list--el="content"]');
 
-			this.buttons = {
-				edit: {
-					$el: this.$el.find('[bebop-list--action="edit"]')
-				},
-				remove: {
-					$el: this.$el.find('[bebop-list--action="remove"]')
-				}
-			};
+      this.buttons = {
+        edit: {
+          $el: this.$el.find('[bebop-list--action="edit"]')
+        },
+        remove: {
+          $el: this.$el.find('[bebop-list--action="remove"]')
+        }
+      };
 
-			this.fields = {};
+      this.fields = {};
 
-			// Build views object
-			this.views = {};
+      // Build views object
+      this.views = {};
 
-			var browseTplName  = this.dataContext ? this.dataContext + '.browse' : 'browse',
-				editTplName    = this.dataContext ? this.dataContext + '.edit' : 'edit',
-				reorderTplName = this.dataContext ? this.dataContext + '.reorder' : 'reorder';
+      var browseTplName  = this.dataContext ? this.dataContext + '.browse' : 'browse',
+        editTplName    = this.dataContext ? this.dataContext + '.edit' : 'edit',
+        reorderTplName = this.dataContext ? this.dataContext + '.reorder' : 'reorder';
 
-			this.views.browse = {
-				$el: this.$el.find('[bebop-list--view="browse"]'),
-				template: options.templates[browseTplName],
-			};
+      this.views.browse = {
+        $el: this.$el.find('[bebop-list--view="browse"]'),
+        template: options.templates[browseTplName],
+      };
 
-			this.views.edit = {
-				$el: this.$el.find('[bebop-list--view="edit"]'),
-				template: options.templates[editTplName],
-				cleanHTML: options.templates[editTplName].replace(/\{\{[^\}]*\}\}/g, '')
-			};
+      this.views.edit = {
+        $el: this.$el.find('[bebop-list--view="edit"]'),
+        template: options.templates[editTplName],
+        cleanHTML: options.templates[editTplName].replace(/\{\{[^\}]*\}\}/g, '')
+      };
 
-			// Reorder template falls back to browse template
-			this.views.reorder = {
-				$el: this.$el.find('[bebop-list--view="reorder"]'),
-				template: options.templates[reorderTplName] === undefined || options.templates[reorderTplName] === '' ? options.templates[browseTplName] : options.templates[reorderTplName]
-			};
+      // Reorder template falls back to browse template
+      this.views.reorder = {
+        $el: this.$el.find('[bebop-list--view="reorder"]'),
+        template: options.templates[reorderTplName] === undefined || options.templates[reorderTplName] === '' ? options.templates[browseTplName] : options.templates[reorderTplName]
+      };
 
-			// Collect data container input
-			this.$dataContainer = this.$el.find('[bebop-list--el="data-container"]');
-			
-			//if (!this.list.status.get('isChildList')) {
+      // Collect data container input
+      this.$dataContainer = this.$el.find('[bebop-list--el="data-container"]');
+      
+      //if (!this.list.status.get('isChildList')) {
 
-				this.$dataContainer.attr('name', options.fieldName +'[]');
-			//}
-			
-			this.mode = options.mode ? options.mode : null;
+        this.$dataContainer.attr('name', options.fieldName +'[]');
+      //}
+      
+      this.mode = options.mode ? options.mode : null;
 
-			// Get image widget
-			if (this.mode == 'gallery') {
+      // Get image widget
+      if (this.mode == 'gallery') {
 
-				this.image = new Bebop.Media({
-					el: this.$el.find('[bebop-media--el="container"]'),
-					id: this.model.get('id')
-				});
+        this.image = new Bebop.Media({
+          el: this.$el.find('[bebop-media--el="container"]'),
+          id: this.model.get('id')
+        });
 
-				this.image.status.on('change:data', function() {
+        this.image.status.on('change:data', function() {
+          this.render();
+        }, this);
+      }
 
-					this.render();
+      // Insert JSON data into data container
+      this.storeData();
 
-				}, this);
-			}
+      // Add event listeners for model events
+      this.listenTo(this.model, 'change', this.storeData);
+      this.listenTo(this.model, 'change:view', this.render);
+      this.listenTo(this.model, 'destroy', this.destroy);
+    },
 
-			// Insert JSON data into data container
-			this.storeData();
+    doAction: function(event) {
 
-			// Add event listeners for model events
-			this.listenTo(this.model, 'change', this.storeData);
-			this.listenTo(this.model, 'change:view', this.render);
-			this.listenTo(this.model, 'destroy', this.destroy);
-		},
+      event.preventDefault();
 
-		doAction: function(event) {
+      var action = $(event.currentTarget).attr('bebop-list--action');
 
-			event.preventDefault();
+      // Execute action if available
+      if (this[action] !== undefined) this[action](event);
+    },
 
-			var action = $(event.currentTarget).attr('bebop-list--action');
+    edit: function() {
+      this.model.set('view', 'edit');
+    },
 
-			// Execute action if available
-			if (this[action] !== undefined) this[action](event);
-		},
+    browse: function() {
+      this.model.set('view', 'browse');
+    },
 
-		edit: function() {
-			this.model.set('view', 'edit');
-		},
+    reorder: function() {
+      this.model.set('view', 'reorder');
+    },
 
-		browse: function() {
-			this.model.set('view', 'browse');
-		},
+    updateSingle: function(event) {
 
-		reorder: function() {
-			this.model.set('view', 'reorder');
-		},
+      var name = $(event.currentTarget).attr('bebop-ui--field');
 
-		updateSingle: function(event) {
+      this.model.set(name, this.getFieldValue(name));
 
-			var name = $(event.currentTarget).attr('bebop-ui--field');
+      if (this.list.status.get('isChildList'))
+        this.list.collection.trigger('updateParentCollection');
 
-			this.model.set(name, this.getFieldValue(name));
+      if (this.list.status.get('isChildList_v2'))
+        this.list.collection.trigger('updateParentCollection_v2');
+    },
 
-			if (this.list.status.get('isChildList')) {
+    update: function() {
 
-				this.list.collection.trigger('updateParentCollection');
-			}
-		},
+      _.each(this.views.edit.fields, function(field, name) {
+        
+        this.model.set(name, this.getFieldValue(name));
 
-		update: function() {
+      }, this);
 
-			_.each(this.views.edit.fields, function(field, name) {
-				
-				this.model.set(name, this.getFieldValue(name));
+      if (this.list.status.get('isChildList'))
+        this.list.collection.trigger('updateParentCollection');
 
-			}, this);
+      if (this.list.status.get('isChildList_v2'))
+        this.list.collection.trigger('updateParentCollection_v2');
+    },
 
-			if (this.list.status.get('isChildList')) {
+    storeData: function() {
 
-				this.list.collection.trigger('updateParentCollection');
-			}
-		},
+      // Clone model attributes so that we can exclude 'view' from data to be saved
+      var data = _.clone(this.model.attributes);
 
-		storeData: function() {
+      // Remove 'view' and 'mode' from data to be saved
+      delete data.view;
+      delete data.mode;
 
-			// Clone model attributes so that we can exclude 'view' from data to be saved
-			var data = _.clone(this.model.attributes);
+      this.$dataContainer.val(JSON.stringify(data));
+    },
 
-			// Remove 'view' and 'mode' from data to be saved
-			delete data.view;
-			delete data.mode;
+    remove: function() {
 
-			this.$dataContainer.val(JSON.stringify(data));
-		},
+      this.model.destroy();
 
-		remove: function() {
+      if (this.list.status.get('isChildList'))
+        this.list.collection.trigger('updateParentCollection');
 
- 			this.model.destroy();
+      if (this.list.status.get('isChildList_v2'))
+        this.list.collection.trigger('updateParentCollection_v2');
+    },
 
- 			if (this.list.status.get('isChildList')) {
+    destroy: function() {
 
-				this.list.collection.trigger('updateParentCollection');
-			}
-		},
+      this.$el.slideUp(250, function() {
 
-		destroy: function() {
+        $(this).remove();
+      });
+    },
 
-			this.$el.slideUp(250, function() {
+    prepareView: function() {
 
-				$(this).remove();
-			});
-		},
+      var view = this.model.get('view');
 
-		prepareView: function() {
+      // Collect fields and add missing ones to the model
+      _.each(this.$content.find('[name]:not([name^="___bebop-ui--placeholder-"])'), function(el, index){
 
-			var view = this.model.get('view');
+        var $el     = $(el),
+          name    = $el.attr('name'),
+          type    = $el.attr('type');
+          newName = type == 'radio' || type == 'checkbox' ? '___bebop-ui--placeholder-'+ name : null;
 
-			// Collect fields and add missing ones to the model
-			_.each(this.$content.find('[name]:not([name^="___bebop-ui--placeholder-"])'), function(el, index){
+        $el.attr('name', newName).attr('bebop-ui--field', name);
 
-			 	var $el     = $(el),
-			 		name    = $el.attr('name'),
-			 		type    = $el.attr('type');
-			 		newName = type == 'radio' || type == 'checkbox' ? '___bebop-ui--placeholder-'+ name : null;
+        this.fields[name] = {
+          $el: $el,
+          tagName: $el.get(0).tagName,
+          type: $el.attr('type')
+        };
 
-			 	$el.attr('name', newName).attr('bebop-ui--field', name);
+        if (!this.model.has(name)) {
 
-			 	this.fields[name] = {
-			 		$el: $el,
-			 		tagName: $el.get(0).tagName,
-			 		type: $el.attr('type')
-			 	};
+          var value = '';
 
-			 	if (!this.model.has(name)) {
+          if ($el.get(0).tagName == 'INPUT') {
 
-			 		var value = '';
+            if ($el.attr('type') == 'checkbox' && !$el.is(':checked')) {
 
-			 		if ($el.get(0).tagName == 'INPUT') {
+              value = '';
 
-			 			if ($el.attr('type') == 'checkbox' && !$el.is(':checked')) {
+            } else {
 
-			 				value = '';
+              value = $el.val();
+            }
+          }
 
-			 			} else {
+          // Set value to empty array in case of a select with multiple values
+          if ($el.get(0).tagName == 'SELECT') {
 
-			 				value = $el.val();
-			 			}
-			 		}
+            $options = $el.find('option:selected');
 
-			 		// Set value to empty array in case of a select with multiple values
-			 		if ($el.get(0).tagName == 'SELECT') {
+            if ($el.attr('multiple')) {
 
-			 			$options = $el.find('option:selected');
+              value = [];
 
-			 			if ($el.attr('multiple')) {
+              _.each($options, function(option, index, options) {
 
-			 				value = [];
+                value[index] = $(option).val();
 
-			 				_.each($selected_options, function(option, index, options) {
+              },this);
+            
+            } else {
 
-			 					value[index] = $(option).val();
+              value = $options.val();
+            }
+          }
 
-			 				},this);
-			 			
-			 			} else {
+          this.model.set(name, value);
+        }
 
-			 				value = $options.val();
-			 			}
-			 		}
+      }, this);
 
-			 		this.model.set(name, value);
-			 	}
 
-			}, this);
+      // Handle action buttons
+      if (view == 'edit') {
 
+        this.buttons.edit.$el.attr('bebop-list--action', 'browse')
+            .find('b').text('Save').end()
+            .find('span').removeClass('bebop-ui-icon-edit').addClass('bebop-ui-icon-save');
+        
+        this.buttons.remove.$el.attr('disabled', true);
 
-			// Handle action buttons
-			if (view == 'edit') {
+      } else {
 
-				this.buttons.edit.$el.attr('bebop-list--action', 'browse')
-						.find('b').text('Save').end()
-						.find('span').removeClass('bebop-ui-icon-edit').addClass('bebop-ui-icon-save');
-				
-				this.buttons.remove.$el.attr('disabled', true);
+        this.buttons.edit.$el.attr('bebop-list--action', 'edit')
+            .find('b').text('Edit').end()
+            .find('span').removeClass('bebop-ui-icon-save').addClass('bebop-ui-icon-edit');
+      
+        this.buttons.remove.$el.prop('disabled', false);
+      }
 
-			} else {
+      if (view == 'reorder') {
 
-				this.buttons.edit.$el.attr('bebop-list--action', 'edit')
-						.find('b').text('Edit').end()
-						.find('span').removeClass('bebop-ui-icon-save').addClass('bebop-ui-icon-edit');
-			
-				this.buttons.remove.$el.prop('disabled', false);
-			}
+        this.buttons.edit.$el.prop('disabled', true);
 
-			if (view == 'reorder') {
+      } else {
 
-				this.buttons.edit.$el.prop('disabled', true);
+        this.buttons.edit.$el.prop('disabled', false);
+      }
+    },
 
-			} else {
+    getFieldValue: function(name)
+    {
+      var $field = this.$content.find('[bebop-ui--field="'+ name +'"]'),
+          value  = '';
 
-				this.buttons.edit.$el.prop('disabled', false);
-			}
-		},
+      switch($field.get(0).tagName) {
 
-		getFieldValue: function(name)
-		{
-			var $field = this.$content.find('[bebop-ui--field="'+ name +'"]');
+        case 'INPUT':
+        
+          if ($field.attr('type') == 'checkbox') {
 
-			switch($field.get(0).tagName) {
+            if ($field.length > 1) {
 
-				case 'INPUT':
-				
-					if ($field.attr('type') == 'checkbox') {
+              value = [];
 
-						value = $field.is(':checked') ? $field.val() : '';
-					}
+              _.each($field, function(el, index) {
 
-					else if ($field.attr('type') == 'radio') {
-						
-						if ($field.length > 1) {
+                var $el = $(el);
 
-							value = '';
+                if($el.is(':checked')) 
+                  value.push($el.val());
+              });
+            }
 
-							_.each($field, function(el, index) {
+            else {
 
-								var $el = $(el);
+              value = $field.is(':checked') ? $field.val() : '';
+            }
+          }
 
-								if($el.is(':checked')) value = $el.val();
-							});
+          else if ($field.attr('type') == 'radio') {
+            
+            if ($field.length > 1) {
 
-						} else {
+              value = '';
 
-							value = $field.is(':checked') ? $field.val() : '';
-						}
-					}
+              _.each($field, function(el, index) {
 
-					else {
+                var $el = $(el);
 
-						value = $field.val();
-					}
+                if($el.is(':checked')) 
+                  value = $el.val();
+              });
 
-					break;
+            } 
 
-				case 'SELECT':
+            else {
 
-					if ($field.attr('multiple')) {
+              value = $field.is(':checked') ? $field.val() : '';
+            }
+          }
 
-						value = [];
+          else {
 
-						_.each($field.find('option:selected'), function(option, index) {
+            value = $field.val();
+          }
 
-						   	value[index] = $(option).val();
-						});
+          break;
 
-					} else {
+        case 'SELECT':
 
-						value = $field.find('option:selected').val();
-					}
+          if ($field.attr('multiple')) {
 
-					break;
+            value = [];
 
-				default: 
+            _.each($field.find('option:selected'), function(option, index) {
 
-					value = $field.val();
-					break;
-			}
-			
-			return value;
-		},
+                value[index] = $(option).val();
+            });
 
-		getPrettyValue: function(name, value) {
+          } else {
 
-			if(name == 'view') return value;
+            value = $field.find('option:selected').val();
+          }
 
-			var $field = $('<div>').html(this.views.edit.cleanHTML).find('[name="'+ name +'"]');
+          break;
 
-			if ($field.length > 0 && $field.get(0).tagName == 'SELECT') {
+        default: 
 
-				value = value ? $field.find('option[value="'+ value +'"]').text() : value;
-			}
+          value = $field.val();
+          break;
+      }
+      
+      return value;
+    },
 
-			return value;
-		},
+    getPrettyValue: function(name, value) {
 
-		getTemplateData: function() {
+      if(name == 'view') return value;
 
-			var view = this.model.get('view'),
-				data = _.clone(this.model.attributes);
+      var $field = $('<div>').html(this.views.edit.cleanHTML).find('[name="'+ name +'"]');
 
-			// Add 'is_' values for mustache templates
-			_.each(data, function(value, key) {
+      if ($field.length > 0 && $field.get(0).tagName == 'SELECT') {
 
-				if (value instanceof Array) {
+        value = value ? $field.find('option[value="'+ value +'"]').text() : value;
+      }
 
-					_.each(value, function(singleValue, index, valuesList) {
-					
-						// Check for "pretty" values for browse or reorder view
-						if(view != 'edit') {
-							//data[key][index] = this.getPrettyValue(key, singleValue);
-						}
+      return value;
+    },
 
-						data[key + '_has_' + singleValue] = true;
+    getTemplateData: function() {
 
-					}, this);
+      var view = this.model.get('view'),
+        data = _.clone(this.model.attributes);
 
-				} else {
+      // Add 'is_' values for mustache templates
+      _.each(data, function(value, key) {
 
-					// Check for "pretty" values for browse or reorder view
-					if(view != 'edit') {
-						data[key] = this.getPrettyValue(key, value);
-					}
+        // Handle field names with '[]'
+        if (key.indexOf('[]') > -1) {
 
-					data[key + '_is_' + value] = true;
-				}
+          delete(data[key]);
+          key       = key.replace('[]', '');
+          data[key] = value;
+        }
 
-			}, this);
+        if (value instanceof Array) {
 
-			if (this.mode == 'gallery') {
+          _.each(value, function(singleValue, index, valuesList) {
+          
+            // Check for "pretty" values for browse or reorder view
+            if(view != 'edit') {
+              //data[key][index] = this.getPrettyValue(key, singleValue);
+            }
 
-				data.image = this.image.status.get('data');
-				
-			}
+            data[key + '_has_' + singleValue] = true;
 
-			return data;
-		},
+          }, this);
 
-		render: function() {
+        } else {
 
-			// Update model if we moved from the edit view
-			if (this.model.hasChanged('view') && this.model.previous('view') == 'edit') this.update();
+          // Check for "pretty" values for browse or reorder view
+          if(view != 'edit') {
+            data[key] = this.getPrettyValue(key, value);
+          }
 
-			var prevView = this.model.previous('view'),
-				view     = this.model.get('view'),
-				viewHtml = Mustache.render(this.views[view].template, this.getTemplateData());
+          data[key + '_is_' + value] = true;
+        }
 
-			this.$el.removeClass('view--' + prevView).addClass('view--' + view);
+      }, this);
 
-			// Render current view
-			this.views[view].$el.html(viewHtml);
+      if (this.mode == 'gallery')
+        data.image = this.image.status.get('data');
 
-			// Prepare current view for interaction
-			this.prepareView();
+      return data;
+    },
 
-			// Show current view
-			this.views[view].$el.show().siblings('[bebop-list--view]').hide();
+    render: function() {
 
-			// Show item if not already visible
-			if(!this.$el.is(':visible')) this.$el.slideDown(200);
+      // Update model if we moved from the edit view
+      if (this.model.hasChanged('view') && this.model.previous('view') == 'edit') this.update();
 
-			// Render child UI Lists instances
-			_.each(this.views[view].$el.find('[bebop-list--el="container"]'), function(item, index) {
+      var prevView = this.model.previous('view'),
+        view     = this.model.get('view'),
+        viewHtml = Mustache.render(this.views[view].template, this.getTemplateData());
 
-				new Bebop.List({
-					el: item,
-					parentList: this.list,
-					parentModel: this.model
-				});
+      this.$el.removeClass('view--' + prevView).addClass('view--' + view);
 
-			}, this);
+      // Render current view
+      this.views[view].$el.html(viewHtml);
 
-			// Render UI Media instances
-			_.each(this.views[view].$el.find('[bebop-media--el="container"]'), function(item, index) {
+      // Prepare current view for interaction
+      this.prepareView();
 
-				new Bebop.Media({el: item});
+      // Show current view
+      this.views[view].$el.show().siblings('[bebop-list--view]').hide();
 
-			}, this);
+      // Show item if not already visible
+      if(!this.$el.is(':visible')) this.$el.slideDown(200);
 
-			// After render event
-			if (this.afterRenderFns.length > 0) {
+      // Render child UI Lists instances
+      _.each(this.views[view].$el.find('[bebop-list--el="container"]'), function(item, index) {
 
-				_.each(this.afterRenderFns, function(fn) {
+        new Bebop.List({
+          el: item,
+          parentList: this.list,
+          parentModel: this.model
+        });
 
-					fn(this);
+      }, this);
 
-				}, this);
-			}
+      // Render UI Media instances
+      _.each(this.views[view].$el.find('[bebop-media--el="container"]'), function(item, index) {
 
-			return this;
-		},
+        new Bebop.Media({el: item});
 
-		afterRender: function(fn) {
+      }, this);
 
-			
-		}
-	});
+      // After render event
+      if (this.afterRenderFns.length > 0) {
 
-	ItemView.prototype.afterRenderFns = [];
+        _.each(this.afterRenderFns, function(fn) {
 
-	ItemView.onRendered = function(fn) {
+          fn(this);
 
-		if(_.isFunction(fn))
-				this.prototype.afterRenderFns.push(fn);
-	};
+        }, this);
+      }
+
+      return this;
+    },
+
+    afterRender: function(fn) {
+
+      
+    }
+  });
+
+  ItemView.prototype.afterRenderFns = [];
+
+  ItemView.onRendered = function(fn) {
+
+    if(_.isFunction(fn))
+        this.prototype.afterRenderFns.push(fn);
+  };
 
 })(window, document, undefined, jQuery || $);

@@ -1,0 +1,21 @@
+.bebop-ui-mod {
+	margin-bottom: 30px;
+
+	&:last-of-type {
+		margin-bottom: 0;
+	}
+
+	label.bebop-ui-mod--label {
+		display: block;
+		margin-bottom: 4px;
+	}
+
+	[bebop-media--el="container"] {
+		margin:0;
+	}
+
+	.bebop-ui-mod--description {
+		display: block;
+		margin-top: 4px;
+	}
+}

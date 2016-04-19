@@ -52,16 +52,22 @@
 
 			// Build status object
 			this.status = new Backbone.Model({
-				isChildList: config == 'inherit' ? true : false,
-				dataContext: null,
-				mode: this.config.get('mode'),
-				view: 'browse',
+				isChildList:    config == 'inherit' ? true : false,
+				isChildList_v2: false,
+				dataContext:    null,
+				mode:           this.config.get('mode'),
+				view:           'browse',
 				insertPosition: null,
-				empty: false,
-				isSortable: true,
+				empty:          false,
+				isSortable:     true,
 				templateEngine: 'mustache',
-				currentEvent: null
+				currentEvent:   null
 			});
+
+			// NEW CHILD LIST SETUP
+			// via UI Modules
+			if (this.config.get('childList'))
+				this.status.set('isChildList_v2', true);
 
 			//////////////////////////////
 			// END Handle configuration //
@@ -70,9 +76,18 @@
  			//////////////////
 			// Collect data //
 			//////////////////
-			
+
+			// This is a V2 child list
+			if (this.status.get('isChildList_v2') && this.parentList && this.parentModel) {
+
+				if (this.parentModel.get(this.config.get('field_name')))
+					data = this.parentModel.get(this.config.get('field_name'));
+
+				this.collection = new List.Collection(data);
+			}
+
 			// This is a child list
-			if (this.status.get('isChildList') && this.parentList) {
+			else if (this.status.get('isChildList') && this.parentList) {
 
 				data = this.$el.attr('bebop-list--data');
 
@@ -195,6 +210,32 @@
 
 			// This is a parent list
 			else {
+
+				// This is a child list V2
+				if (this.status.get('isChildList_v2') && this.parentList) {
+
+					// Set sort function for child lists
+					this.collection.comparator = function(modelA, modelB) {
+
+						var indexOfA = self.$list.find('li[bebop-list--model-id="'+ modelA.cid +'"]').index(),
+							indexOfB = self.$list.find('li[bebop-list--model-id="'+ modelB.cid +'"]').index();
+						
+						if (indexOfA < indexOfB) {
+
+							return -1;
+						}
+
+						else if (indexOfA > indexOfB) {
+
+							return 1;
+						}
+
+						else {
+
+							return 0;
+						}
+					};
+				} 
 
 				// Find template container for this list
 				var $tplContainer = $('#bebop-list--'+ this.config.get('field_name') +'-templates-container');
@@ -334,6 +375,12 @@
 					this.collection.trigger('updateParentCollection');
 				}
 
+				if (this.status.get('isChildList_v2')) {
+
+					this.collection.sort();
+					this.collection.trigger('updateParentCollection_v2');
+				}
+
 			}, this);
 
 			// Add empty state item
@@ -343,13 +390,20 @@
 
 			}, this);
 
-
 			if (this.parentList && this.parentModel) {
 
 				// Update parent collection
 				this.collection.on('updateParentCollection', function() {
 
 					this.parentModel.set(this.status.get('dataContext'), this.collection.toJSON());
+					
+				}, this);
+			
+
+				// Update parent collection V2
+				this.collection.on('updateParentCollection_v2', function() {
+
+					this.parentModel.set(this.config.get('field_name'), this.collection.toJSON());
 					
 				}, this);
 			}
@@ -360,17 +414,19 @@
 
 			if (this.isMode('gallery')) {
 
+				var file_upload_config = this.config.get('file_upload');
+
 				// Instantiate WordPress media picker
 				this.mediaPicker = wp.media({
 					frame: 'select',
-		            multiple: true,
-		            title: 'Upload or select existing resources',
-		            library: {
-		                type: 'image'
-		            },
-		            button: {
-		                text: 'Add images'
-		            }
+          multiple: file_upload_config.config.modal_select_multiple,
+          title: file_upload_config.config.modal_title,
+          library: {
+              type: file_upload_config.config.mime_types
+          },
+          button: {
+              text: file_upload_config.config.modal_button_text
+          }
 				});
 
 				this.mediaPicker.on("select", function() {
@@ -379,14 +435,11 @@
 
 					_.each(selection, function(file, index, selection) {
 
-						if (file.type == 'image') {
-
-							this.collection.add(new List.ItemModel({
-								id: file.id,
-								view: this.status.get('view'),
-								mode: this.status.get('mode')
-							}));
-						} 
+						this.collection.add(new List.ItemModel({
+							id: file.id,
+							view: this.status.get('view'),
+							mode: this.status.get('mode')
+						}));
 
 					}, this);
 
@@ -412,6 +465,17 @@
 
 					self.collection.sort();
 					self.collection.trigger('updateParentCollection');
+				});
+			}
+
+			// This is a child list V2
+			if (this.status.get('isChildList_v2')) {
+
+				// Handle items order
+				this.$list.on("sortstop", function(event, ui) {
+
+					self.collection.sort();
+					self.collection.trigger('updateParentCollection_v2');
 				});
 			}
 

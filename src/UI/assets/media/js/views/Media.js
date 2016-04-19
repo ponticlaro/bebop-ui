@@ -56,14 +56,14 @@
 				// Instantiate WordPress media picker
 				this.mediaPicker = wp.media({
 					frame: 'select',
-		            multiple: false,
-		            title: this.config.get('title'),
-		            library: {
-		                type: this.config.get('mime_types')
-		            },
-		            button: {
-		                text: this.config.get('button_text')
-		            }
+          multiple: this.config.get('modal_select_multiple'),
+          title: this.config.get('modal_title'),
+          library: {
+              type: this.config.get('mime_types')
+          },
+          button: {
+              text: this.config.get('modal_button_text')
+          }
 				});
 
 				this.mediaPicker.on("select", function() {
