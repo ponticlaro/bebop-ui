@@ -34,6 +34,8 @@ class ModuleFactory {
         'radio'                => 'Ponticlaro\Bebop\UI\Modules\Radio',
         'rawhtml'              => 'Ponticlaro\Bebop\UI\Modules\RawHtml',
         'select'               => 'Ponticlaro\Bebop\UI\Modules\Select',
+        //'searchableselect'   => 'Ponticlaro\Bebop\UI\Modules\SearchableSelect',
+        //'searchbox'          => 'Ponticlaro\Bebop\UI\Modules\Searchbox',
         'submit'               => 'Ponticlaro\Bebop\UI\Modules\Submit', 
         'textarea'             => 'Ponticlaro\Bebop\UI\Modules\Textarea',
         'video'                => 'Ponticlaro\Bebop\UI\Modules\Video',

@@ -29,7 +29,7 @@
 			this.$panes = this.$el.find('[bebop-multilist--el="pane"]');
 
 			// Start content variable
-			this.content = {}
+			this.content = {};
 
 			// Mix tabs and panes
 			_.each(this.$tabs, function(tab, index, tabs) {
@@ -37,9 +37,9 @@
 				this.content[index] = {
 					$tab: $(tab),
 					$pane: $(this.$panes.get(index))
-				}
+				};
 
-			}, this)
+			}, this);
 
 			// Display first tab
 			this.navigateTo(0);
@@ -56,7 +56,7 @@
 
 		navigateTo: function(id) {
 
-			if (this.content[id] != undefined) {
+			if (this.content[id] !== undefined) {
 				this.content[id].$tab.addClass('is-active').siblings().removeClass('is-active');
 				this.content[id].$pane.addClass('is-active').siblings().removeClass('is-active');
 			}

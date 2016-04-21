@@ -47,8 +47,6 @@ class ContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
    */
   protected function __createInstance($key, $data = array(), array $config = array())
   { 
-    $this->__enqueueScripts();
-
     $title = $key;
     $key   = Utils::slugify($key);
 
@@ -134,6 +132,7 @@ class ContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
   public function load()
   {
     add_action('init', [$this, 'registerScripts']);
+    add_action('init', [$this, 'enqueueScripts']);
   }
 
   /**
@@ -193,7 +192,7 @@ class ContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
    * 
    * @return void
    */
-  protected function __enqueueScripts()
+  public function enqueueScripts()
   {
     global $wp_version;
 

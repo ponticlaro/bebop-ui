@@ -57,6 +57,7 @@ class MultiContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
   {
     // Register back-end scripts
     add_action('init', array($this, 'registerScripts'));
+    add_action('init', array($this, 'enqueueScripts'));
   }
 
   /**
@@ -99,7 +100,7 @@ class MultiContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
    * Enqueues scripts that MultiContentList needs
    * 
    */
-  private function __enqueueScripts()
+  public function enqueueScripts()
   {
     wp_enqueue_style('bebop-ui--multilist');
     wp_enqueue_script('bebop-ui--multilist');

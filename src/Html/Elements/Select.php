@@ -62,19 +62,19 @@ class Select extends \Ponticlaro\Bebop\Html\ControlElement {
     $value    = $this->getValue();
     $options  = $this->config->get('options') ?: [];
 
-    foreach ($options as $option) {
+    foreach ($options as $key => $option) {
 
       $config = [
         'text'        => $option['label'],
         'attrs.name'  => $this->getName(),
         'attrs.value' => $option['value']
       ];
-      
-      $option_is_current = is_array($value) ? in_array($option['value'], $value) : $option['value'] == $value;
+
+      $option_is_current = is_array($value) && in_array($option['value'], $value) || $option['value'] === $value ? true : false;
 
       if ($option_is_current || $option['selected'])
         $config['attrs']['selected'] = true;
-      
+
       $elements[] = Html::Option($config);
     }
 

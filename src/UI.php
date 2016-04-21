@@ -82,35 +82,63 @@ class UI extends \Ponticlaro\Bebop\Common\Patterns\SingletonAbstract {
     $css      = Css::getInstance()->getHook('back');
     $js       = Js::getInstance()->getHook('back');
 
-    // Register CSS
+    //////////////////
+    // Register CSS //
+    //////////////////
+    
+    // VENDOR
+    $css->register('jquery.select2', $base_url .'/core/css/vendor/select2.min');
+
+    // CORE
     $css->register('bebop-ui', $base_url .'/core/css/bebop-ui');
 
-    // Register development JS
+    /////////////////
+    // Register JS //
+    /////////////////
+
+    // VENDOR
+    $js->register('jquery.debounce', $base_url .'/core/js/vendor/jquery.ba-throttle-debounce.min', ['jquery']);
+    //$js->register('jquery.select2', $base_url .'/core/js/vendor/select2.full.min');
+
+    // Development JS
     if (defined('BEBOP_DEV_ENV_ENABLED') && BEBOP_DEV_ENV_ENABLED) {
       
+      // VENDOR
       $js->register('mustache', $base_url .'/core/js/vendor/mustache');
-      $js->register('jquery.debounce', $base_url .'core/js/vendor/jquery.ba-throttle-debounce.min', ['jquery']);
+      
+      // MODULES
+      // $js->register('bebop-ui.searchbox', $base_url .'/core/js/modules/searchbox', ['jquery', 'jquery.select2']);
+
+      // CORE
       $js->register('bebop-ui', $base_url .'/core/js/bebop-ui', [
         'jquery',
         'jquery-ui-datepicker',
-        'jquery.debounce'
+        'jquery.debounce',
+        //'jquery.select2',
+        //'bebop-ui.searchbox'
       ]);
     }
 
-    // Register optimized JS
+    // Optimized JS
     else {
 
+      // VENDOR
       // Mustache is optimized separately 
       // so that other components can load it only if needed
       $js->register('mustache', $base_url .'/core/js/vendor/mustache.min');
 
+      // CORE
       // The following dependencies should never be concatenated and minified
       // These are used by other WordPress features and plugins
       $js->register('bebop-ui', $base_url .'/core/js/bebop-ui.min', [
         'jquery',
-        'jquery-ui-datepicker'
+        'jquery-ui-datepicker',
+        //'jquery.select2'
       ]);
     }
+
+    Css::getInstance()->getHook('back')->enqueue('jquery.select2');
+    Js::getInstance()->getHook('back')->enqueue('bebop-ui');
   }
 
   /**

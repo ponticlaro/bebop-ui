@@ -37,8 +37,6 @@ class Media extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
    */
   protected function __createInstance($key, $data = null, array $config = array())
   { 
-    $this->__enqueueScripts();
-
     $label = $key;
     $key   = Utils::slugify($key);
 
@@ -71,7 +69,8 @@ class Media extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
    */
   public function load()
   {
-    add_action('init', array($this, 'registerScripts'));
+    add_action('admin_init', array($this, 'registerScripts'));
+    add_action('admin_init', array($this, 'enqueueScripts'));
     add_action('admin_footer', array($this, 'renderTemplates'));
   }
 
@@ -189,7 +188,7 @@ class Media extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
    * 
    * @return void
    */
-  protected function __enqueueScripts()
+  public function enqueueScripts()
   {
     global $wp_version;
 

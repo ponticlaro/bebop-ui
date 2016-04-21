@@ -8,28 +8,35 @@ module.exports = function(grunt) {
 
       ui_main_js_path: 'src/UI/assets/core/js',
       ui_list_js_path: 'src/UI/assets/list/js',
-      ui_multilist_js_path: 'src/UI/assets/multilist/assets/js',
+      ui_multilist_js_path: 'src/UI/assets/multilist/js',
       ui_media_js_path: 'src/UI/assets/media/js',
       ui_gallery_js_path: 'src/UI/assets/gallery/js',
     },
 
     jshint: {
 
-      ui_main: '<%= meta.ui_main_js_path %>/bebop-ui.js',
+      ui_main: [
+        '<%= meta.ui_main_js_path %>/modules',
+        '<%= meta.ui_main_js_path %>/bebop-ui.js'
+      ],
+
       ui_list: [
         '<%= meta.ui_list_js_path %>/collections',
         '<%= meta.ui_list_js_path %>/models',
         '<%= meta.ui_list_js_path %>/views',
         '<%= meta.ui_list_js_path %>/bebop-ui--list.js'
       ],
+
       ui_multilist: [
         '<%= meta.ui_multilist_js_path %>/views',
         '<%= meta.ui_multilist_js_path %>/bebop-ui--multilist.js'
       ],
+
       ui_media: [
         '<%= meta.ui_media_js_path %>/views',
         '<%= meta.ui_media_js_path %>/bebop-ui--media.js'
       ],
+      
       ui_gallery: [
         '<%= meta.ui_gallery_js_path %>/bebop-ui--gallery.js'
       ]
@@ -39,6 +46,7 @@ module.exports = function(grunt) {
       ui_main_js: {
         src: [
           '<%= meta.ui_main_js_path %>/vendor/jquery.ba-throttle-debounce.min.js',
+          '<%= meta.ui_main_js_path %>/modules/searchbox.js',
           '<%= meta.ui_main_js_path %>/bebop-ui.js'
         ],
         dest: '<%= meta.ui_main_js_path %>/bebop-ui.min.js'
