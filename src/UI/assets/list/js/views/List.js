@@ -646,6 +646,11 @@
 
 			}, this);
 
+			// Instantiate UI Modules
+			Bebop.Modules.init({
+				'container': this.$el
+			});
+
 			return this;
 		}
 	});

@@ -196,6 +196,11 @@
 [bebop-list--el="form"] {
 	padding: 10px;
 	
+	.bebop-ui-mod {
+		margin-bottom: 0;
+		display: inline;
+	}
+
 	input[type="text"] {
 		width: auto !important;
 	}
@@ -236,6 +241,11 @@
 .bebop-list--formField {
 	float:left;
 	margin-right: 10px;
+
+	.bebop-ui-mod-searchableselect {
+		display: inline-block;
+		margin-right: 9px;
+	}
 }
 
 [bebop-list--el="empty-state-indicator"] {
@@ -324,5 +334,19 @@
 		[bebop-list--view] {
 			margin-left: 40px;
 		}
+	}
+}
+
+[bebop-list--view="browse"],
+[bebop-list--view="reorder"] {
+
+	.select2-selection {
+		outline-width: 0 !important;
+		background:none !important;
+		border: none !important;
+	}
+
+	.select2-selection__arrow {
+		display:none !important;
 	}
 }

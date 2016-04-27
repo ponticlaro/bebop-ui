@@ -69,6 +69,11 @@ class Media extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
    */
   public function load()
   {
+    ///////////////
+    // IMPORTANT //
+    ///////////////
+    // We should always enqueue scripts to make sure all possible 
+    // implementations of AdminPages, Metaboxes and UI ContentList work properly
     add_action('admin_init', array($this, 'registerScripts'));
     add_action('admin_init', array($this, 'enqueueScripts'));
     add_action('admin_footer', array($this, 'renderTemplates'));

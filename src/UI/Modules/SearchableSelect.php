@@ -2,7 +2,6 @@
 
 namespace Ponticlaro\Bebop\UI\Modules;
 
-use Ponticlaro\Bebop\Db\WpQueryEnhanced;
 use Ponticlaro\Bebop\Html\Elements\Select as SelectElement;
 
 class SearchableSelect extends Select {
@@ -30,32 +29,35 @@ class SearchableSelect extends Select {
 
     // Set default vars
     $this->setVars([
-    	'attrs' => [
-    		'style' => 'width:100%;display:block'
-    	],
-      'data_source' => [
-        'query_type' => 'posts',
-        'query'      => [
-          'type' => [
-            'post',
-            'page'
-          ],
-          'max_results' => -1
-        ],
-        'mapping' => [
-          'value' => 'ID',
-          'label' => 'post_title'
-        ],
-        'grouping' => [
-          'by'     => 'post_type',
-          'groups' => [
-            'post' => 'Posts',
-            'page' => 'Pages'
-          ]
-        ]
+      'attrs' => [
+        'style' => 'min-width:100%;max-width:100%;display:block'
+      ],
+      'placeholder' => 'Search',
+      'url'         => '/_bebop/api/search',
+      'query'       => [
+        'max_results' => 25
+      ],
+      'mapping' => [
+        'id'   => 'ID',
+        'text' => 'post_title'
+      ],
+      'templates' => [
+        'engine'    => 'underscore',
+        'result'    => '<strong><%= text %></strong><br><%= post_type %>',
+        'selection' => '<%= text %>'
       ],
       'before' => '<div class="bebop-ui-mod bebop-ui-mod-select bebop-ui-mod-searchableselect">'
     ]);
+  }
+
+  /**
+   * Checks if module configuration allows it to be rendered
+   * 
+   * @return void
+   */
+  public function configIsValid()
+  {
+    return $this->getVar('url') && $this->getVar('query') ? true : false;
   }
 
   /**
@@ -67,31 +69,27 @@ class SearchableSelect extends Select {
   {
     parent::preRendering();
 
-    $this->el->setAttr('bebop-ui-searchable-select');
-    $this->el->setValue($this->getVar('value'));
+    // Prepare configuration array to be displayed as a DOM element attribute
+    $config = preg_replace(["/'/", '/"/'], ["&#39;", "&#34;"], json_encode([
+      'placeholder' => $this->getVar('placeholder'),
+      'url'         => $this->getVar('url'),
+      'query'       => $this->getVar('query'),
+      'mapping'     => $this->getVar('mapping'),
+      'templates'   => $this->getVar('templates')
+    ]));
 
-    $query = new WpQueryEnhanced($this->getVar('data_source.query'));
-    $data  = $query->execute();
+    $this->el->setAttr('bebop-ui-el--searchableselect', $config);
 
-    if ($data) {
+    $data = $this->getVar('value');
 
-      $value_property = $this->getVar('data_source.mapping.value');
-      $label_property = $this->getVar('data_source.mapping.label');
-
-      foreach ($data as $item) {
-
-        $label = $item->$label_property;
-        $value = $item->$value_property;
-
-        if ($label)
-           $this->el->addOption($label, (string)$value);
+    if (is_array($data)) {
+      foreach ($data as $v) {
+        $this->el->addOption($v, (string)$v, true);
       }
     }
 
-    else {
-
-      $this->el->setAttr('disabled', true);
-      $this->el->setAttr('placeholder', 'No items to be displayed');
+    elseif ($data) {
+      $this->el->addOption($data, (string)$data, true);
     }
   }
 }

@@ -16,7 +16,6 @@ module.exports = function(grunt) {
     jshint: {
 
       ui_main: [
-        '<%= meta.ui_main_js_path %>/modules',
         '<%= meta.ui_main_js_path %>/bebop-ui.js'
       ],
 
@@ -46,7 +45,6 @@ module.exports = function(grunt) {
       ui_main_js: {
         src: [
           '<%= meta.ui_main_js_path %>/vendor/jquery.ba-throttle-debounce.min.js',
-          '<%= meta.ui_main_js_path %>/modules/searchbox.js',
           '<%= meta.ui_main_js_path %>/bebop-ui.js'
         ],
         dest: '<%= meta.ui_main_js_path %>/bebop-ui.min.js'

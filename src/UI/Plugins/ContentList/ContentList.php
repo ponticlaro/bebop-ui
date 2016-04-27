@@ -131,6 +131,11 @@ class ContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
    */
   public function load()
   {
+    ///////////////
+    // IMPORTANT //
+    ///////////////
+    // We should always enqueue scripts to make sure all possible 
+    // implementations of AdminPages, Metaboxes and UI ContentList work properly
     add_action('init', [$this, 'registerScripts']);
     add_action('init', [$this, 'enqueueScripts']);
   }
@@ -754,7 +759,33 @@ class ContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
       foreach ($elements as $id => $template) {
         
         $html .= "<div bebop-list--formElementId='$id' class='bebop-list--formField'>";
-        $html .= $this->getHtml($template);
+        
+        if (is_array($template)) {
+          
+          foreach ($template as $section) {
+              
+            $ui_id = isset($section['ui']) && $section['ui'] ? $section['ui'] : null;
+
+            unset($section['ui']);
+            $section = ModuleFactory::create($ui_id, $section);
+
+            if ($section) {
+              
+              ob_start();
+              $section->render();
+              $new_html = ob_get_contents();
+              ob_end_clean();
+
+              $html .= $new_html;
+            }
+          }
+        }
+
+        elseif (is_string($template)) {
+          
+          $html .= $this->getHtml($template); 
+        }
+
         $html .= '</div>';
       }
     }
@@ -829,28 +860,38 @@ class ContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
                 $section->renderBeforeMainTemplate();
                 echo $el->getOpeningTag();
 
-                $opt_elements = $el->getOptionsAsElements();
+                if (is_a($section, 'Ponticlaro\Bebop\UI\Modules\SearchableSelect')) {
+                  
+                  $name = $el->getName();
 
-                if ($opt_elements) {
-                  foreach ($opt_elements as $opt_el) {
+                  echo "{{#${name}}}<option selected value='{{.}}'>{{.}}</option>{{/${name}}}";
+                }
 
-                    $name  = $opt_el->getName();
-                    $value = $opt_el->getValue();
+                else {
 
-                    $opt_el->removeAttr('selected');
+                  $opt_elements = $el->getOptionsAsElements();
 
-                    // Set 'selected' attribute for Mustache
-                    if ($el->allowsMultipleValues()) {
-      
-                      $opt_el->setAttr("{{#${name}_has_${value}}}selected{{/${name}_has_${value}}}");
-                     }
+                  if ($opt_elements) {
+                    foreach ($opt_elements as $opt_el) {
 
-                    else {
+                      $name  = $opt_el->getName();
+                      $value = $opt_el->getValue();
 
-                      $opt_el->setAttr("{{#${name}_is_${value}}}selected{{/${name}_is_${value}}}");
+                      $opt_el->removeAttr('selected');
+
+                      // Set 'selected' attribute for Mustache
+                      if ($el->allowsMultipleValues()) {
+        
+                        $opt_el->setAttr("{{#${name}_has_${value}}}selected{{/${name}_has_${value}}}");
+                       }
+
+                      else {
+
+                        $opt_el->setAttr("{{#${name}_is_${value}}}selected{{/${name}_is_${value}}}");
+                      }
+
+                      $opt_el->render();
                     }
-
-                    $opt_el->render();
                   }
                 }
 

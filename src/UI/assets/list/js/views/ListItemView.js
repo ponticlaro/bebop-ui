@@ -363,7 +363,10 @@
 
       if(name == 'view') return value;
 
-      var $field = $('<div>').html(this.views.edit.cleanHTML).find('[name="'+ name +'"]');
+      var data = [];
+      data[name] = value;
+
+      var $field = $(Mustache.render(this.views.browse.cleanHTML, data)).find('[name="'+ name +'"]');
 
       if ($field.length > 0 && $field.get(0).tagName == 'SELECT') {
 
@@ -395,7 +398,7 @@
           
             // Check for "pretty" values for browse or reorder view
             if(view != 'edit') {
-              //data[key][index] = this.getPrettyValue(key, singleValue);
+              data[key][index] = this.getPrettyValue(key, singleValue);
             }
 
             data[key + '_has_' + singleValue] = true;
@@ -416,6 +419,9 @@
 
       if (this.mode == 'gallery')
         data.image = this.image.status.get('data');
+
+      console.log('view');
+      console.log(data);
 
       return data;
     },
@@ -470,6 +476,11 @@
 
         }, this);
       }
+
+      // Instantiate UI Modules
+      Bebop.Modules.init({
+        'container': this.$el
+      });
 
       return this;
     },

@@ -32,8 +32,6 @@ class Option extends \Ponticlaro\Bebop\Html\ControlElement {
     $name = $this->getAttr('name');
     $this->removeAttr('name');
 
-    var_dump($this->config->getAll());
-
     $html = parent::getAttrsHtml();
 
     $this->setAttr('name', $name);

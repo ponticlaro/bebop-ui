@@ -54,8 +54,11 @@ class ContentListForm {
    */
   public function addElement($id, $template)
   {
-    if (!is_string($id) || !is_string($template))
-      throw new \Exception("Form Element ID and Template must both be strings");
+    if (!is_string($id))
+      throw new \Exception("Form Element ID must be a string");
+
+    if (!is_string($template) && !is_array($template))
+      throw new \Exception("Form Element Template must be a string or an array");
 
     $this->elements->set($id, $template);
 

@@ -55,7 +55,11 @@ class MultiContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
    */
   public function load()
   {
-    // Register back-end scripts
+    ///////////////
+    // IMPORTANT //
+    ///////////////
+    // We should always enqueue scripts to make sure all possible 
+    // implementations of AdminPages, Metaboxes and UI ContentList work properly
     add_action('init', array($this, 'registerScripts'));
     add_action('init', array($this, 'enqueueScripts'));
   }

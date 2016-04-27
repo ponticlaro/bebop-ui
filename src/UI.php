@@ -90,7 +90,9 @@ class UI extends \Ponticlaro\Bebop\Common\Patterns\SingletonAbstract {
     $css->register('jquery.select2', $base_url .'/core/css/vendor/select2.min');
 
     // CORE
-    $css->register('bebop-ui', $base_url .'/core/css/bebop-ui');
+    $css->register('bebop-ui', $base_url .'/core/css/bebop-ui', [
+      'jquery.select2'
+    ]);
 
     /////////////////
     // Register JS //
@@ -98,7 +100,7 @@ class UI extends \Ponticlaro\Bebop\Common\Patterns\SingletonAbstract {
 
     // VENDOR
     $js->register('jquery.debounce', $base_url .'/core/js/vendor/jquery.ba-throttle-debounce.min', ['jquery']);
-    //$js->register('jquery.select2', $base_url .'/core/js/vendor/select2.full.min');
+    $js->register('jquery.select2', $base_url .'/core/js/vendor/select2.full.min');
 
     // Development JS
     if (defined('BEBOP_DEV_ENV_ENABLED') && BEBOP_DEV_ENV_ENABLED) {
@@ -106,16 +108,13 @@ class UI extends \Ponticlaro\Bebop\Common\Patterns\SingletonAbstract {
       // VENDOR
       $js->register('mustache', $base_url .'/core/js/vendor/mustache');
       
-      // MODULES
-      // $js->register('bebop-ui.searchbox', $base_url .'/core/js/modules/searchbox', ['jquery', 'jquery.select2']);
-
       // CORE
       $js->register('bebop-ui', $base_url .'/core/js/bebop-ui', [
+        'underscore',
         'jquery',
         'jquery-ui-datepicker',
         'jquery.debounce',
-        //'jquery.select2',
-        //'bebop-ui.searchbox'
+        'jquery.select2'
       ]);
     }
 
@@ -131,14 +130,12 @@ class UI extends \Ponticlaro\Bebop\Common\Patterns\SingletonAbstract {
       // The following dependencies should never be concatenated and minified
       // These are used by other WordPress features and plugins
       $js->register('bebop-ui', $base_url .'/core/js/bebop-ui.min', [
+        'underscore',
         'jquery',
         'jquery-ui-datepicker',
-        //'jquery.select2'
+        'jquery.select2'
       ]);
     }
-
-    Css::getInstance()->getHook('back')->enqueue('jquery.select2');
-    Js::getInstance()->getHook('back')->enqueue('bebop-ui');
   }
 
   /**
