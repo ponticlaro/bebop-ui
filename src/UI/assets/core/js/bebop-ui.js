@@ -131,6 +131,7 @@
 				    		});
 				    	}
 
+				    	$el.trigger('change');
 				    	$el.select2(select2_config).trigger('change');
 				    }
 					});

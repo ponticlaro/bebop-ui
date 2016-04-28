@@ -43,7 +43,7 @@ class SearchableSelect extends Select {
       ],
       'templates' => [
         'engine'    => 'underscore',
-        'result'    => '<strong><%= text %></strong><br><%= post_type %>',
+        'result'    => '<%= text %>',
         'selection' => '<%= text %>'
       ],
       'before' => '<div class="bebop-ui-mod bebop-ui-mod-select bebop-ui-mod-searchableselect">'

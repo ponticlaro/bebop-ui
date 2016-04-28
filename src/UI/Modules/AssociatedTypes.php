@@ -34,7 +34,7 @@ class AssociatedTypes extends ItemList {
       'url'         => null,
       'query'       => [],
       'mapping'     => [],
-      'templates' => [
+      'templates'   => [
         'result' => '<div class="bebop-ui-mod-associatedtypes-searchresult"><%= text %><span><%= post_type %></span></div>',
       ],
       'before'      => '<div class="bebop-ui-mod bebop-ui-mod-list bebop-ui-mod-associatedtypes">'
