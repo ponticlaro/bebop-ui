@@ -125,12 +125,7 @@
 
     updateSingle: function(event) {
 
-      console.log('updateSingle');
-
       var name = $(event.currentTarget).attr('bebop-ui--field');
-
-      console.log(name);
-      console.log(this.getFieldValue(name));
 
       this.model.set(name, this.getFieldValue(name));
 
