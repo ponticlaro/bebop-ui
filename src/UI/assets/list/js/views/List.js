@@ -648,7 +648,7 @@
 
 			// Instantiate UI Modules
 			Bebop.Modules.init({
-				'container': this.$el
+				'container': this.$form
 			});
 
 			return this;

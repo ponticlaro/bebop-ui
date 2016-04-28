@@ -420,24 +420,22 @@
       if (this.mode == 'gallery')
         data.image = this.image.status.get('data');
 
-      console.log('view');
-      console.log(data);
-
       return data;
     },
 
     render: function() {
 
       // Update model if we moved from the edit view
-      if (this.model.hasChanged('view') && this.model.previous('view') == 'edit') this.update();
+      if (this.model.hasChanged('view') && this.model.previous('view') == 'edit') 
+        this.update();
 
       var prevView = this.model.previous('view'),
-        view     = this.model.get('view'),
-        viewHtml = Mustache.render(this.views[view].template, this.getTemplateData());
+          view     = this.model.get('view'),
+          viewHtml = Mustache.render(this.views[view].template, this.getTemplateData());
 
       this.$el.removeClass('view--' + prevView).addClass('view--' + view);
 
-      // Render current view
+      // Render current view§
       this.views[view].$el.html(viewHtml);
 
       // Prepare current view for interaction
@@ -447,7 +445,8 @@
       this.views[view].$el.show().siblings('[bebop-list--view]').hide();
 
       // Show item if not already visible
-      if(!this.$el.is(':visible')) this.$el.slideDown(200);
+      if(!this.$el.is(':visible')) 
+        this.$el.slideDown(200);
 
       // Render child UI Lists instances
       _.each(this.views[view].$el.find('[bebop-list--el="container"]'), function(item, index) {
@@ -467,20 +466,18 @@
 
       }, this);
 
+      // Instantiate UI Modules
+      Bebop.Modules.init({
+        'container': this.views[view].$el
+      });
+
       // After render event
       if (this.afterRenderFns.length > 0) {
 
         _.each(this.afterRenderFns, function(fn) {
-
           fn(this);
-
         }, this);
       }
-
-      // Instantiate UI Modules
-      Bebop.Modules.init({
-        'container': this.$el
-      });
 
       return this;
     },

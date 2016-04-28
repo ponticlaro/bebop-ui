@@ -15,8 +15,6 @@
 		// Associated Types
     Bebop.List.addFormAction('addAssociatedType', function(event) {
 
-      console.log('EVENT: addAssociatedType');
-
       var $selector = $(event.currentTarget).parents('[bebop-list--formelementid]').find('[bebop-list--formElId="selector"]');
           id        = $selector.val();
 

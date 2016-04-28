@@ -36,7 +36,7 @@
 	Modules.SearchableSelect = function(options) {
 
 		var el = options.el || null;
-
+		
 		if (el) {
 
 			var $el    = $(el),
