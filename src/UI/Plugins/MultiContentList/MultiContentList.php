@@ -106,8 +106,8 @@ class MultiContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
    */
   public function enqueueScripts()
   {
-    wp_enqueue_style('bebop-ui--multilist');
-    wp_enqueue_script('bebop-ui--multilist');
+    Css::getInstance()->getHook('back')->enqueue('bebop-ui--multilist');
+    Js::getInstance()->getHook('back')->enqueue('bebop-ui--multilist');
   }
 
   /**
@@ -119,9 +119,6 @@ class MultiContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
    */
   private function __createInstance($title, array $config = array())
   { 
-    // Enqueue all scripts that the MultiContentList needs
-    $this->__enqueueScripts();
-
     // Create slugified $key from $title
     $key = Utils::slugify($title);
 
