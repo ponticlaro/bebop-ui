@@ -264,6 +264,11 @@
 		white-space: nowrap;
 	}
 
+	.bebop-ui-mod-fileupload-on-gallery-list {
+		float: left;
+		margin: 0 0 0 -130px;
+	}
+
 	[bebop-media--el="container"] {
 		float: left;
 		margin: 0;
@@ -296,6 +301,10 @@
 	}
 
 	.bebop-list--item.view--reorder {
+
+		.bebop-ui-mod-fileupload-on-gallery-list {
+			margin: 0 0 0 -40px;
+		}
 
 		[bebop-media--el="container"] {	
 			height: 40px;

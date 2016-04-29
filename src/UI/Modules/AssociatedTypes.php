@@ -79,7 +79,7 @@ class AssociatedTypes extends ItemList {
         'text'  => 'Add<span class="bebop-ui-icon-add"></span>',
         'class' => 'button-primary',
         'attrs' => [
-          'bebop-list--formAction' => 'bebop-ui-action--addPageSection'
+          'bebop-list--formAction' => 'bebop-ui-action--addAssociatedType'
         ]
       ]
     ]);

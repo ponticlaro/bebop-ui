@@ -63,8 +63,10 @@ class ContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
       'file_upload'      => [
         'name'   => 'id',
         'config' => [
+          'modal_title'           => 'Upload or select existing images',
+          'modal_button_text'     => 'Add Images',
           'modal_select_multiple' => true,
-          'mime_types' => [
+          'mime_types'            => [
             'image'
           ]
         ]
@@ -85,9 +87,9 @@ class ContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
 
     // Views
     $this->views_sections = (new Collection(array(
-      'browse'  => '',
-      'reorder' => '',
-      'edit'    => ''
+      'browse'  => [],
+      'reorder' => [],
+      'edit'    => []
     )))->disableDottedNotation();
 
     $this->views = (new Collection(array(
@@ -243,14 +245,6 @@ class ContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
           </div>
           
           <div bebop-list--el="content" class="bebop-ui-clrfix">
-
-            <?php if ($this->isMode('gallery')) {
-
-              $upload = Module::FileUpload($this->getConfig('file_upload') ?: []);
-              $upload->render();
-
-            } ?>
-
             <div bebop-list--view="browse"></div>
             <div bebop-list--view="reorder"></div>
             <div bebop-list--view="edit"></div>
@@ -596,7 +590,7 @@ class ContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
   {
     if (!is_string($form_id) || !is_string($element_id)) return false;
 
-    return $this->forms->get($form_id) ? $this->forms->get($form_id)->hasElement($id) : falss;
+    return $this->forms->get($form_id) ? $this->forms->get($form_id)->hasElement($id) : false;
   }
 
   /**
@@ -665,7 +659,13 @@ class ContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
    */
   public function setItemView($view, $template)
   {
-    if(!is_string($view)) return $this;
+    if(!is_string($view)) 
+      return $this;
+
+    $this->addItemViewSection($view, [
+      'ui'   => 'rawHtml',
+      'html' => $this->getHtml($template)
+    ]);
 
     $this->views->set($view, $template);
 
@@ -834,7 +834,32 @@ class ContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
    */
   protected function buildItemViewsFromSections()
   {
-    foreach ($this->views_sections->getAll() as $view => $sections) {
+    $view_sections = $this->views_sections->getAll();
+
+    foreach ($view_sections as $view => $sections) {
+      
+      // var_dump($view);
+      // var_dump($sections);
+
+      // Add Gallery Mode sections
+      if ($this->isMode('gallery')) {
+
+        $file_upload_config = array_merge([
+          'before' => '<div class="bebop-ui-mod bebop-ui-mod-fileupload bebop-ui-mod-fileupload-on-gallery-list">'
+        ], $this->getConfig('file_upload') ?: []);
+
+        array_unshift($sections, ModuleFactory::create('fileupload', $file_upload_config));
+
+        // Add default reorder view for gallery mode
+        if ($view == 'reorder' && count($sections) == 1) {
+
+          $sections[] = ModuleFactory::create('rawHtml', [
+            'html' => '<span class="bebop-list--media-title">{{image.title}}</span>'
+          ]);
+        }
+      }
+
+      // Handle manually added sections
       if ($sections && is_array($sections)) {
 
         ob_start();
@@ -993,10 +1018,6 @@ class ContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
   public function render()
   {
     $this->buildItemViewsFromSections();
-
-    // Force default reorder view if in gallery mode
-    if ($this->isMode('gallery') && !$this->getItemView('reorder'))
-      $this->setItemView('reorder', __DIR__ .'/views/partials/items/gallery/reorder.mustache');
 
     // Render list
     $this->__renderTemplate('default', $this);
