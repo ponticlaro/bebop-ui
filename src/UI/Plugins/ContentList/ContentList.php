@@ -662,11 +662,6 @@ class ContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
     if(!is_string($view)) 
       return $this;
 
-    $this->addItemViewSection($view, [
-      'ui'   => 'rawHtml',
-      'html' => $this->getHtml($template)
-    ]);
-
     $this->views->set($view, $template);
 
     return $this;
@@ -837,9 +832,6 @@ class ContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
     $view_sections = $this->views_sections->getAll();
 
     foreach ($view_sections as $view => $sections) {
-      
-      // var_dump($view);
-      // var_dump($sections);
 
       // Add Gallery Mode sections
       if ($this->isMode('gallery')) {
@@ -855,6 +847,14 @@ class ContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
 
           $sections[] = ModuleFactory::create('rawHtml', [
             'html' => '<span class="bebop-list--media-title">{{image.title}}</span>'
+          ]);
+        }
+
+        // Making sure old style gallery mode with template files still works
+        if ($this->getItemView($view)) {
+
+          $sections[] = ModuleFactory::create('rawHtml', [
+            'html' => $this->getHtml($this->getItemView($view))
           ]);
         }
       }
@@ -1004,7 +1004,7 @@ class ContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
 
         $html = ob_get_contents();
         ob_end_clean();
-
+        
         $this->setItemView($view, $html);
       }
     }
