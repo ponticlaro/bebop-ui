@@ -8,18 +8,6 @@ use Ponticlaro\Bebop\UI\Plugins\ContentList\ContentList;
 class AssociatedTypes extends ItemList {
 
   /**
-   * Sets module main element
-   * 
-   * @param object $el Module main element
-   */
-  public function setEl(ContentList $el)
-  {
-    $this->el = $el;
-
-    return $this;
-  }
-
-  /**
    * Applies module defaults
    * 
    * @return void
@@ -72,11 +60,13 @@ class AssociatedTypes extends ItemList {
       $search_config['templates'] = $this->getVar('templates');
 
     $config = array_replace_recursive([
-      'ui'    => 'searchableselect',
+      'ui'    => 'postsearch',
       'attrs' => [
         'bebop-list--formElId' => 'selector'
       ]
-    ], $search_config, [
+    ], 
+    $search_config, 
+    [
       'attrs' => [
         'style' => 'min-width:220px;max-width:100%;display:block'
       ]
@@ -86,16 +76,16 @@ class AssociatedTypes extends ItemList {
       $config,
       [
         'ui'    => 'button',
-        'text'  => 'Add',
+        'text'  => 'Add<span class="bebop-ui-icon-add"></span>',
         'class' => 'button-primary',
         'attrs' => [
-          'bebop-list--formAction' => 'addAssociatedType'
+          'bebop-list--formAction' => 'bebop-ui-action--addPageSection'
         ]
       ]
     ]);
 
     $config = array_replace_recursive([
-      'ui'   => 'searchableselect',
+      'ui'   => 'postsearch',
       'name' => 'id',
       'attrs' => [
         'disabled' => true,
@@ -106,7 +96,7 @@ class AssociatedTypes extends ItemList {
     $this->el->addItemViewSection('browse', $config);
 
     $config = array_replace_recursive([
-      'ui'   => 'searchableselect',
+      'ui'   => 'postsearch',
       'name' => 'id',
       'attrs' => [
         'bebop-ui-mod-associatedtypes-selector' => true

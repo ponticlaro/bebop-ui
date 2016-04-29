@@ -26,21 +26,20 @@
 		var $container = options.container || $(document);
 		
 		// Generate Searchable Select instances
-		$.each($container.find('[bebop-ui-el--searchableselect]'), function(index, item) {
-			new Modules.SearchableSelect({el: item});
+		$.each($container.find('[bebop-ui-el--postsearch]'), function(index, item) {
+			new Modules.PostSearch({el: item});
 		});
-
 	};
 
-	// Searchbox
-	Modules.SearchableSelect = function(options) {
+	// PostSearchSelect
+	Modules.PostSearch = function(options) {
 
 		var el = options.el || null;
 		
 		if (el) {
 
 			var $el    = $(el),
-			    config = JSON.parse($el.attr('bebop-ui-el--searchableselect'));
+			    config = JSON.parse($el.attr('bebop-ui-el--postsearch'));
 
 			var select2_config = {
 				placeholder: config.placeholder,

@@ -860,7 +860,7 @@ class ContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
                 $section->renderBeforeMainTemplate();
                 echo $el->getOpeningTag();
 
-                if (is_a($section, 'Ponticlaro\Bebop\UI\Modules\SearchableSelect')) {
+                if (is_a($section, 'Ponticlaro\Bebop\UI\Modules\PostSearch')) {
                   
                   $name = $el->getName();
 

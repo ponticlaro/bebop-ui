@@ -13,7 +13,7 @@
 		////////////////
 
 		// Associated Types
-    Bebop.List.addFormAction('addAssociatedType', function(event) {
+    Bebop.List.addFormAction('bebop-ui-action--addAssociatedType', function(event) {
 
       var $selector = $(event.currentTarget).parents('[bebop-list--formelementid]').find('[bebop-list--formElId="selector"]');
           id        = $selector.val();
@@ -34,6 +34,28 @@
       }
     });
 
+    // Page Sections
+    Bebop.List.addFormAction('bebop-ui-action--addPageSection', function(event) {
+
+      var $selector = $(event.currentTarget).parents('[bebop-list--formelementid]').find('[bebop-list--formElId="selector"]');
+          id        = $selector.val();
+
+      if (!id || id == -1) {
+        alert('You need to select a page section type');
+      }
+
+      else {
+
+        this.addNewitem({
+          'type': id,
+          'type_title': $selector.find('option[value='+ id +']').text(),
+          'view': 'edit'
+        });
+
+        $selector.val(-1);
+      }
+
+    });
 	});
 
 })(window, document, undefined, jQuery || $);

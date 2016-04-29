@@ -4,7 +4,7 @@ namespace Ponticlaro\Bebop\UI\Modules;
 
 use Ponticlaro\Bebop\Html\Elements\Select as SelectElement;
 
-class SearchableSelect extends Select {
+class PostSearch extends Select {
 
   /**
    * Sets module main element
@@ -46,7 +46,7 @@ class SearchableSelect extends Select {
         'result'    => '<%= text %>',
         'selection' => '<%= text %>'
       ],
-      'before' => '<div class="bebop-ui-mod bebop-ui-mod-select bebop-ui-mod-searchableselect">'
+      'before' => '<div class="bebop-ui-mod bebop-ui-mod-select bebop-ui-mod-postsearch">'
     ]);
   }
 
@@ -78,7 +78,7 @@ class SearchableSelect extends Select {
       'templates'   => $this->getVar('templates')
     ]));
 
-    $this->el->setAttr('bebop-ui-el--searchableselect', $config);
+    $this->el->setAttr('bebop-ui-el--postsearch', $config);
 
     $data = $this->getVar('value');
 

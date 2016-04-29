@@ -18,6 +18,11 @@
 		display: block;
 		margin-top: 4px;
 	}
+
+	&.bebop-ui-mod-inputhidden {
+		margin:0;
+		padding:0;
+	}
 }
 
 .bebop-ui-mod-associatedtypes-searchresult {
@@ -29,3 +34,4 @@
 		color: #AAA;
 	}
 }
+
