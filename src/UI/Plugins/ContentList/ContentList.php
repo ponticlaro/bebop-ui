@@ -252,8 +252,8 @@ class ContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
 
           <div bebop-list--el="item-actions">
             <button bebop-list--action="edit" class="button button-small">
-              <b>Edit</b>
               <span class="bebop-ui-icon-edit"></span>
+              <b>Edit</b>
             </button>
             <button bebop-list--action="remove" class="button button-small">
               <span class="bebop-ui-icon-remove"></span>
