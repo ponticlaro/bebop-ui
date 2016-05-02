@@ -129,7 +129,7 @@ class PageSections extends ItemList {
   			],
   			[
 	        'ui'    => 'button',
-	        'text'  => 'Add<span class="bebop-ui-icon-add"></span>',
+	        'text'  => '<span class="bebop-ui-icon-add"></span> Add',
 	        'class' => 'button-primary',
 	        'attrs' => [
 	          'bebop-list--formAction' => 'bebop-ui-action--addPageSection'
