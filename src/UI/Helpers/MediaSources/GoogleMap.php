@@ -42,25 +42,25 @@ class GoogleMap extends \Ponticlaro\Bebop\UI\Patterns\MediaSourceAbstract {
     if (is_string($view)) {
       switch ($view) {
         case 'browse':
-        	
-        	$sections[] = [
-        		'ui'   => 'rawHtml',
-        		'html' => '
-        			{{#url}}
+          
+          $sections[] = [
+            'ui'   => 'rawHtml',
+            'html' => '
+              {{#url}}
                 <div bebop-ui-mod-list--media-source-embed>
                   <iframe src="{{url}}" width="120" height="120" frameborder="0" style="border:0" allowfullscreen></iframe>
                 </div>
-				   		{{/url}}'
-        	];
+              {{/url}}'
+          ];
 
-        	$sections[] = [
-        		'ui'   => 'rawHtml',
-        		'html' => '
-		        	{{^url}}
+          $sections[] = [
+            'ui'   => 'rawHtml',
+            'html' => '
+              {{^url}}
                 <div bebop-ui-mod-list--media-source-icon><span class="bebop-ui-icon-warning"></div>
-				        <span class="description">You need to insert a Vimeo video ID</span>
-				    	{{/url}}'
-        	];
+                <span class="description">You need to insert a Google Map url</span>
+              {{/url}}'
+          ];
 
           break;
 

@@ -72,7 +72,7 @@ class MultimediaGallery extends ItemList {
           ]
         ]
       ],
-      'before' => '<div class="bebop-ui-mod bebop-ui-mod-list bebop-ui-mod-list-multimediagallery" bebop-ui-mod-list-mediagallery>'
+      'before' => '<div class="bebop-ui-mod bebop-ui-mod-list bebop-ui-mod-list-multimediagallery">'
     ]);
   }
 

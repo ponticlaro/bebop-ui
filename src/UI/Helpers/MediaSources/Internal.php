@@ -50,7 +50,7 @@ class Internal extends \Ponticlaro\Bebop\UI\Patterns\MediaSourceAbstract {
     ];
 
     if ($config)
-      $default_config = array_replace_recursive($default_config, $config);
+      $default_config = array_merge($default_config, $config);
 
     $file_upload_section = [
       'ui'     => 'fileupload',

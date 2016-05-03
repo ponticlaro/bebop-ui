@@ -2,7 +2,7 @@
 
 namespace Ponticlaro\Bebop\UI\Modules;
 
-class ImageGallery extends MultimediaGallery {
+class MapList extends MultimediaGallery {
 
   /**
    * List of media sources allowed for this module
@@ -10,7 +10,7 @@ class ImageGallery extends MultimediaGallery {
    * @var string
    */
   protected static $allowed_media_sources = [
-    'internal'
+    'google_map'
   ];
 
   /**
@@ -24,18 +24,14 @@ class ImageGallery extends MultimediaGallery {
 
     $this->setVars([
       'media_sources' => [
-        'internal' => [
-          'modal_title'       => 'Upload or select existing images',
-          'modal_button_text' => 'Add Images',
-          'mime_types'        => ['image'],
-        ]
+        'google_map' => true
       ],
       'config' => [
         'labels' => [
-          'add_button' => 'Add Images'
+          'add_button' => 'Add Maps'
         ]
       ],
-      'before' => '<div class="bebop-ui-mod bebop-ui-mod-list bebop-ui-mod-list-imagegallery">'
+      'before' => '<div class="bebop-ui-mod bebop-ui-mod-list bebop-ui-mod-list-mapgallery">'
     ]);
   }
 }

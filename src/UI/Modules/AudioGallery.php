@@ -2,10 +2,18 @@
 
 namespace Ponticlaro\Bebop\UI\Modules;
 
-use Ponticlaro\Bebop\UI\Plugins\ContentList\ContentList;
-use Ponticlaro\Bebop\Common\Utils;
+class AudioGallery extends MultimediaGallery {
 
-class AudioGallery extends ItemList {
+  /**
+   * List of media sources allowed for this module
+   * 
+   * @var string
+   */
+  protected static $allowed_media_sources = [
+    'internal',
+    'soundcloud_track',
+    'soundcloud_playlist'
+  ];
 
   /**
    * Applies module defaults
@@ -17,17 +25,18 @@ class AudioGallery extends ItemList {
     parent::__init();
 
     $this->setVars([
+      'media_sources' => [
+        'internal' => [
+          'modal_title'       => 'Upload or select existing audios',
+          'modal_button_text' => 'Add Audios',
+          'mime_types'        => ['audio']
+        ],
+        'soundcloud_track'    => false,
+        'soundcloud_playlist' => false,
+      ],
       'config' => [
         'labels' => [
           'add_button' => 'Add Audios'
-        ],
-        'mode'        => 'gallery',
-        'file_upload' => [
-          'config' => [
-            'modal_title'       => 'Upload or select existing audios',
-            'modal_button_text' => 'Add Audios',
-            'mime_types'        => ['audio'],
-          ]
         ]
       ],
       'before' => '<div class="bebop-ui-mod bebop-ui-mod-list bebop-ui-mod-list-audiogallery">'
