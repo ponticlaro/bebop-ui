@@ -156,7 +156,7 @@ class Media extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
 
     <script bebop-media--template="non-image-view" type="text/template" style="display:none">
       <div class="bebop-media--previewer-inner">
-        <div class="bebop-media--previewer-icon bebop-ui-icon-file"></div>
+        <div class="bebop-media--previewer-icon bebop-ui-icon-{{bebop_file_icon}}"></div>
         <div class="bebop-media--previewer-file-title">{{title}}</div>
         <div class="bebop-media--previewer-info">
           <a href="{{url}}" target="_blank">Open file in new tab</a> <span class="bebop-ui-icon-share"></span>

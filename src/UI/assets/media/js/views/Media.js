@@ -184,6 +184,21 @@
 
 					else {
 
+						if (typeValue.indexOf('video') != -1) {
+
+							data.bebop_file_icon = 'video';
+						}
+
+						else if(typeValue.indexOf('audio') != -1) {
+
+							data.bebop_file_icon = 'music';
+						}
+
+						else {
+
+							data.bebop_file_icon = 'file';
+						}
+
 						data.url = data.permalink !== undefined ? data.permalink : data.url;
 					}
 

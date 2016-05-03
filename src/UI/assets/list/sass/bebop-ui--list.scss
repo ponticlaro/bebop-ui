@@ -1,3 +1,17 @@
+%clrfix:before,
+%clrfix:after {
+  content: " "; /* 1 */
+  display: table; /* 2 */
+}
+
+%clrfix:after {
+	clear: both;
+}
+
+%clrfix {
+	*zoom: 1;
+}
+
 [bebop-list--el="container"] {
 	background-color: #fff;
 	border: 1px solid #ccc;
@@ -259,11 +273,6 @@
 		white-space: nowrap;
 	}
 
-	.bebop-ui-mod-fileupload-on-gallery-list {
-		float: left;
-		margin: 0 0 0 -130px;
-	}
-
 	[bebop-media--el="container"] {
 		float: left;
 		margin: 0;
@@ -290,16 +299,8 @@
 			}
 		}
 	}
-	
-	[bebop-list--view] {
-		margin-left: 130px;
-	}
 
 	.bebop-list--item.view--reorder {
-
-		.bebop-ui-mod-fileupload-on-gallery-list {
-			margin: 0 0 0 -40px;
-		}
 
 		[bebop-media--el="container"] {	
 			height: 40px;
@@ -334,10 +335,6 @@
 				display: none;
 			}
 		}
-
-		[bebop-list--view] {
-			margin-left: 40px;
-		}
 	}
 }
 
@@ -353,4 +350,154 @@
 	.select2-selection__arrow {
 		display:none !important;
 	}
+}
+
+[bebop-ui-mod-list--item-with-media-source-visual] {
+	@extend %clrfix;
+	margin-left: 130px;
+
+	[bebop-media--el="container"] {
+		height: 120px;
+		width: 120px;
+		overflow: hidden;
+		margin: 0 !important;
+
+		[bebop-media--el="previewer"] {
+			
+			.bebop-media--previewer-info {
+				display: none;
+			}
+
+			.bebop-media--previewer-image {
+				padding: 8px;
+			}
+
+			.bebop-media--previewer-icon {
+				font-size:30px;
+			}
+
+			.bebop-media--previewer-file-title {
+				font-size:11px;
+			}
+		}
+	}
+
+	[bebop-ui-mod-list--media-source-icon],
+	[bebop-ui-mod-list--media-source-embed] {
+		background: #EAEAEA;
+		float: left;
+		margin-left: -130px;
+		height: 120px;
+		width: 120px;
+	}
+
+	[bebop-ui-mod-list--media-source-icon] {
+		font-size: 60px;
+		line-height: 120px !important;
+		text-align: center;
+		vertical-align: middle;
+	
+		.bebop-ui-icon-youtube {
+			color: #E62117;
+		}
+
+		.bebop-ui-icon-vimeo {
+			color: #00ADEF;
+		}
+
+		.bebop-ui-icon-soundcloud {
+			color: #FF5500;
+		}
+	}
+
+	&[status-is="warning"] {
+		[bebop-ui-mod-list--media-source-icon] {
+
+			background: #ffbb00;
+			color: #fff;
+		}	
+	}	
+}
+
+.bebop-list--item.view--reorder {
+	
+	[bebop-ui-mod-list--item-with-media-source-visual] {
+		margin-left: 40px;
+
+		[bebop-ui-mod-list--media-source-icon],
+		[bebop-ui-mod-list--media-source-embed] {
+			margin: -10px 0 -10px -50px;
+			height: 40px;
+			width: 40px;
+		}
+
+		[bebop-ui-mod-list--media-source-icon] {
+			color: #999999;
+			font-size: 24px;
+			line-height: 40px !important;
+		}
+
+		[bebop-ui-mod-list--media-source-embed] {
+
+			[bebop-media--el="container"] {	
+				height: 40px;
+				width: 40px;
+				margin:0 !important;
+			}
+
+			[bebop-media--el="previewer"] {
+				height: 40px;
+				width: 40px;
+			
+				.bebop-media--previewer-inner {
+					padding: 0;
+				}
+
+				.bebop-media--previewer-image {
+					padding: 0;
+				}
+
+				.bebop-media--previewer-icon {
+					font-size:24px;
+					padding:0 0 0 0;
+					line-height: 40px;
+				}
+				
+				.bebop-media--previewer-status-code,
+				.bebop-media--previewer-file-title {
+					display: none;
+				}
+
+				img {
+					box-shadow: none;
+					-webkit-box-shadow: none;
+				}
+			}
+
+			[bebop-media--el="actions"] {		
+				display: none;
+			}
+		}
+	}
+
+	.bebop-ui-mod-list--item-title {
+		font-size: 16px;
+		line-height: 18px;
+		max-width: 100%;
+		overflow: hidden;
+		white-space: nowrap;
+  	text-overflow: ellipsis;
+	}
+}
+
+.bebop-ui-mod-list--item-title {
+	font-size: 21px;
+	font-weight: bold;
+	line-height: 24px;
+}
+
+.bebop-ui-mod-list--item-credits {
+	font-size: 11px;
+	line-height: 16px;
+	color: #999;
 }

@@ -835,12 +835,22 @@ class ContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
 
       // Add Gallery Mode sections
       if ($this->isMode('gallery')) {
+        
+        array_unshift($sections, ModuleFactory::create('rawHtml', [
+          'ui'   => 'rawHtml',
+          'html' => '</div>'
+        ]));
 
         $file_upload_config = array_merge([
-          'before' => '<div class="bebop-ui-mod bebop-ui-mod-fileupload bebop-ui-mod-fileupload-on-gallery-list">'
+          'before' => '<div class="bebop-ui-mod bebop-ui-mod-fileupload">'
         ], $this->getConfig('file_upload') ?: []);
 
         array_unshift($sections, ModuleFactory::create('fileupload', $file_upload_config));
+
+        array_unshift($sections, ModuleFactory::create('rawHtml', [
+          'ui'   => 'rawHtml',
+          'html' => '<div bebop-ui-mod-list--item-with-media-source-visual><div bebop-ui-mod-list--media-source-embed>'
+        ]));
 
         // Add default reorder view for gallery mode
         if ($view == 'reorder' && count($sections) == 1) {
@@ -857,6 +867,11 @@ class ContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
             'html' => $this->getHtml($this->getItemView($view))
           ]);
         }
+
+        $sections[] = ModuleFactory::create('rawHtml', [
+          'ui'   => 'rawHtml',
+          'html' => '</div>'
+        ]);
       }
 
       // Handle manually added sections
@@ -1004,7 +1019,7 @@ class ContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
 
         $html = ob_get_contents();
         ob_end_clean();
-        
+      
         $this->setItemView($view, $html);
       }
     }

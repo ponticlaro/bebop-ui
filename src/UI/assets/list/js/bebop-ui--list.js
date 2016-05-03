@@ -56,6 +56,27 @@
       }
 
     });
+
+    // Multi Source Media
+    Bebop.List.addFormAction('bebop-ui-action--addMediaFromTargetSource', function(event) {
+
+      var $selector = $(event.currentTarget).parents('[bebop-list--formelementid]').find('[bebop-list--formElId="selector"]');
+          id        = $selector.val();
+
+      if (!id || id == -1) {
+        alert('You need to select a media source');
+      }
+
+      else {
+
+        this.addNewitem({
+          'source_id': id,
+          'source_name': $selector.find('option[value='+ id +']').text(),
+          'view': 'edit'
+        });
+      }
+
+    });
 	});
 
 })(window, document, undefined, jQuery || $);
