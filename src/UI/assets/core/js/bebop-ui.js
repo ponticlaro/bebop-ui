@@ -38,8 +38,10 @@
 		
 		if (el) {
 
-			var $el    = $(el),
-			    config = JSON.parse($el.attr('bebop-ui-el--postsearch'));
+			var $el               = $(el),
+			    config            = JSON.parse($el.attr('bebop-ui-el--postsearch')),
+			    resultTemplate    = _.template(config.templates.result),
+			    selectionTemplate = _.template(config.templates.selection);
 
 			var select2_config = {
 				placeholder: config.placeholder,
@@ -92,10 +94,10 @@
 					if (!item.id && item.text && (item.disabled || item.loading))
 			  		return item.text;
 
-			  	return _.template(config.templates.result, item);
+			  	return resultTemplate(item);
 			  },
 			  templateSelection: function (item) {
-		      return _.template(config.templates.selection, item);
+		      return selectionTemplate(item);
 		    }
 			};
 
