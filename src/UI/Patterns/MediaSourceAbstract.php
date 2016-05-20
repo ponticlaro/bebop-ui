@@ -66,5 +66,5 @@ abstract class MediaSourceAbstract {
    * @param  array  $config User configuration
    * @return array          List of UI sections to be rendered
    */
-  abstract public static function getContentListUISections($view, array $config);
+  abstract public function getContentListUISections($view, array $config);
 }

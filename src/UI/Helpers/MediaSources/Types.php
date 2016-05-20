@@ -2,7 +2,7 @@
 
 namespace Ponticlaro\Bebop\UI\Helpers\MediaSources;
 
-class YoutubePlaylist extends \Ponticlaro\Bebop\UI\Patterns\MediaSourceAbstract {
+class Types extends \Ponticlaro\Bebop\UI\Patterns\MediaSourceAbstract {
 
   /**
    * Instantiates this class
@@ -12,9 +12,18 @@ class YoutubePlaylist extends \Ponticlaro\Bebop\UI\Patterns\MediaSourceAbstract 
   {
     parent::__construct();
 
+    // Defaults
+    $this->config->set('name', 'Post');
+    $this->config->set('labels', [
+      'identifier_field'           => 'Select Post',
+      'missing_identifier_message' => 'You need to select a Post'
+    ]);
+    $this->config->set('types', [
+      'post'
+    ]);
+
     $this->config->set($config);
-    $this->config->set('id', 'youtube_playlist');
-    $this->config->set('name', 'Youtube Playlist');
+    $this->config->set('id', 'types');
     $this->config->set('identifier_field', 'id');
   }
 
@@ -47,9 +56,7 @@ class YoutubePlaylist extends \Ponticlaro\Bebop\UI\Patterns\MediaSourceAbstract 
             'ui'   => 'rawHtml',
             'html' => '
               {{#id}}
-                <div bebop-ui-mod-list--media-source-embed>
-                  <iframe src="https://www.youtube.com/embed/videoseries?list={{id}}" width="120" height="120" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-                </div>
+                <div bebop-ui-mod-list--media-source-icon><span class="bebop-ui-icon-file"></div>
               {{/id}}'
           ];
 
@@ -58,7 +65,7 @@ class YoutubePlaylist extends \Ponticlaro\Bebop\UI\Patterns\MediaSourceAbstract 
             'html' => '
               {{^id}}
                 <div bebop-ui-mod-list--media-source-icon><span class="bebop-ui-icon-warning"></div>
-                <span class="description">You need to insert a Youtube playlist ID</span>
+                <span class="description">'. $this->config->get('labels.missing_identifier_message') .'</span>
               {{/id}}'
           ];
 
@@ -70,17 +77,7 @@ class YoutubePlaylist extends \Ponticlaro\Bebop\UI\Patterns\MediaSourceAbstract 
             'ui'   => 'rawHtml',
             'html' => '
               {{#id}}
-                <div bebop-ui-mod-list--media-source-icon><span class="bebop-ui-icon-youtube"></div>
-                <div class="bebop-ui-mod-list--item-title">
-                  <a target="_blank" href="https://www.youtube.com/embed/videoseries?list={{id}}">
-                    {{#title}}
-                      {{title}}
-                    {{/title}}
-                    {{^title}}
-                      https://www.youtube.com/embed/videoseries?list={{id}}
-                    {{/title}}
-                  </a>
-                </div>
+                <div bebop-ui-mod-list--media-source-icon><span class="bebop-ui-icon-file"></div>
               {{/id}}'
           ];
 
@@ -89,7 +86,7 @@ class YoutubePlaylist extends \Ponticlaro\Bebop\UI\Patterns\MediaSourceAbstract 
             'html' => '
               {{^id}}
                 <div bebop-ui-mod-list--media-source-icon><span class="bebop-ui-icon-warning"></div>
-                <span class="description">You need to insert a Youtube playlist ID</span>
+                <span class="description">'. $this->config->get('labels.missing_identifier_message') .'</span>
               {{/id}}'
           ];
 
@@ -99,13 +96,19 @@ class YoutubePlaylist extends \Ponticlaro\Bebop\UI\Patterns\MediaSourceAbstract 
 
           $sections[] = [
             'ui'   => 'rawHtml',
-            'html' => '<div bebop-ui-mod-list--media-source-icon><span class="bebop-ui-icon-youtube"></div>'
+            'html' => '<div bebop-ui-mod-list--media-source-icon><span class="bebop-ui-icon-file"></div>'
           ];
 
           $sections[] = [
-            'ui'    => 'input',
+            'ui'    => 'postsearch',
             'name'  => 'id',
-            'label' => 'Playlist ID'
+            'label' => $this->config->get('labels.identifier_field'),
+            'attrs' => [
+              'style' => 'width:100%'
+            ],
+            'query' => [
+              'type' => $this->config->get('types') ?: []
+            ]
           ];
           break;
       }
@@ -113,5 +116,4 @@ class YoutubePlaylist extends \Ponticlaro\Bebop\UI\Patterns\MediaSourceAbstract 
 
     return $sections;
   }
-
 }

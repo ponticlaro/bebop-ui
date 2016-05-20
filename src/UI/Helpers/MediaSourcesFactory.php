@@ -19,6 +19,7 @@ class MediaSourcesFactory {
    'google_map'          => 'Ponticlaro\Bebop\UI\Helpers\MediaSources\GoogleMap',
    'soundcloud_playlist' => 'Ponticlaro\Bebop\UI\Helpers\MediaSources\SoundcloudPlaylist',
    'soundcloud_track'    => 'Ponticlaro\Bebop\UI\Helpers\MediaSources\SoundcloudTrack',
+   'types'               => 'Ponticlaro\Bebop\UI\Helpers\MediaSources\Types',
    'vimeo'               => 'Ponticlaro\Bebop\UI\Helpers\MediaSources\Vimeo',
    'youtube_video'       => 'Ponticlaro\Bebop\UI\Helpers\MediaSources\YoutubeVideo',
    'youtube_playlist'    => 'Ponticlaro\Bebop\UI\Helpers\MediaSources\YoutubePlaylist'

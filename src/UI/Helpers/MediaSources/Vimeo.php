@@ -35,7 +35,7 @@ class Vimeo extends \Ponticlaro\Bebop\UI\Patterns\MediaSourceAbstract {
    * @param  array  $config User configuration
    * @return array          List of UI sections to be rendered
    */
-  public static function getContentListUISections($view, array $config)
+  public function getContentListUISections($view, array $config)
   {
     $sections = [];
 

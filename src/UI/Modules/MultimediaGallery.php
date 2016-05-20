@@ -18,6 +18,7 @@ class MultimediaGallery extends ItemList {
     'google_map',
     'soundcloud_track',
     'soundcloud_playlist',
+    'types',
     'vimeo',
     'youtube_video',
     'youtube_playlist'
@@ -38,6 +39,7 @@ class MultimediaGallery extends ItemList {
         'google_map'          => true,
         'soundcloud_track'    => true,
         'soundcloud_playlist' => true,
+        'types'               => false,
         'vimeo'               => true,
         'youtube_video'       => true,
         'youtube_playlist'    => true
@@ -100,7 +102,7 @@ class MultimediaGallery extends ItemList {
       foreach ($media_sources as $source_id => $source_config) {
         if ($source_config && $this->allowsMediaSource($source_id) && MediaSourcesFactory::canManufacture($source_id)) {
 
-          $media_source = MediaSourcesFactory::create($source_id);
+          $media_source = MediaSourcesFactory::create($source_id, is_array($source_config) ? $source_config : []);
 
           $selector_options[] = [
             'value' => $source_id,
@@ -144,7 +146,7 @@ class MultimediaGallery extends ItemList {
           foreach ($media_sources as $source_id => $source_config) {
             if ($source_config && $this->allowsMediaSource($source_id) && MediaSourcesFactory::canManufacture($source_id)) {
 
-              $media_source = MediaSourcesFactory::create($source_id);
+              $media_source = MediaSourcesFactory::create($source_id, is_array($source_config) ? $source_config : []);
               $id_field     = $media_source->getIdentifierField();
 
               // Set openning tag to enclose HTML for this media source
