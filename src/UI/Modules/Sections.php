@@ -14,8 +14,8 @@ class Sections extends ItemList {
    */
   protected static $section_types = [
     'html' => [
-      "title"        => "HTML",
-      "edit_modules" => [
+      "title"         => "HTML",
+      "edit_sections" => [
         [
           "ui"    => "input",
           "label" => "Title"
@@ -25,7 +25,7 @@ class Sections extends ItemList {
           "label" => "Content"
         ]
       ],
-      "browse_modules" => [
+      "browse_sections" => [
         [
           "ui"   => "rawHtml",
           "html" => "{{type_title}}: <strong>{{title}}</strong>"
@@ -111,12 +111,12 @@ class Sections extends ItemList {
 
   				// Get section type and sections
   				$id           = isset($sconf['id']) && $sconf['id'] ? $sconf['id'] : Utils::slugify($title);
-  				$browse_modules  = isset($sconf['browse_modules']) && is_array($sconf['browse_modules']) ? $sconf['browse_modules'] : [];
-          $reorder_modules = isset($sconf['reorder_modules']) && is_array($sconf['reorder_modules']) ? $sconf['reorder_modules'] : [];
-          $edit_modules = isset($sconf['edit_modules']) && is_array($sconf['edit_modules']) ? $sconf['edit_modules'] : [];
+  				$browse_sections  = isset($sconf['browse_sections']) && is_array($sconf['browse_sections']) ? $sconf['browse_sections'] : [];
+          $reorder_sections = isset($sconf['reorder_sections']) && is_array($sconf['reorder_sections']) ? $sconf['reorder_sections'] : [];
+          $edit_sections = isset($sconf['edit_sections']) && is_array($sconf['edit_sections']) ? $sconf['edit_sections'] : [];
 
-          if (!$reorder_modules)
-            $reorder_modules = $browse_modules;
+          if (!$reorder_sections)
+            $reorder_sections = $browse_sections;
 
   				// Add section option to options list
   				$selector_options[] = [
@@ -134,7 +134,7 @@ class Sections extends ItemList {
   					'html' => "{{#type_is_$id}}"
   				];
 
-          foreach ($browse_modules as $section) {
+          foreach ($browse_sections as $section) {
             $browse_view[] = $section;
           }
 
@@ -154,7 +154,7 @@ class Sections extends ItemList {
             'html' => "{{#type_is_$id}}"
           ];
 
-          foreach ($reorder_modules as $section) {
+          foreach ($reorder_sections as $section) {
             $reorder_view[] = $section;
           }
 
@@ -188,7 +188,7 @@ class Sections extends ItemList {
   					'value' => $title
   				];
 
-  				foreach ($edit_modules as $section) {
+  				foreach ($edit_sections as $section) {
 				  	$edit_view[] = $section;
   				}
 
