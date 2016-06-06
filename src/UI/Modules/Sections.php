@@ -58,7 +58,7 @@ class Sections extends ItemList {
     // Set default vars
     $this->setVars([
       'before'            => '<div class="bebop-ui-mod bebop-ui-mod-list bebop-ui-mod-pagesections">',
-      'add_section_types' => [],
+      'set_section_types' => [],
       'section_types'     => [
         'html'
       ]
@@ -74,11 +74,11 @@ class Sections extends ItemList {
   {
   	parent::__afterSetVars();
 
-    $add_section_types = $this->getVar('add_section_types') ?: [];
+    $set_section_types = $this->getVar('set_section_types') ?: [];
 
     // Add Section types
-    if ($add_section_types) {
-      foreach ($add_section_types as $section_type_config) {
+    if ($set_section_types) {
+      foreach ($set_section_types as $section_type_config) {
 
         $title = isset($section_type_config['title']) && $section_type_config['title'] ? $section_type_config['title'] : null;
 
