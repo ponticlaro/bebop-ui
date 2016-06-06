@@ -34,14 +34,14 @@
       }
     });
 
-    // Page Sections
-    Bebop.List.addFormAction('bebop-ui-action--addPageSection', function(event) {
+    // Sections
+    Bebop.List.addFormAction('bebop-ui-action--addSection', function(event) {
 
       var $selector = $(event.currentTarget).parents('[bebop-list--formelementid]').find('[bebop-list--formElId="selector"]');
           id        = $selector.val();
 
-      if (!id || id == -1) {
-        alert('You need to select a page section type');
+      if (!id) {
+        alert('You need to select an option from the dropdown');
       }
 
       else {
@@ -51,8 +51,6 @@
           'type_title': $selector.find('option[value='+ id +']').text(),
           'view': 'edit'
         });
-
-        $selector.val(-1);
       }
 
     });
