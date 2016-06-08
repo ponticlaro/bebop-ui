@@ -83,7 +83,7 @@ class Sections extends ItemList {
         $title = isset($section_type_config['title']) && $section_type_config['title'] ? $section_type_config['title'] : null;
 
         if ($title) {
-          $section_type_id = Utils::slugify($title);
+          $section_type_id = isset($section_type_config['id']) && $section_type_config['id'] ? $section_type_config['id'] : Utils::slugify($title);
           $this->setType($section_type_id, $section_type_config);
         }
       }
