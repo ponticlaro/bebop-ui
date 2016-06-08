@@ -30,6 +30,7 @@ class ModuleFactory {
         'itemlist'          => 'Ponticlaro\Bebop\UI\Modules\ItemList',
         'maplist'           => 'Ponticlaro\Bebop\UI\Modules\MapList',
         'multimediagallery' => 'Ponticlaro\Bebop\UI\Modules\MultimediaGallery',
+        'navigation'        => 'Ponticlaro\Bebop\UI\Modules\Navigation',
         'postsearch'        => 'Ponticlaro\Bebop\UI\Modules\PostSearch',
         'pdf'               => 'Ponticlaro\Bebop\UI\Modules\Pdf',
         'radio'             => 'Ponticlaro\Bebop\UI\Modules\Radio',
