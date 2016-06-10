@@ -345,6 +345,12 @@
 		outline-width: 0 !important;
 		background:none !important;
 		border: none !important;
+		height: auto !important;
+
+		.select2-selection__rendered {
+			line-height: inherit !important;
+			padding: 0 !important;
+		}
 	}
 
 	.select2-selection__arrow {
