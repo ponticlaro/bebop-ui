@@ -20,8 +20,7 @@ class Navigation extends Sections {
           "label" => "Internal Page",
           "name"  => "id",
           "attrs" => [
-            "width" => "100%",
-            "style" => "min-width:auto;max-width:auto;"
+            "style" => "width:100%"
           ]
         ],
         [
@@ -32,12 +31,8 @@ class Navigation extends Sections {
       ],
       "browse_sections" => [
         [
-          "ui"    => "postsearch",
-          "name"  => "id",
-          "attrs" => [
-            "width" => "100%",
-            "style" => "min-width:auto;max-width:auto;"
-          ]
+          "ui"   => "postsearch",
+          "name" => "id"
         ]
       ]
     ],
@@ -102,6 +97,9 @@ class Navigation extends Sections {
    */
   protected function __afterSetVars()
   {
+    // Collect default section types
+    $default_section_types = static::$section_types;
+
     // Add ui sections to the browse view of all section types
     if ($browse_sections = $this->getVar('browse_sections')) {
 
@@ -170,5 +168,8 @@ class Navigation extends Sections {
     // }
 
     parent::__afterSetVars();
+
+    // Restore default section types
+    static::$section_types = $default_section_types;
   }
 }

@@ -358,6 +358,12 @@
 	}
 }
 
+[bebop-list--view="edit"] {
+	.select2-container {
+		width: 100%;
+	}
+}
+
 [bebop-ui-mod-list--item-with-media-source-visual] {
 	@extend %clrfix;
 	margin-left: 130px;
