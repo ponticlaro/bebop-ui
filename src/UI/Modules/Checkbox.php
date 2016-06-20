@@ -98,11 +98,19 @@ class Checkbox extends \Ponticlaro\Bebop\UI\Patterns\ModuleAbstract {
       if (count($this->getVar('options')) > 1) {
         
         $value = is_array($data[$name]) && isset($data[$name][0]) && is_array($data[$name][0]) ? $data[$name][0] : $data[$name];
+      
+        // Use default_options if there is no value
+        if (!$value && $this->getVar('default_options'))
+          $value = $this->getVar('default_options');
       }
 
       else {
 
         $value = is_array($data[$name]) ? $data[$name][0] : $data[$name];
+
+        // Use default_option if there is no value
+        if (!$value && $this->getVar('default_option'))
+          $value = $this->getVar('default_option');
       }
 
       $this->setVar('value', $value);
