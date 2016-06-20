@@ -257,7 +257,7 @@
 					if (templateId) this.formTemplates[templateId] = $el.html().trim();
 
 					// Remove element from DOM
-					$el.remove();
+					// $el.remove();
 					
 				}, this);
 
@@ -296,11 +296,11 @@
 					}
 
 					// Remove element from DOM
-					$el.remove();
+					//$el.remove();
 					
 				}, this);
 
-				$tplContainer.remove();
+				//$tplContainer.remove();
 			}
 
 			// Add forms HTML to DOM
