@@ -1,4 +1,4 @@
-<div bebop-list--el="container" bebop-list--config='<?php echo preg_replace("/'/", "&#39;", json_encode($this->config->getAll())); ?>'>
+<div bebop-list--el="container" bebop-list--config="<?php echo htmlentities(json_encode($this->config->getAll())); ?>">
 
 	<?php $data = $this->getData();
 
