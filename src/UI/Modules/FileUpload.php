@@ -33,8 +33,9 @@ class FileUpload extends \Ponticlaro\Bebop\UI\Patterns\ModuleAbstract {
       'config' => [
         'modal_title'       => 'Upload or select existing files',
         'modal_button_text' => 'Add Files',
-        'mime_types'        => []
+        'mime_types'        => [],
       ],
+      'attrs'  => [],
       'before' => '<div class="bebop-ui-mod bebop-ui-mod-fileupload">',
       'after'  => '</div>'
     ]);
@@ -62,6 +63,7 @@ class FileUpload extends \Ponticlaro\Bebop\UI\Patterns\ModuleAbstract {
   public function preRendering()
   {
     $this->el->setName($this->getVar('name'));
+    $this->el->setConfig('attrs', $this->getVar('attrs'));
     $this->el->setConfig('data', $this->getVar('value'));
 
     $config = $this->getVar('config');

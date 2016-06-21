@@ -5,6 +5,7 @@ namespace Ponticlaro\Bebop\UI\Plugins\Media;
 use Ponticlaro\Bebop\Common\Collection;
 use Ponticlaro\Bebop\Common\UrlManager;
 use Ponticlaro\Bebop\Common\Utils;
+use Ponticlaro\Bebop\Html;
 use Ponticlaro\Bebop\ScriptsLoader\Css;
 use Ponticlaro\Bebop\ScriptsLoader\Js;
 
@@ -17,6 +18,13 @@ class Media extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
    */
   protected static $__key = 'Media';
   
+  /**
+   * Container DOM element
+   * 
+   * @var Ponticlaro\Bebop\Html\Element
+   */
+  protected $el;
+
   /**
    * Instantiates this class
    * 
@@ -40,9 +48,12 @@ class Media extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
     $label = $key;
     $key   = Utils::slugify($key);
 
+    $this->el = Html::Div();
+
     $default_config = array(
       'key'                   => $key,
       'field_name'            => $key,
+      'attrs'                 => [],
       'data'                  => $data,
       'select_button_class'   => '',
       'select_button_text'    => 'Select '. $label,
@@ -286,7 +297,16 @@ class Media extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
    */
   public function render()
   {
-    $this->__renderTemplate($this->template, $this->config);
+    // Set custom attributes
+    $this->el->setAttrs($this->config->get('attrs'));
+
+    // Remove custom attributes from config
+    $this->config->remove('attrs');
+
+    $this->el->setAttr('bebop-media--el', 'container');
+    $this->el->setAttr('bebop-media--config', htmlentities(json_encode($this->config->getAll())));
+    $this->el->append('<input type="hidden" name="'. $this->config->get('field_name') .'" value="'. $this->config->get('data') .'">');
+    $this->el->render();
 
     return $this;
   }
