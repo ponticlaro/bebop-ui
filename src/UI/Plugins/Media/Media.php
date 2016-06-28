@@ -303,9 +303,18 @@ class Media extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
     // Remove custom attributes from config
     $this->config->remove('attrs');
 
+    // Set container attributes
     $this->el->setAttr('bebop-media--el', 'container');
     $this->el->setAttr('bebop-media--config', htmlentities(json_encode($this->config->getAll())));
-    $this->el->append('<input type="hidden" name="'. $this->config->get('field_name') .'" value="'. $this->config->get('data') .'">');
+
+    // Append input element
+    $input = Html::Input();
+    $input->setAttr('type', 'hidden');
+    $input->setAttr('name', $this->config->get('field_name'));
+    $input->setAttr('value', $this->config->get('data'));
+    $this->el->prepend($input);
+
+    // Render
     $this->el->render();
 
     return $this;
