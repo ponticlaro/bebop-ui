@@ -11,7 +11,7 @@ class Navigation extends Sections {
    * 
    * @var array
    */
-  protected static $section_types = [
+  protected $section_types = [
     'internal_page' => [
       "title"         => "Internal Page",
       "edit_sections" => [
@@ -78,8 +78,8 @@ class Navigation extends Sections {
 
     // Set default vars
     $this->setVars([
-      'before'        => '<div class="bebop-ui-mod bebop-ui-mod-list bebop-ui-mod-pagesections bebop-ui-mod-navigation">',
-      'section_types' => [
+      'before'                => '<div class="bebop-ui-mod bebop-ui-mod-list bebop-ui-mod-pagesections bebop-ui-mod-navigation">',
+      'enabled_section_types' => [
         'Internal Page',
         'Link'
       ],
@@ -97,45 +97,42 @@ class Navigation extends Sections {
    */
   protected function __afterSetVars()
   {
-    // Collect default section types
-    $default_section_types = static::$section_types;
-
     // Add ui sections to the browse view of all section types
     if ($browse_sections = $this->getVar('browse_sections')) {
 
-      foreach (static::$section_types as $id => $config) {
+      foreach ($this->section_types as $id => $config) {
 
         foreach ($browse_sections as $section) {
           $config['browse_sections'][] = $section;
         }
 
-        static::$section_types[$id] = $config;
+        $this->section_types[$id] = $config;
       }
     }
 
     // Add ui sections to the reorder view of all section types
     if ($reorder_sections = $this->getVar('reorder_sections')) {
 
-      foreach (static::$section_types as $id => $config) {
+      foreach ($this->section_types as $id => $config) {
 
         foreach ($reorder_sections as $section) {
           $config['reorder_sections'][] = $section;
         }
 
-        static::$section_types[$id] = $config;
+        $this->section_types[$id] = $config;
       }
     }
 
     // Add ui sections to the edit view of all section types
     if ($edit_sections = $this->getVar('edit_sections')) {
 
-      foreach (static::$section_types as $id => $config) {
+      foreach ($this->section_types as $id => $config) {
 
         foreach ($edit_sections as $section) {
           $config['edit_sections'][] = $section;
         }
 
-        static::$section_types[$id] = $config;
+        $this->section_types[$id] = $config;
       }
     }
 
@@ -144,7 +141,7 @@ class Navigation extends Sections {
     // if (is_numeric($depth) && $depth > 0) {
 
     //   // Loop through each existing section type
-    //   foreach (static::$section_types as $id => $config) {
+    //   foreach ($this->section_types as $id => $config) {
 
     //     $sections_copy = $config['edit_sections'];
     //     $temp_depth    = $depth;
@@ -152,13 +149,13 @@ class Navigation extends Sections {
     //     // For each level add a copy of the parent nav
     //     while ($temp_depth > 0) {
 
-    //       $current_sections                              = static::$section_types[$id]['edit_sections'];
-    //       static::$section_types[$id]['edit_sections']   = $sections_copy;
-    //       static::$section_types[$id]['edit_sections'][] = [
+    //       $current_sections                              = $this->section_types[$id]['edit_sections'];
+    //       $this->section_types[$id]['edit_sections']   = $sections_copy;
+    //       $this->section_types[$id]['edit_sections'][] = [
     //         'ui'                => 'navigation',
     //         'label'             => 'Links',
     //         'section_types'     => $this->getVar('section_types'),
-    //         'set_section_types' => static::$section_types[$id]['section_types'],
+    //         'set_section_types' => $this->section_types[$id]['section_types'],
     //         'edit_sections'     => $current_sections
     //       ];
 
@@ -168,8 +165,5 @@ class Navigation extends Sections {
     // }
 
     parent::__afterSetVars();
-
-    // Restore default section types
-    static::$section_types = $default_section_types;
   }
 }

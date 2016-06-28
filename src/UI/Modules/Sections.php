@@ -12,7 +12,7 @@ class Sections extends ItemList {
    * 
    * @var array
    */
-  protected static $section_types = [
+  protected $section_types = [
     'html' => [
       "title"         => "HTML",
       "edit_sections" => [
@@ -40,10 +40,10 @@ class Sections extends ItemList {
    * @param string $id     Section type ID
    * @param array  $config Section type Configuration array
    */
-  public static function setType($id, array $config = [])
+  public function setType($id, array $config = [])
   {
     $id                         = Utils::slugify($id);
-    static::$section_types[$id] = $config;
+    $this->section_types[$id] = $config;
   }
 
   /**
@@ -57,9 +57,9 @@ class Sections extends ItemList {
 
     // Set default vars
     $this->setVars([
-      'before'            => '<div class="bebop-ui-mod bebop-ui-mod-list bebop-ui-mod-pagesections">',
-      'set_section_types' => [],
-      'section_types'     => [
+      'before'                => '<div class="bebop-ui-mod bebop-ui-mod-list bebop-ui-mod-pagesections">',
+      'set_section_types'     => [],
+      'enabled_section_types' => [
         'html'
       ]
     ]);
@@ -74,6 +74,7 @@ class Sections extends ItemList {
   {
   	parent::__afterSetVars();
 
+    // Get user defined section types
     $set_section_types = $this->getVar('set_section_types') ?: [];
 
     // Add Section types
@@ -90,7 +91,7 @@ class Sections extends ItemList {
     }
 
     // Handle enabled section types
-  	$section_types = $this->getVar('section_types') ?: [];
+  	$section_types = $this->getVar('enabled_section_types') ?: [];
 
   	if ($section_types) {
 
@@ -102,7 +103,7 @@ class Sections extends ItemList {
   		foreach ($section_types as $id) {
   			
         $id    = Utils::slugify($id);
-        $sconf = isset(static::$section_types[$id]) ? static::$section_types[$id] : null;
+        $sconf = isset($this->section_types[$id]) ? $this->section_types[$id] : null;
 
   			// Get section title
         $title = $sconf['title']; 
@@ -110,10 +111,10 @@ class Sections extends ItemList {
   			if ($title) {
 
   				// Get section type and sections
-  				$id           = isset($sconf['id']) && $sconf['id'] ? $sconf['id'] : Utils::slugify($title);
+  				$id               = isset($sconf['id']) && $sconf['id'] ? $sconf['id'] : Utils::slugify($title);
   				$browse_sections  = isset($sconf['browse_sections']) && is_array($sconf['browse_sections']) ? $sconf['browse_sections'] : [];
           $reorder_sections = isset($sconf['reorder_sections']) && is_array($sconf['reorder_sections']) ? $sconf['reorder_sections'] : [];
-          $edit_sections = isset($sconf['edit_sections']) && is_array($sconf['edit_sections']) ? $sconf['edit_sections'] : [];
+          $edit_sections    = isset($sconf['edit_sections']) && is_array($sconf['edit_sections']) ? $sconf['edit_sections'] : [];
 
           if (!$reorder_sections)
             $reorder_sections = $browse_sections;
