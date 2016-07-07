@@ -43,7 +43,7 @@ class PostSearch extends Select {
       ],
       'templates' => [
         'engine'    => 'underscore',
-        'result'    => '<%= text %>',
+        'result'    => '<div class="bebop-ui-mod-postsearch-searchresult"><%= text %><span><%= post_type %></span></div>',
         'selection' => '<%= text %>'
       ],
       'before' => '<div class="bebop-ui-mod bebop-ui-mod-select bebop-ui-mod-postsearch">'
