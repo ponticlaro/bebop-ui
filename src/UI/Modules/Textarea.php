@@ -12,9 +12,10 @@ class Textarea extends \Ponticlaro\Bebop\UI\Patterns\ModuleAbstract {
    * 
    * @param object $el Module main element
    */
-  public function setEl(TextareaElement $el)
+  public function setEl($el)
   {
-    $this->el = $el;
+    if ($el instanceof TextareaElement)
+      $this->el = $el;
 
     return $this;
   }

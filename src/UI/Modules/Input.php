@@ -12,9 +12,10 @@ class Input extends \Ponticlaro\Bebop\UI\Patterns\ModuleAbstract {
    * 
    * @param object $el Module main element
    */
-  public function setEl(InputElement $el)
+  public function setEl($el)
   {
-    $this->el = $el;
+    if ($el instanceof InputElement)
+      $this->el = $el;
 
     return $this;
   }

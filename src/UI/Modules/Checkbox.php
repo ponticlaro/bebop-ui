@@ -12,9 +12,10 @@ class Checkbox extends \Ponticlaro\Bebop\UI\Patterns\ModuleAbstract {
    * 
    * @param object $el Module main element
    */
-  public function setEl(CheckboxElement $el)
+  public function setEl($el)
   {
-    $this->el = $el;
+    if ($el instanceof CheckboxElement)
+      $this->el = $el;
 
     return $this;
   }
@@ -106,7 +107,7 @@ class Checkbox extends \Ponticlaro\Bebop\UI\Patterns\ModuleAbstract {
 
       else {
 
-        $value = is_array($data[$name]) ? $data[$name][0] : $data[$name];
+        $value = is_array($data[$name]) ? ($data[$name] ? reset($data[$name]) : null) : $data[$name];
 
         // Use default_option if there is no value
         if (!$value && $this->getVar('default_option'))

@@ -12,9 +12,9 @@ class Button extends \Ponticlaro\Bebop\UI\Patterns\ModuleAbstract {
    * 
    * @param object $el Module main element
    */
-  public function setEl(Element $el)
+  public function setEl($el)
   {
-    if ($el->getTag() == 'button')
+    if ($el instanceof Element && $el->getTag() == 'button')
       $this->el = $el;
 
     return $this;

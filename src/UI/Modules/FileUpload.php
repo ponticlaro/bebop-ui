@@ -12,9 +12,10 @@ class FileUpload extends \Ponticlaro\Bebop\UI\Patterns\ModuleAbstract {
    * 
    * @param object $el Module main element
    */
-  public function setEl(Media $el)
+  public function setEl($el)
   {
-    $this->el = $el;
+    if ($el instanceof Media)
+      $this->el = $el;
 
     return $this;
   }
@@ -96,7 +97,7 @@ class FileUpload extends \Ponticlaro\Bebop\UI\Patterns\ModuleAbstract {
     $name = $this->getVar('name');
 
     if ($name && isset($data[$name]))
-      $this->setVar('value', is_array($data[$name]) ? $data[$name][0] : $data[$name]);
+      $this->setVar('value', is_array($data[$name]) ? ($data[$name] ? reset($data[$name]) : null) : $data[$name]);
   }
 
   /**

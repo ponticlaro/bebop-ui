@@ -11,9 +11,10 @@ class PostSearch extends Select {
    * 
    * @param object $el Module main element
    */
-  public function setEl(SelectElement $el)
+  public function setEl($el)
   {
-    $this->el = $el;
+    if ($el instanceof SelectElement)
+      $this->el = $el;
 
     return $this;
   }

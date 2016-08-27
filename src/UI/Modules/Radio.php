@@ -12,9 +12,10 @@ class Radio extends \Ponticlaro\Bebop\UI\Patterns\ModuleAbstract {
    * 
    * @param object $el Module main element
    */
-  public function setEl(RadioElement $el)
+  public function setEl($el)
   {
-    $this->el = $el;
+    if ($el instanceof RadioElement)
+      $this->el = $el;
 
     return $this;
   }
