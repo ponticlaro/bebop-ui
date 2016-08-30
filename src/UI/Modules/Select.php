@@ -105,7 +105,7 @@ class Select extends \Ponticlaro\Bebop\UI\Patterns\ModuleAbstract {
 
       else {
 
-        $value = is_array($data[$name]) ? $data[$name][0] : $data[$name];
+        $value = is_array($data[$name]) ? reset($data[$name]) : $data[$name];
       }
 
       $this->setVar('value', $value);

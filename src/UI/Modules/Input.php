@@ -95,7 +95,7 @@ class Input extends \Ponticlaro\Bebop\UI\Patterns\ModuleAbstract {
     $name = $this->getVar('name');
 
     if ($name && isset($data[$name]))
-      $this->setVar('value', is_array($data[$name]) ? $data[$name][0] : $data[$name]);
+      $this->setVar('value', is_array($data[$name]) ? reset($data[$name]) : $data[$name]);
   }
 
   /**

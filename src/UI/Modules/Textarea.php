@@ -95,7 +95,7 @@ class Textarea extends \Ponticlaro\Bebop\UI\Patterns\ModuleAbstract {
 
     if ($name && isset($data[$name])) {
 
-      $value = is_array($data[$name]) ? $data[$name][0] : $data[$name];
+      $value = is_array($data[$name]) ? reset($data[$name]) : $data[$name];
       $this->setVar('value', htmlentities($value));
     }
   }
