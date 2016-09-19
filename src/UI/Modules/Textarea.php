@@ -8,6 +8,23 @@ use Ponticlaro\Bebop\Common\Utils;
 class Textarea extends \Ponticlaro\Bebop\UI\Patterns\ModuleAbstract {
 
   /**
+   * Sets a single module variable
+   * 
+   * @param string $key   Key or path that contains the value
+   * @param mixed  $value Value to be set
+   * @return object       This class instance
+   */
+  public function setVar($key, $value)
+  {
+    if (is_string($key) && $key == 'value')
+      $value = htmlentities($value);
+
+    parent::setVar($key, $value);
+      
+    return $this;
+  }
+
+  /**
    * Sets module main element
    * 
    * @param object $el Module main element
@@ -96,7 +113,7 @@ class Textarea extends \Ponticlaro\Bebop\UI\Patterns\ModuleAbstract {
     if ($name && isset($data[$name])) {
 
       $value = is_array($data[$name]) ? reset($data[$name]) : $data[$name];
-      $this->setVar('value', htmlentities($value));
+      $this->setVar('value', $value);
     }
   }
 
