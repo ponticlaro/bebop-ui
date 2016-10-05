@@ -37,11 +37,13 @@ class Checkbox extends \Ponticlaro\Bebop\Html\ControlElement {
     foreach ($options as $option) {
 
       $config = [
-        'text'        => $option['label'],
-        'attrs.name'  => $this->getName(),
-        'attrs.value' => $option['value'],
-        'attrs.id'    => 'checkbox_'. $this->getName() .'_'. $option['value']
+        'text'  => $option['label'],
+        'attrs' => $this->getAttrs()
       ];
+
+      $config['attrs.name'] = $this->getName();
+      $config['attrs.value'] = $option['value'];
+      $config['attrs.id'] = 'checkbox_'. $this->getName() .'_'. $option['value'];
       
       $option_is_current = is_array($value) ? in_array($option['value'], $value) : $option['value'] == $value;
 
