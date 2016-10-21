@@ -67,11 +67,19 @@
 
       else {
 
-        this.addNewitem({
-          'source_id': id,
-          'source_name': $selector.find('option[value='+ id +']').text(),
-          'view': 'edit'
-        });
+        if (id == 'internal') {
+
+          this.addNewInternalMediaitem();
+        }
+
+        else {
+
+          this.addNewitem({
+            'source_id': id,
+            'source_name': $selector.find('option[value='+ id +']').text(),
+            'view': 'browse'
+          });     
+        }
       }
 
     });

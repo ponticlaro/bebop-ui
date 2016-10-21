@@ -412,38 +412,73 @@
 			if (this.$list.attr('bebop-list--is-sortable') == 'true')
 				this.status.set('isSortable', true);
 
-			if (this.isMode('gallery')) {
+			var file_upload_config = this.config.get('file_upload');
 
-				var file_upload_config = this.config.get('file_upload');
+			if (file_upload_config !== null) {
 
-				// Instantiate WordPress media picker
-				this.mediaPicker = wp.media({
-					frame: 'select',
-          multiple: file_upload_config.config.modal_select_multiple,
-          title: file_upload_config.config.modal_title,
-          library: {
-              type: file_upload_config.config.mime_types
-          },
-          button: {
-              text: file_upload_config.config.modal_button_text
-          }
-				});
+				if (this.isMode('gallery')) {
 
-				this.mediaPicker.on("select", function() {
+					// Instantiate WordPress media picker
+					this.mediaPicker = wp.media({
+						frame: 'select',
+	          multiple: file_upload_config.config.modal_select_multiple,
+	          title: file_upload_config.config.modal_title,
+	          library: {
+	              type: file_upload_config.config.mime_types
+	          },
+	          button: {
+	              text: file_upload_config.config.modal_button_text
+	          }
+					});
 
-					var selection = this.mediaPicker.state().get('selection').toJSON();
+					this.mediaPicker.on("select", function() {
 
-					_.each(selection, function(file, index, selection) {
+						var selection = this.mediaPicker.state().get('selection').toJSON();
 
-						this.collection.add(new List.ItemModel({
-							id: file.id,
-							view: this.status.get('view'),
-							mode: this.status.get('mode')
-						}));
+						_.each(selection, function(file, index, selection) {
+
+							this.collection.add(new List.ItemModel({
+								id: file.id,
+								view: this.status.get('view'),
+								mode: this.status.get('mode')
+							}));
+
+						}, this);
 
 					}, this);
+				}
 
-				}, this);
+				else {
+
+					// Instantiate WordPress media picker
+					this.interalSourceMediaPicker = wp.media({
+						frame: 'select',
+	          multiple: file_upload_config.config.modal_select_multiple,
+	          title: file_upload_config.config.modal_title,
+	          library: {
+	              type: file_upload_config.config.mime_types
+	          },
+	          button: {
+	              text: file_upload_config.config.modal_button_text
+	          }
+					});
+
+					this.interalSourceMediaPicker.on("select", function() {
+
+						var selection = this.interalSourceMediaPicker.state().get('selection').toJSON();
+
+						_.each(selection, function(file, index, selection) {
+
+							this.collection.add(new List.ItemModel({
+								id: file.id,
+								view: 'browse',
+								source_id: 'internal'
+							}));
+
+						}, this);
+
+					}, this);				
+				}
 			}
 
 			this.status.on('change:view', function() {
@@ -573,6 +608,12 @@
 
 				this.addNewModel(data);
 			}
+		},
+
+		addNewInternalMediaitem: function() {
+
+			this.setInsertPosition();
+			this.interalSourceMediaPicker.open();
 		},
 
 		setInsertPosition: function() {

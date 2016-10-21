@@ -112,26 +112,49 @@ class MultimediaGallery extends ItemList {
       }
 
       // Replace 'add' form element
-      if (count($selector_options) > 0) {
-      
-        $this->el->setFormElement('main', 'add', [
-          [
+      $total_selector_options = count($selector_options);
+
+      if ($total_selector_options > 0) {
+        
+        $ui_elements = [];
+
+        if ($total_selector_options == 1) {
+
+          $single_option = reset($selector_options);
+
+          $ui_elements[] = [
+            'ui'    => 'input',
+            'name'  => true,
+            'value' => $single_option['value'],
+            'attrs' => [
+              'bebop-list--formElId' => 'selector',
+              'type'                 => 'hidden'
+            ]
+          ];
+        }
+
+        else {
+
+          $ui_elements[] = [
             'ui'    => 'select',
             'name'  => true,
             'attrs' => [
               'bebop-list--formElId' => 'selector'
             ],
             'options' => $selector_options
-          ],
-          [
-            'ui'    => 'button',
-            'text'  => '<span class="bebop-ui-icon-add"></span> Add',
-            'class' => 'button-primary',
-            'attrs' => [
-              'bebop-list--formAction' => 'bebop-ui-action--addMediaFromTargetSource'
-            ]
+          ];
+        }
+
+        $ui_elements[] = [
+          'ui'    => 'button',
+          'text'  => '<span class="bebop-ui-icon-add"></span> Add',
+          'class' => 'button-primary',
+          'attrs' => [
+            'bebop-list--formAction' => 'bebop-ui-action--addMediaFromTargetSource'
           ]
-        ]);
+        ];
+
+        $this->el->setFormElement('main', 'add', $ui_elements);
       }
     }
 
