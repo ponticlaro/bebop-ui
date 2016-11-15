@@ -2,8 +2,8 @@
   "name": "bebop",
   "devDependencies": {
     "grunt": "*",
+    "requirejs": "*",
     "grunt-contrib-jshint": "*",
-    "grunt-contrib-concat": "*",
-    "grunt-contrib-uglify": "*"
+    "grunt-contrib-requirejs": "*"
   }
 }

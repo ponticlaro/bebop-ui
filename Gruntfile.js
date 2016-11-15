@@ -5,130 +5,62 @@ module.exports = function(grunt) {
   grunt.initConfig({
 
     meta: {
-
-      ui_main_js_path: 'src/UI/assets/core/js',
-      ui_list_js_path: 'src/UI/assets/list/js',
-      ui_multilist_js_path: 'src/UI/assets/multilist/js',
-      ui_media_js_path: 'src/UI/assets/media/js',
-      ui_gallery_js_path: 'src/UI/assets/gallery/js',
+      ui_js_path: 'src/UI/assets/js',
     },
 
     jshint: {
-
       ui_main: [
-        '<%= meta.ui_main_js_path %>/bebop-ui.js'
+        '<%= meta.ui_main_js_path %>'
       ],
-
-      ui_list: [
-        '<%= meta.ui_list_js_path %>/collections',
-        '<%= meta.ui_list_js_path %>/models',
-        '<%= meta.ui_list_js_path %>/views',
-        '<%= meta.ui_list_js_path %>/bebop-ui--list.js'
-      ],
-
-      ui_multilist: [
-        '<%= meta.ui_multilist_js_path %>/views',
-        '<%= meta.ui_multilist_js_path %>/bebop-ui--multilist.js'
-      ],
-
-      ui_media: [
-        '<%= meta.ui_media_js_path %>/views',
-        '<%= meta.ui_media_js_path %>/bebop-ui--media.js'
-      ],
-      
-      ui_gallery: [
-        '<%= meta.ui_gallery_js_path %>/bebop-ui--gallery.js'
-      ]
-    },
-    concat: {
-
-      ui_main_js: {
-        src: [
-          '<%= meta.ui_main_js_path %>/vendor/jquery.ba-throttle-debounce.min.js',
-          '<%= meta.ui_main_js_path %>/bebop-ui.js'
-        ],
-        dest: '<%= meta.ui_main_js_path %>/bebop-ui.min.js'
-      },
-
-      ui_list_js: {
-        src: [
-          '<%= meta.ui_list_js_path %>/views/List.js',
-          '<%= meta.ui_list_js_path %>/views/ListItemView.js',
-          '<%= meta.ui_list_js_path %>/models/ListItemModel.js',
-          '<%= meta.ui_list_js_path %>/collections/ListCollection.js',
-          '<%= meta.ui_list_js_path %>/bebop-ui--list.js'
-        ],
-        dest: '<%= meta.ui_list_js_path %>/bebop-ui--list.min.js'
-      },
-
-      ui_multilist_js: {
-        src: [
-          '<%= meta.ui_multilist_js_path %>/views/MultiList.js',
-          '<%= meta.ui_multilist_js_path %>/bebop-ui--multilist.js',
-        ],
-        dest: '<%= meta.ui_multilist_js_path %>/bebop-ui--multilist.min.js'
-      },
-
-      ui_media_js: {
-        src: [
-          '<%= meta.ui_media_js_path %>/views/Media.js',
-          '<%= meta.ui_media_js_path %>/bebop-ui--media.js',
-        ],
-        dest: '<%= meta.ui_media_js_path %>/bebop-ui--media.min.js'
-      },
-
-      ui_gallery_js: {
-        src: [
-          '<%= meta.ui_gallery_js_path %>/bebop-ui--gallery.js',
-        ],
-        dest: '<%= meta.ui_gallery_js_path %>/bebop-ui--gallery.min.js'
-      }
     },
 
-    uglify: {
-
-      mustache: {
-        src: '<%= meta.ui_main_js_path %>/vendor/mustache.js',
-        dest: '<%= meta.ui_main_js_path %>/vendor/mustache.min.js'
+    requirejs: {
+      main: {
+        options: {
+          baseUrl: './src/UI/assets/js',
+          include: [ 
+            'bebop-ui.js'
+          ],
+          out: './src/UI/assets/js/bebop-ui.min.js'
+        }
       },
-
-      ui_main_js: {
-        src: '<%= concat.ui_main_js.dest %>',
-        dest: '<%= concat.ui_main_js.dest %>'
+      media: {
+        options: {
+          baseUrl: './src/UI/assets/js',
+          include: [ 
+            'bebop-ui--media.js' 
+          ],
+          out: './src/UI/assets/js/bebop-ui--media.min.js'
+        }
       },
-
-      ui_list_js: {
-        src: '<%= concat.ui_list_js.dest %>',
-        dest: '<%= concat.ui_list_js.dest %>'
+      list: {
+        options: {
+          baseUrl: './src/UI/assets/js',
+          include: [ 
+            'bebop-ui--list.js' 
+          ],
+          out: './src/UI/assets/js/bebop-ui--list.min.js'
+        }
       },
-
-      ui_multilist_js: {
-        src: '<%= concat.ui_multilist_js.dest %>',
-        dest: '<%= concat.ui_multilist_js.dest %>'
-      },
-
-      ui_media_js: {
-        src: '<%= concat.ui_media_js.dest %>',
-        dest: '<%= concat.ui_media_js.dest %>'
-      },
-
-      ui_gallery_js: {
-        src: '<%= concat.ui_gallery_js.dest %>',
-        dest: '<%= concat.ui_gallery_js.dest %>'
+      multilist: {
+        options: {
+          baseUrl: './src/UI/assets/js',
+          include: [ 
+            'bebop-ui--multilist.js' 
+          ],
+          out: './src/UI/assets/js/bebop-ui--multilist.min.js'
+        }
       }
     }
   });
 
   // These plugins provide necessary tasks.
   grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-requirejs');
 
   // Default task.
   grunt.registerTask('default', [
-    'jshint', 
-    'concat', 
-    'uglify'
+    'jshint',
+    'requirejs'
   ]);
-
 };
