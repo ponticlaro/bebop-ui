@@ -1,6 +1,7 @@
 define([
   'underscore',
   'jquery',
+  'select2',
 ],
 function (_, $) {
 

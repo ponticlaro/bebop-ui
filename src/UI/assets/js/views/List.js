@@ -2,12 +2,20 @@ define([
 	'underscore',
   'jquery',
   'backbone',
+  'bebop-ui-mod--post-search',
   'bebop-ui--listItemView',
   'bebop-ui--listItemModel',
   'bebop-ui--listCollection',
   'jquery-ui.sortable',
 ],
-function (_, $, Backbone, ListItemView, ListItemModel, ListCollection) {
+function (
+	_, 
+	$, 
+	Backbone, 
+	PostSearchModule, 
+	ListItemView, 
+	ListItemModel, 
+	ListCollection) {
 
 	var ListView = Backbone.View.extend({
 

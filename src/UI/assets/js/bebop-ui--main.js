@@ -26,6 +26,8 @@ function (
     Modules: {}
   };
 
+  window.Bebop = Bebop;
+
   // Backward compatibility
   window.Bebop              = Bebop;
   Bebop.Modules.PostSearch  = PostSearchModule;
