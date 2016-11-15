@@ -154,42 +154,21 @@ class ContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
     $js       = Js::getInstance()->getHook('back');
 
     // Register CSS
-    $css->register('bebop-ui--list', $base_url .'/list/css/bebop-ui--list', ['bebop-ui', 'bebop-ui--media']);
+    $css->register('bebop-ui--list', $base_url .'/css/bebop-ui--list', ['bebop-ui', 'bebop-ui--media']);
 
     // Register development JS
     if (defined('BEBOP_DEV_ENV_ENABLED') && BEBOP_DEV_ENV_ENABLED) {
       
-      $js->register('bebop-ui--listView', $base_url .'/list/js/views/List');
-      $js->register('bebop-ui--listItemView', $base_url .'/list/js/views/ListItemView');
-      $js->register('bebop-ui--listItemModel', $base_url .'/list/js/models/ListItemModel');
-      $js->register('bebop-ui--listCollection', $base_url .'/list/js/collections/ListCollection');
-      $js->register('bebop-ui--list', $base_url .'/list/js/bebop-ui--list', [
-        'jquery',
-        'jquery-ui-sortable',
-        'underscore',
-        'backbone',
-        'mustache',
-        'bebop-ui--media',
-        'bebop-ui--listView',
-        'bebop-ui--listItemView',
-        'bebop-ui--listItemModel',
-        'bebop-ui--listCollection',
+      $js->register('bebop-ui--list', $base_url .'/js/bebop-ui--list', [
+        'bebop-ui'
       ]);
     }
 
     // Register optimized JS
     else {
 
-      // The following dependencies should never be concatenated and minified
-      // Some are use by other WordPress features and plugins
-      // and other are register by Bebop UI
-      $js->register('bebop-ui--list', $base_url .'/list/js/bebop-ui--list.min', [
-        'jquery',
-        'jquery-ui-sortable',
-        'underscore',
-        'backbone',
-        'mustache',
-        'bebop-ui--media'
+      $js->register('bebop-ui--list', $base_url .'/js/bebop-ui--list.min', [
+        'bebop-ui'
       ]);
     }
   }

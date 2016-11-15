@@ -74,16 +74,15 @@ class MultiContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
     $js       = Js::getInstance()->getHook('back');
 
     // Register CSS
-    $css->register('bebop-ui--multilist', $base_url .'/multilist/css/bebop-ui--multilist', ['bebop-ui']);
+    $css->register('bebop-ui--multilist', $base_url .'/css/bebop-ui--multilist', [
+      'bebop-ui'
+    ]);
 
     // Register development JS
     if (defined('BEBOP_DEV_ENV_ENABLED') && BEBOP_DEV_ENV_ENABLED) {
       
-      $js->register('bebop-ui--multilistView', $base_url .'/multilist/js/views/MultiList');
-      $js->register('bebop-ui--multilist', $base_url .'/multilist/js/bebop-ui--multilist', [
-        'jquery',
-        'jquery-ui-tabs',
-        'bebop-ui--multilistView'
+      $js->register('bebop-ui--multilist', $base_url .'/js/bebop-ui--multilist', [
+        'bebop-ui'
       ]);
     }
 
@@ -93,9 +92,8 @@ class MultiContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
       // The following dependencies should never be concatenated and minified
       // Some are use by other WordPress features and plugins
       // and other are register by Bebop UI
-      $js->register('bebop-ui--multilist', $base_url .'/multilist/js/bebop-ui--multilist.min', [
-        'jquery',
-        'jquery-ui-tabs'
+      $js->register('bebop-ui--multilist', $base_url .'/js/bebop-ui--multilist.min', [
+        'bebop-ui'
       ]);
     }
   }

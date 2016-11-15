@@ -1,0 +1,518 @@
+define([
+  'jquery',
+  'backbone',
+  'mustache',
+  'bebop-ui-mod--post-search',
+  'bebop-ui-mod--media-source-metabox',
+  'bebop-ui--listView',
+  'bebop-ui--mediaView',
+],
+function (
+  $, 
+  Backbone, 
+  Mustache, 
+  PostSearchModule, 
+  MediaSourceMetaboxModule, 
+  ListView, 
+  MediaView) {
+
+  var ItemView = Backbone.View.extend({ 
+
+    tagName: 'li',
+
+    className: 'bebop-list--item',
+
+    events: {
+      'click > [bebop-list--el="item-actions"] [bebop-list--action]': 'doAction',
+      'change > [bebop-list--el="content"] [bebop-ui--field]': 'updateSingle',
+      'keyup > [bebop-list--el="content"] [bebop-ui--field]': 'updateSingle'
+    },
+
+    initialize: function(options) {
+
+      var self = this;
+
+      // Store reference to container list
+      this.list = options.list;
+
+      // Used to define a single parameter we want to edit on a given model
+      this.dataContext = options.dataContext ? options.dataContext : '';
+
+      // add mode id to $el as an attribute
+      this.$el.attr('bebop-list--model-id', this.model.cid);
+
+      // Set main template as $el html
+      this.$el.html(options.templates.main);
+
+      this.$content = this.$el.find('[bebop-list--el="content"]');
+
+      this.buttons = {
+        edit: {
+          $el: this.$el.find('[bebop-list--action="edit"]')
+        },
+        remove: {
+          $el: this.$el.find('[bebop-list--action="remove"]')
+        }
+      };
+
+      this.fields = {};
+
+      // Build views object
+      this.views = {};
+
+      var browseTplName  = this.dataContext ? this.dataContext + '.browse' : 'browse',
+        editTplName    = this.dataContext ? this.dataContext + '.edit' : 'edit',
+        reorderTplName = this.dataContext ? this.dataContext + '.reorder' : 'reorder';
+
+      this.views.browse = {
+        $el: this.$el.find('[bebop-list--view="browse"]'),
+        template: options.templates[browseTplName],
+      };
+
+      this.views.edit = {
+        $el: this.$el.find('[bebop-list--view="edit"]'),
+        template: options.templates[editTplName],
+        cleanHTML: options.templates[editTplName].replace(/\{\{[^\}]*\}\}/g, '')
+      };
+
+      // Reorder template falls back to browse template
+      this.views.reorder = {
+        $el: this.$el.find('[bebop-list--view="reorder"]'),
+        template: options.templates[reorderTplName] === undefined || options.templates[reorderTplName] === '' ? options.templates[browseTplName] : options.templates[reorderTplName]
+      };
+
+      // Collect data container input
+      this.$dataContainer = this.$el.find('[bebop-list--el="data-container"]');
+      
+      //if (!this.list.status.get('isChildList')) {
+
+        this.$dataContainer.attr('name', options.fieldName +'[]');
+      //}
+      
+      this.mode = options.mode ? options.mode : null;
+
+      // Get image widget
+      if (this.mode == 'gallery') {
+
+        this.image = new MediaView({
+          el: this.$el.find('[bebop-media--el="container"]'),
+          id: this.model.get('id')
+        });
+
+        this.image.status.on('change:data', function() {
+          this.render();
+        }, this);
+      }
+
+      // Insert JSON data into data container
+      this.storeData();
+
+      // Add event listeners for model events
+      this.listenTo(this.model, 'change', this.storeData);
+      this.listenTo(this.model, 'change:view', this.render);
+      this.listenTo(this.model, 'destroy', this.destroy);
+    },
+
+    doAction: function(event) {
+
+      event.preventDefault();
+
+      var action = $(event.currentTarget).attr('bebop-list--action');
+
+      // Execute action if available
+      if (this[action] !== undefined) this[action](event);
+    },
+
+    edit: function() {
+      this.model.set('view', 'edit');
+    },
+
+    browse: function() {
+      this.model.set('view', 'browse');
+    },
+
+    reorder: function() {
+      this.model.set('view', 'reorder');
+    },
+
+    updateSingle: function(event) {
+
+      var name = $(event.currentTarget).attr('bebop-ui--field');
+
+      this.model.set(name, this.getFieldValue(name));
+
+      if (this.list.status.get('isChildList'))
+        this.list.collection.trigger('updateParentCollection');
+
+      if (this.list.status.get('isChildList_v2'))
+        this.list.collection.trigger('updateParentCollection_v2');
+    },
+
+    update: function() {
+
+      _.each(this.views.edit.fields, function(field, name) {
+        
+        this.model.set(name, this.getFieldValue(name));
+
+      }, this);
+
+      if (this.list.status.get('isChildList'))
+        this.list.collection.trigger('updateParentCollection');
+
+      if (this.list.status.get('isChildList_v2'))
+        this.list.collection.trigger('updateParentCollection_v2');
+    },
+
+    storeData: function() {
+
+      // Clone model attributes so that we can exclude 'view' from data to be saved
+      var data = _.clone(this.model.attributes);
+
+      // Remove 'view' and 'mode' from data to be saved
+      delete data.view;
+      delete data.mode;
+
+      this.$dataContainer.val(JSON.stringify(data));
+    },
+
+    remove: function() {
+
+      this.model.destroy();
+
+      if (this.list.status.get('isChildList'))
+        this.list.collection.trigger('updateParentCollection');
+
+      if (this.list.status.get('isChildList_v2'))
+        this.list.collection.trigger('updateParentCollection_v2');
+    },
+
+    destroy: function() {
+
+      this.$el.slideUp(250, function() {
+
+        $(this).remove();
+      });
+    },
+
+    prepareView: function() {
+
+      var view = this.model.get('view');
+
+      // Collect fields and add missing ones to the model
+      _.each(this.$content.find('[name]:not([name^="___bebop-ui--placeholder-"])'), function(el, index){
+
+        var $el     = $(el),
+          name    = $el.attr('name'),
+          type    = $el.attr('type');
+          newName = type == 'radio' || type == 'checkbox' ? '___bebop-ui--placeholder-'+ name : null;
+
+        $el.attr('name', newName).attr('bebop-ui--field', name);
+
+        this.fields[name] = {
+          $el: $el,
+          tagName: $el.get(0).tagName,
+          type: $el.attr('type')
+        };
+
+        if (!this.model.has(name)) {
+
+          var value = '';
+
+          if ($el.get(0).tagName == 'INPUT') {
+
+            if ($el.attr('type') == 'checkbox' && !$el.is(':checked')) {
+
+              value = '';
+
+            } else {
+
+              value = $el.val();
+            }
+          }
+
+          // Set value to empty array in case of a select with multiple values
+          if ($el.get(0).tagName == 'SELECT') {
+
+            $options = $el.find('option:selected');
+
+            if ($el.attr('multiple')) {
+
+              value = [];
+
+              _.each($options, function(option, index, options) {
+
+                value[index] = $(option).val();
+
+              },this);
+            
+            } else {
+
+              value = $options.val();
+            }
+          }
+
+          this.model.set(name, value);
+        }
+
+      }, this);
+
+
+      // Handle action buttons
+      if (view == 'edit') {
+
+        this.buttons.edit.$el.attr('bebop-list--action', 'browse')
+            .find('b').text('Save').end()
+            .find('span').removeClass('bebop-ui-icon-edit').addClass('bebop-ui-icon-save');
+        
+        this.buttons.remove.$el.attr('disabled', true);
+
+      } else {
+
+        this.buttons.edit.$el.attr('bebop-list--action', 'edit')
+            .find('b').text('Edit').end()
+            .find('span').removeClass('bebop-ui-icon-save').addClass('bebop-ui-icon-edit');
+      
+        this.buttons.remove.$el.prop('disabled', false);
+      }
+
+      if (view == 'reorder') {
+
+        this.buttons.edit.$el.prop('disabled', true);
+
+      } else {
+
+        this.buttons.edit.$el.prop('disabled', false);
+      }
+    },
+
+    getFieldValue: function(name)
+    {
+      var $view  = this.views[this.model.get('view')].$el,
+          $field = $view.find('[bebop-ui--field="'+ name +'"]'),
+          value  = '';
+
+      switch($field.get(0).tagName) {
+
+        case 'INPUT':
+        
+          if ($field.attr('type') == 'checkbox') {
+
+            if ($field.length > 1) {
+
+              value = [];
+
+              _.each($field, function(el, index) {
+
+                var $el = $(el);
+
+                if($el.is(':checked')) 
+                  value.push($el.val());
+              });
+            }
+
+            else {
+
+              value = $field.is(':checked') ? $field.val() : '';
+            }
+          }
+
+          else if ($field.attr('type') == 'radio') {
+            
+            if ($field.length > 1) {
+
+              value = '';
+
+              _.each($field, function(el, index) {
+
+                var $el = $(el);
+
+                if($el.is(':checked')) 
+                  value = $el.val();
+              });
+
+            } 
+
+            else {
+
+              value = $field.is(':checked') ? $field.val() : '';
+            }
+          }
+
+          else {
+
+            value = $field.val();
+          }
+
+          break;
+
+        case 'SELECT':
+
+          if ($field.attr('multiple')) {
+
+            value = [];
+
+            _.each($field.find('option:selected'), function(option, index) {
+
+                value[index] = $(option).val();
+            });
+
+          } else {
+
+            value = $field.find('option:selected').val();
+          }
+
+          break;
+
+        default: 
+
+          value = $field.val();
+          break;
+      }
+      
+      return value;
+    },
+
+    getPrettyValue: function(name, value) {
+
+      if(name == 'view') return value;
+
+      var data = [];
+      data[name] = value;
+
+      var $field = $(Mustache.render(this.views.browse.cleanHTML, data)).find('[name="'+ name +'"]');
+
+      if ($field.length > 0 && $field.get(0).tagName == 'SELECT') {
+
+        value = value ? $field.find('option[value="'+ value +'"]').text() : value;
+      }
+
+      return value;
+    },
+
+    getTemplateData: function() {
+
+      var view = this.model.get('view'),
+        data = _.clone(this.model.attributes);
+
+      // Add 'is_' values for mustache templates
+      _.each(data, function(value, key) {
+
+        // Handle field names with '[]'
+        if (key.indexOf('[]') > -1) {
+
+          delete(data[key]);
+          key       = key.replace('[]', '');
+          data[key] = value;
+        }
+
+        if (value instanceof Array) {
+
+          _.each(value, function(singleValue, index, valuesList) {
+          
+            // Check for "pretty" values for browse or reorder view
+            if(view != 'edit') {
+              data[key][index] = this.getPrettyValue(key, singleValue);
+            }
+
+            data[key + '_has_' + singleValue] = true;
+
+          }, this);
+
+        } else {
+
+          // Check for "pretty" values for browse or reorder view
+          if(view != 'edit') {
+            data[key] = this.getPrettyValue(key, value);
+          }
+
+          data[key + '_is_' + value] = true;
+        }
+
+      }, this);
+
+      if (this.mode == 'gallery')
+        data.image = this.image.status.get('data');
+
+      return data;
+    },
+
+    render: function() {
+
+      // Update model if we moved from the edit view
+      if (this.model.hasChanged('view') && this.model.previous('view') == 'edit') 
+        this.update();
+
+      var prevView = this.model.previous('view'),
+          view     = this.model.get('view'),
+          viewHtml = Mustache.render(this.views[view].template, this.getTemplateData());
+
+      this.$el.removeClass('view--' + prevView).addClass('view--' + view);
+
+      // Render current view§
+      this.views[view].$el.html(viewHtml);
+
+      // Prepare current view for interaction
+      this.prepareView();
+
+      // Show current view
+      this.views[view].$el.show().siblings('[bebop-list--view]').hide();
+
+      // Show item if not already visible
+      if(!this.$el.is(':visible')) 
+        this.$el.slideDown(200);
+
+      // Render child UI Lists instances
+      _.each(this.views[view].$el.find('[bebop-list--el="container"]'), function(item, index) {
+
+        new ListView({
+          el: item,
+          parentList: this.list,
+          parentModel: this.model
+        });
+
+      }, this);
+
+      // Render UI Media instances
+      _.each(this.views[view].$el.find('[bebop-media--el="container"]'), function(item, index) {
+
+        new MediaView({el: item});
+
+      }, this);
+
+      // Generate Searchable Select Module instances
+      $.each(this.views[view].$el.find('[bebop-ui-el--postsearch]'), function(index, item) {
+        new PostSearchModule({el: item});
+      });
+
+      // Generate Media Source Metabox instances
+      $.each(this.views[view].$el.find('[bebop-metabox="media-source"]'), function(index, item) {
+        new MediaSourceMetaboxModule({el: item});
+      });
+
+      // After render event
+      if (this.afterRenderFns.length > 0) {
+
+        _.each(this.afterRenderFns, function(fn) {
+          fn(this);
+        }, this);
+      }
+
+      return this;
+    },
+
+    afterRender: function(fn) {
+
+      
+    }
+  });
+
+  ItemView.prototype.afterRenderFns = [];
+
+  ItemView.onRendered = function(fn) {
+
+    if(_.isFunction(fn))
+        this.prototype.afterRenderFns.push(fn);
+  };
+
+  return ItemView;
+});

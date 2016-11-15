@@ -102,36 +102,21 @@ class Media extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
     $js       = Js::getInstance()->getHook('back');
 
     // Register CSS
-    $css->register('bebop-ui--media', $base_url .'/media/css/bebop-ui--media', ['bebop-ui']);
+    $css->register('bebop-ui--media', $base_url .'/css/bebop-ui--media', ['bebop-ui']);
 
     // Register development JS
     if (defined('BEBOP_DEV_ENV_ENABLED') && BEBOP_DEV_ENV_ENABLED) {
 
-      $js->register('bebop-ui--mediaView', $base_url .'/media/js/views/Media');
-      $js->register('bebop-ui--media', $base_url .'/media/js/bebop-ui--media', [
-        'jquery',
-        'jquery-ui-sortable',
-        'underscore',
-        'backbone',
-        'bebop-ui',
-        'mustache',
-        'bebop-ui--mediaView'
+      $js->register('bebop-ui--media', $base_url .'/js/bebop-ui--media', [
+        'requirejs'
       ]);
     }
 
     // Register optimized JS
     else {
 
-      // The following dependencies should never be concatenated and minified
-      // Some are use by other WordPress features and plugins
-      // and other are register by Bebop UI
-      $js->register('bebop-ui--media', $base_url .'/media/js/bebop-ui--media.min', [
-        'jquery',
-        'jquery-ui-sortable',
-        'underscore',
-        'backbone',
-        'bebop-ui',
-        'mustache'
+      $js->register('bebop-ui--media', $base_url .'/js/bebop-ui--media.min', [
+        //'bebop-ui'
       ]);
     }
   }
@@ -227,8 +212,8 @@ class Media extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
       // Handle WordPress lower than 3.5
     }
 
-    wp_enqueue_style('bebop-ui--media');
-    wp_enqueue_script('bebop-ui--media');
+    Css::getInstance()->getHook('back')->enqueue('bebop-ui--media');
+    Js::getInstance()->getHook('back')->enqueue('bebop-ui--media');
   }
 
   /**

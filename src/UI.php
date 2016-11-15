@@ -87,10 +87,10 @@ class UI extends \Ponticlaro\Bebop\Common\Patterns\SingletonAbstract {
     //////////////////
     
     // VENDOR
-    $css->register('jquery.select2', $base_url .'/core/css/vendor/select2.min');
+    $css->register('jquery.select2', $base_url .'/css/vendor/select2.min');
 
     // CORE
-    $css->register('bebop-ui', $base_url .'/core/css/bebop-ui', [
+    $css->register('bebop-ui', $base_url .'/css/bebop-ui', [
       'jquery.select2'
     ]);
 
@@ -99,41 +99,23 @@ class UI extends \Ponticlaro\Bebop\Common\Patterns\SingletonAbstract {
     /////////////////
 
     // VENDOR
-    $js->register('jquery.debounce', $base_url .'/core/js/vendor/jquery.ba-throttle-debounce.min', ['jquery']);
-    $js->register('jquery.select2', $base_url .'/core/js/vendor/select2.full.min');
+    $js->register('requirejs', $base_url .'/js/vendor/require.min');
 
     // Development JS
     if (defined('BEBOP_DEV_ENV_ENABLED') && BEBOP_DEV_ENV_ENABLED) {
       
-      // VENDOR
-      $js->register('mustache', $base_url .'/core/js/vendor/mustache');
-      
       // CORE
-      $js->register('bebop-ui', $base_url .'/core/js/bebop-ui', [
-        'underscore',
-        'jquery',
-        'jquery-ui-datepicker',
-        'jquery.debounce',
-        'jquery.select2'
+      $js->register('bebop-ui', $base_url .'/js/bebop-ui', [
+        'requirejs'
       ]);
     }
 
     // Optimized JS
     else {
 
-      // VENDOR
-      // Mustache is optimized separately 
-      // so that other components can load it only if needed
-      $js->register('mustache', $base_url .'/core/js/vendor/mustache.min');
-
       // CORE
-      // The following dependencies should never be concatenated and minified
-      // These are used by other WordPress features and plugins
-      $js->register('bebop-ui', $base_url .'/core/js/bebop-ui.min', [
-        'underscore',
-        'jquery',
-        'jquery-ui-datepicker',
-        'jquery.select2'
+      $js->register('bebop-ui', $base_url .'/js/bebop-ui.min', [
+        'requirejs'
       ]);
     }
   }
