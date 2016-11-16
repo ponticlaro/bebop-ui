@@ -54,6 +54,7 @@ class UI extends \Ponticlaro\Bebop\Common\Patterns\SingletonAbstract {
 
     // Register common UI scripts
     add_action('init', array($this, 'registerScripts'));
+    add_action('init', array($this, 'enqueueScripts'));
 
     // Set assets directory
     $assets_dir = __DIR__ . '/UI/assets';
@@ -106,7 +107,10 @@ class UI extends \Ponticlaro\Bebop\Common\Patterns\SingletonAbstract {
       
       // CORE
       $js->register('bebop-ui', $base_url .'/js/bebop-ui', [
-        'requirejs'
+        'requirejs',
+        'underscore',
+        'jquery',
+        'backbone'
       ]);
     }
 
@@ -118,6 +122,38 @@ class UI extends \Ponticlaro\Bebop\Common\Patterns\SingletonAbstract {
         'requirejs'
       ]);
     }
+  }
+
+  /**
+   * Enqueues stylesheets and scripts
+   * 
+   * @return void
+   */
+  public function enqueueScripts()
+  {
+    global $wp_version;
+
+    if (version_compare($wp_version, '4.0', '>=')) {
+      
+      wp_enqueue_media();
+    }
+
+    elseif (version_compare($wp_version, '3.5', '>=')) {
+      
+      // Enqueue media scripts ONLY if needed
+      add_action('admin_enqueue_scripts', function() {
+
+        if (!did_action('wp_enqueue_media'))
+          wp_enqueue_media();
+      }); 
+    }
+
+    else {
+      // Handle WordPress lower than 3.5
+    }
+
+    Css::getInstance()->getHook('back')->enqueue('bebop-ui');
+    Js::getInstance()->getHook('back')->enqueue('bebop-ui');
   }
 
   /**

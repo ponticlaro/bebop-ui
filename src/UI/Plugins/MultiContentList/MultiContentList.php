@@ -71,31 +71,11 @@ class MultiContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
   {
     $base_url = UrlManager::getInstance()->get('_bebop/static/ui');
     $css      = Css::getInstance()->getHook('back');
-    $js       = Js::getInstance()->getHook('back');
 
     // Register CSS
     $css->register('bebop-ui--multilist', $base_url .'/css/bebop-ui--multilist', [
       'bebop-ui'
     ]);
-
-    // Register development JS
-    if (defined('BEBOP_DEV_ENV_ENABLED') && BEBOP_DEV_ENV_ENABLED) {
-      
-      $js->register('bebop-ui--multilist', $base_url .'/js/bebop-ui--multilist', [
-        'bebop-ui'
-      ]);
-    }
-
-    // Register optimized JS
-    else {
-
-      // The following dependencies should never be concatenated and minified
-      // Some are use by other WordPress features and plugins
-      // and other are register by Bebop UI
-      $js->register('bebop-ui--multilist', $base_url .'/js/bebop-ui--multilist.min', [
-        'bebop-ui'
-      ]);
-    }
   }
 
   /**
@@ -105,7 +85,6 @@ class MultiContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
   public function enqueueScripts()
   {
     Css::getInstance()->getHook('back')->enqueue('bebop-ui--multilist');
-    Js::getInstance()->getHook('back')->enqueue('bebop-ui--multilist');
   }
 
   /**

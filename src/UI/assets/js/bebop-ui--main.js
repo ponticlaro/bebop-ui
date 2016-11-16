@@ -1,5 +1,4 @@
 define([
-  'underscore',
   'jquery',
   'bebop-ui-mod--post-search',
   'bebop-ui-mod--media-source-metabox',
@@ -11,7 +10,6 @@ define([
   'bebop-ui--listCollection',
 ],
 function (
-  _, 
   $, 
   PostSearchModule,
   MediaSourceMetaboxModule,
@@ -25,8 +23,6 @@ function (
   var Bebop = {
     Modules: {}
   };
-
-  window.Bebop = Bebop;
 
   // Backward compatibility
   window.Bebop              = Bebop;
@@ -64,6 +60,21 @@ function (
 
   // On DOM ready
   $(function() {
+
+    // Generate Media widgets
+    $.each($('[bebop-media--el="container"]'), function(index, item) {
+      new MediaView({el: item});
+    });
+
+    // Generate lists
+    $.each($('[bebop-list--el="container"]'), function(index, item) {
+      new ListView({el: item});
+    });
+
+    // Generate multilists
+    $.each($('[bebop-multilist--el="container"]'), function(index, item) {
+      new MultilistView({el: item});
+    });
 
     // Generate datepicker instances
     $('[bebop-list--el="container"]').on('focusin', '[bebop-ui--el="datepicker"]', function() {

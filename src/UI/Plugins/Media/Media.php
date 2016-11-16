@@ -99,26 +99,19 @@ class Media extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
   {
     $base_url = UrlManager::getInstance()->get('_bebop/static/ui');
     $css      = Css::getInstance()->getHook('back');
-    $js       = Js::getInstance()->getHook('back');
 
     // Register CSS
     $css->register('bebop-ui--media', $base_url .'/css/bebop-ui--media', ['bebop-ui']);
+  }
 
-    // Register development JS
-    if (defined('BEBOP_DEV_ENV_ENABLED') && BEBOP_DEV_ENV_ENABLED) {
-
-      $js->register('bebop-ui--media', $base_url .'/js/bebop-ui--media', [
-        'requirejs'
-      ]);
-    }
-
-    // Register optimized JS
-    else {
-
-      $js->register('bebop-ui--media', $base_url .'/js/bebop-ui--media.min', [
-        //'bebop-ui'
-      ]);
-    }
+  /**
+   * Enqueues stylesheets and scripts
+   * 
+   * @return void
+   */
+  public function enqueueScripts()
+  {
+    Css::getInstance()->getHook('back')->enqueue('bebop-ui--media');
   }
 
   /**
@@ -183,38 +176,6 @@ class Media extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
     </script>
 
   <?php }
-
-  /**
-   * Enqueues stylesheets and scripts
-   * 
-   * @return void
-   */
-  public function enqueueScripts()
-  {
-    global $wp_version;
-
-    if (version_compare($wp_version, '4.0', '>=')) {
-      
-      wp_enqueue_media();
-    }
-
-    elseif (version_compare($wp_version, '3.5', '>=')) {
-      
-      // Enqueue media scripts ONLY if needed
-      add_action('admin_enqueue_scripts', function() {
-
-        if (!did_action('wp_enqueue_media'))
-          wp_enqueue_media();
-      }); 
-    }
-
-    else {
-      // Handle WordPress lower than 3.5
-    }
-
-    Css::getInstance()->getHook('back')->enqueue('bebop-ui--media');
-    Js::getInstance()->getHook('back')->enqueue('bebop-ui--media');
-  }
 
   /**
    * Sets the value for the target config key

@@ -1,3 +1,15 @@
+if (typeof _ === 'function') {
+  define('underscore', function () { return _; });
+}
+
+if (typeof jQuery === 'function') {
+  define('jquery', function () { return jQuery; });
+}
+
+if (typeof Backbone === 'object') {
+  define('backbone', function () { return Backbone; });
+}
+
 // Configure Requirejs
 var bebopui_requirejs = requirejs.config({
   context: "bebop-ui",
