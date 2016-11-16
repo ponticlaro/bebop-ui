@@ -55,6 +55,7 @@
 
 			var select2_config = {
 				placeholder: config.placeholder,
+				allowClear: true,
 			  ajax: {
 			    url: config.url,
 			    dataType: 'json',
