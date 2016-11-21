@@ -5,8 +5,7 @@ define([
   'bebop-ui-mod--post-search',
   'bebop-ui--listItemView',
   'bebop-ui--listItemModel',
-  'bebop-ui--listCollection',
-  'jquery-ui.sortable',
+  'bebop-ui--listCollection'
 ],
 function (
 	_, 

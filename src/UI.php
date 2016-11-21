@@ -110,7 +110,9 @@ class UI extends \Ponticlaro\Bebop\Common\Patterns\SingletonAbstract {
         'requirejs',
         'underscore',
         'jquery',
-        'backbone'
+        'backbone',
+        'jquery-ui-sortable',
+        'jquery-ui-tabs'
       ]);
     }
 

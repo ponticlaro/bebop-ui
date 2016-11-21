@@ -20,12 +20,13 @@ function (
   ListItemModel, 
   ListCollection) {
 
+  console.log($().jquery);
+
   var Bebop = {
     Modules: {}
   };
 
   // Backward compatibility
-  window.Bebop              = Bebop;
   Bebop.Modules.PostSearch  = PostSearchModule;
   Bebop.Modules.MediaSource = MediaSourceMetaboxModule;
   Bebop.Media               = MediaView;
@@ -56,35 +57,29 @@ function (
     $.each($container.find('[bebop-metabox="media-source"]'), function(index, item) {
       new MediaSourceMetaboxModule({el: item});
     });
-  };
-
-  // On DOM ready
-  $(function() {
 
     // Generate Media widgets
-    $.each($('[bebop-media--el="container"]'), function(index, item) {
+    $.each($container.find('[bebop-media--el="container"]'), function(index, item) {
       new MediaView({el: item});
     });
 
     // Generate lists
-    $.each($('[bebop-list--el="container"]'), function(index, item) {
+    $.each($container.find('[bebop-list--el="container"]'), function(index, item) {
       new ListView({el: item});
     });
 
     // Generate multilists
-    $.each($('[bebop-multilist--el="container"]'), function(index, item) {
+    $.each($container.find('[bebop-multilist--el="container"]'), function(index, item) {
       new MultilistView({el: item});
     });
 
     // Generate datepicker instances
-    $('[bebop-list--el="container"]').on('focusin', '[bebop-ui--el="datepicker"]', function() {
+    $container.find('[bebop-list--el="container"]').on('focusin', '[bebop-ui--el="datepicker"]', function() {
       $(this).datepicker({ 
         dateFormat: "M dd, yy"
       });
     });
-
-    Bebop.Modules.init();
-  });
+  };
 
   return Bebop;
 });

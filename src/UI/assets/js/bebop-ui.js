@@ -1,26 +1,23 @@
-if (typeof _ === 'function') {
+// Get Underscorejs from WordPress
+if (typeof _ === 'function')
   define('underscore', function () { return _; });
-}
 
-if (typeof jQuery === 'function') {
+// Get jQuery from WordPress
+if (typeof jQuery === 'function')
   define('jquery', function () { return jQuery; });
-}
 
-if (typeof Backbone === 'object') {
+// Get Backbonejs from WordPress
+if (typeof Backbone === 'object')
   define('backbone', function () { return Backbone; });
-}
 
 // Configure Requirejs
-var bebopui_requirejs = requirejs.config({
+var bebop_ui_requirejs = requirejs.config({
   context: "bebop-ui",
   baseUrl: '/_bebop/static/ui/js',
   paths: {
 
-    // Main Files
-    'bebop-ui--main': 'bebop-ui--main?noext',
-    'bebop-ui--media': 'bebop-ui--media?noext',
-    'bebop-ui--list': 'bebop-ui--list?noext',
-    'bebop-ui--multilist': 'bebop-ui--multilist?noext',
+    // Main
+    'bebop': 'Bebop?noext',
 
     // Modules
     'bebop-ui-mod--post-search': 'modules/PostSearch?noext',
@@ -39,16 +36,22 @@ var bebopui_requirejs = requirejs.config({
     'bebop-ui--listCollection': 'collections/ListCollection?noext',
 
     // Vendor
-    'underscore': 'vendor/underscore.min?noext',
-    'backbone': 'vendor/backbone.min?noext',
-    'jquery': 'vendor/jquery-2.2.4.min?noext',
     'mustache': 'vendor/mustache.min?noext',
-    'select2': 'vendor/select2.full.min?noext',
-    'jquery.ba-throttle-debounce': 'vendor/jquery.ba-throttle-debounce.min?noext',
-    'jquery-ui.tabs': 'vendor/jquery-ui-tabs.min?noext',
-    'jquery-ui.sortable': 'vendor/jquery-ui-sortable.min?noext',
-  }
+    'select2': 'vendor/select2.full.min?noext'
+  } 
 });
 
 // Run our code in context
-bebopui_requirejs(['bebop-ui--main']);
+bebop_ui_requirejs([
+  'jquery',
+  'bebop'
+],
+function ($, Bebop) {
+
+  // On DOM ready
+  $(function() {
+
+    // Initialize Bebop UI modules
+    Bebop.Modules.init();
+  });
+});
