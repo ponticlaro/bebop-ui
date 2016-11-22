@@ -351,6 +351,10 @@
 			line-height: inherit !important;
 			padding: 0 !important;
 		}
+
+		.select2-selection__clear {
+			display:none;
+		}
 	}
 
 	.select2-selection__arrow {
