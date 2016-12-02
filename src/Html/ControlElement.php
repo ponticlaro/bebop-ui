@@ -78,7 +78,7 @@ class ControlElement extends ElementAbstract {
       
       if (is_string($option)) {
         
-        $this->addOption($option, null, false);
+        $this->addOption($option, $option, false);
       }
 
       elseif (is_array($option) && isset($option['label']) && $option['label']) {
@@ -105,7 +105,7 @@ class ControlElement extends ElementAbstract {
 
     $this->config->push([
       'label'    => $label,
-      'value'    => $value ? $value : Utils::slugify($label),
+      'value'    => $value,
       'selected' => $selected
     ], 'options');
 
