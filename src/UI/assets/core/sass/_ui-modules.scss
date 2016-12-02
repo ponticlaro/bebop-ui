@@ -25,6 +25,39 @@
 	}
 }
 
+.bebop-ui-mod-list {
+	
+	[bebop-list--formelementid="add"] {
+
+		.bebop-ui-mod-select {
+
+			margin-right:0;
+
+			select {
+				height: 30px;
+				line-height: 30px;
+			}
+
+			.select2-container {
+				height: 30px;
+			}
+
+			.select2-container--default .select2-selection--single {
+				border-top-right-radius:0;
+				border-bottom-right-radius:0;
+			}
+		}
+
+		.bebop-ui-mod-select + .bebop-ui-mod-button {
+
+			button {
+				border-top-left-radius:0;
+				border-bottom-left-radius:0;
+			}
+		}
+	}
+}
+
 .bebop-ui-mod-postsearch-searchresult {
 
 	span {

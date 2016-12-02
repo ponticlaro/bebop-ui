@@ -135,6 +135,11 @@ class MultimediaGallery extends ItemList {
 
         else {
 
+          array_unshift($selector_options, [
+            'value' => '',
+            'label' => 'Select Source...'
+          ]);
+
           $ui_elements[] = [
             'ui'    => 'select',
             'name'  => true,

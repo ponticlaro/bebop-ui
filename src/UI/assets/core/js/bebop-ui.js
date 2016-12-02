@@ -39,6 +39,11 @@
 		$.each($container.find('[bebop-metabox="media-source"]'), function(index, item) {
 			new Metaboxes.MediaSource({el: item});
 		});
+
+		$container.find('select[bebop-list--formelid="selector"]').select2({
+			placeholder: 'Select source...',
+			minimumResultsForSearch: 10
+		});
 	};
 
 	// PostSearchSelect
@@ -208,6 +213,9 @@
 				dateFormat: "M dd, yy"
 			});
 		});
+
+		
+
 
 		Modules.init();
 	});
