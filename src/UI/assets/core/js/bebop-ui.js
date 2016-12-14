@@ -40,7 +40,8 @@
 			new Metaboxes.MediaSource({el: item});
 		});
 
-		$container.find('select[bebop-list--formelid="selector"]').select2({
+		// Generate UI List basic dropdowns
+		$container.find('select[bebop-list--formelid="selector"]:not([bebop-ui-el--postsearch])').select2({
 			placeholder: 'Select source...',
 			minimumResultsForSearch: 10
 		});
