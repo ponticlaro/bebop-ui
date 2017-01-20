@@ -6,7 +6,7 @@ use Ponticlaro\Bebop\Common\Collection;
 use Ponticlaro\Bebop\Common\UrlManager;
 use Ponticlaro\Bebop\Common\PathManager;
 use Ponticlaro\Bebop\Common\Utils;
-use Ponticlaro\Bebop\Common\StaticAssetsServer;
+use Ponticlaro\Bebop\HttpApi\StaticAssetsServer;
 use Ponticlaro\Bebop\HttpApi;
 use Ponticlaro\Bebop\ScriptsLoader\Css;
 use Ponticlaro\Bebop\ScriptsLoader\Js;

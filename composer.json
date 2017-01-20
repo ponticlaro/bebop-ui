@@ -16,8 +16,8 @@
     }
   ],
   "require": {
-    "ponticlaro/bebop-common": "^1",
-    "ponticlaro/bebop-http-api": "^1",
+    "ponticlaro/bebop-common": "^1.1.2",
+    "ponticlaro/bebop-http-api": "^1.0.1",
     "ponticlaro/bebop-scripts-loader": "^1"
   },
   "require-dev": {
