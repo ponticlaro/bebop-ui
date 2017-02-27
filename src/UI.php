@@ -11,7 +11,14 @@ use Ponticlaro\Bebop\HttpApi;
 use Ponticlaro\Bebop\ScriptsLoader\Css;
 use Ponticlaro\Bebop\ScriptsLoader\Js;
 
-class UI extends \Ponticlaro\Bebop\Common\Patterns\SingletonAbstract {
+class UI {
+
+  /**
+   * Class instance
+   * 
+   * @var object
+   */
+  private static $instance;
 
   /**
    * Class that plugins should be extending to get loaded
@@ -33,10 +40,11 @@ class UI extends \Ponticlaro\Bebop\Common\Patterns\SingletonAbstract {
   private $__plugins;
 
   /**
-   * Instantiates UI object
+   * Instantiates class
    * 
+   * @return void
    */
-  protected function __construct()
+  public function __construct()
   {
     // Get URL for current directory
     self::$__base_url = Utils::getPathUrl(__DIR__);
@@ -69,6 +77,26 @@ class UI extends \Ponticlaro\Bebop\Common\Patterns\SingletonAbstract {
     // Setup static assets server
     $http_api = new HttpApi('bebop_ui_static_assets', '_bebop/static/ui');
     new StaticAssetsServer($http_api, $assets_dir);
+  }
+
+  /**
+   * Do not allow clones
+   * 
+   * @return void
+  */
+  private final function __clone() {}
+
+  /**
+   * Gets single instance of called class
+   * 
+   * @return object
+   */
+  public static function getInstance() 
+  {
+    if (!isset(static::$instance))
+      static::$instance = new static();
+
+    return static::$instance;
   }
 
   /**
