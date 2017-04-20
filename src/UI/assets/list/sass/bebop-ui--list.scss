@@ -517,3 +517,17 @@
 	line-height: 16px;
 	color: #999;
 }
+
+[bebop-list--message] {
+	background-color: #ffcd8c;
+	padding: 10px;
+	font-weight: bold;
+
+	&.is-top {
+		border-top: 1px solid #d0d0d0;
+	}
+
+	&.is-bottom {
+		border-bottom: 1px solid #d0d0d0;
+	}
+}

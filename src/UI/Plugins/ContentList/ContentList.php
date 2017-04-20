@@ -52,15 +52,17 @@ class ContentList extends \Ponticlaro\Bebop\UI\Patterns\PluginAbstract {
 
     // Default main configuration
     $default_config = array(
-      'key'              => $key,
-      'title'            => $title,
-      'description'      => '',
-      'field_name'       => $key,
-      'show_top_form'    => true,
-      'show_bottom_form' => true,
-      'type'             => 'single',
-      'mode'             => 'default',
-      'file_upload'      => [
+      'key'               => $key,
+      'title'             => $title,
+      'description'       => '',
+      'field_name'        => $key,
+      'show_top_form'     => true,
+      'show_bottom_form'  => true,
+      'type'              => 'single',
+      'mode'              => 'default',
+      'max_items'         => null,
+      'max_items_message' => null,
+      'file_upload'       => [
         'name'   => 'id',
         'config' => [
           'modal_title'           => 'Upload or select existing images',

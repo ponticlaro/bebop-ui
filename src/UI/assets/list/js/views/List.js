@@ -595,8 +595,14 @@
 		},
 
 		addNewitem: function(data) {
-
+			
 			this.setInsertPosition();
+
+			if (this.isMaxItemsReached()) {
+				
+				this.displayMaxItemsReachedMessage();
+				return;
+			}
 
 			if (!data) data = {};
 
@@ -658,6 +664,47 @@
 			var itemView = this.getNewItemView(model);
 
 			this.$list.append(itemView.render().el);
+		},
+
+		isMaxItemsReached: function()
+		{
+			var max_items = this.config.get('max_items');
+
+			if (max_items && max_items > 0 && max_items <= this.collection.length)
+				return true;
+
+			return false;
+		},
+
+		displayMaxItemsReachedMessage: function() 
+		{
+			var max_items = this.config.get('max_items');
+			var max_items_message = this.config.get('max_items_message');
+
+			// Set message text
+			var text = max_items_message ? max_items_message : "You've reached the maximum number of allowed items: "+ max_items;
+
+			// Create message element
+			var $el = $('<div>').attr('bebop-list--message', true).text(text);
+
+			// Get position to insert message
+			var insert_position = this.status.get('insertPosition');
+
+			// Render message
+			if(insert_position == 'prepend') {
+
+				$el.addClass('is-top');
+				this.$list.before($el);
+			}
+
+			else {
+				$el.addClass('is-bottom');
+				this.$list.after($el);
+			}
+
+			$el.delay(3000).slideUp(250, function() {
+        $(this).remove();
+      });
 		},
 
 		refresh: function() {
