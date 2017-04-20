@@ -19,6 +19,7 @@ Thumbs.db
 .tmproj
 *.esproj
 nbproject
+.phpintel
 *.sublime-project
 *.sublime-workspace
 
