@@ -97,6 +97,12 @@ class MultimediaGallery extends ItemList {
     // Handle media sources dropdrown
     if ($media_sources) {
 
+      // Override Add button configuration for internal source
+      if ( array_key_exists( 'internal', $media_sources ) && is_array( $media_sources['internal'] )) {
+        $default_upload_config = $this->el->getConfig( 'file_upload.config' );
+        $this->el->setConfig( 'file_upload.config', array_merge( $default_upload_config, $media_sources['internal'] ) );
+      }
+
       $selector_options = [];
 
       foreach ($media_sources as $source_id => $source_config) {
